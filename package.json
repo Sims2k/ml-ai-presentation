@@ -1,0 +1,14 @@
+{
+  "name": "ml-ai-presentation",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "python3 scripts/build_lecture_deck.py",
+    "test": "node scripts/verify_navigation.cjs && node scripts/verify_lecture_deck.cjs",
+    "site": "python3 scripts/build_site.py",
+    "serve": "python3 -m http.server 8000 --directory docs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.1"
+  }
+}

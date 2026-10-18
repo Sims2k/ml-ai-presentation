@@ -1,0 +1,9 @@
+node_modules/
+outputs/
+previews/
+assets/diagrams/
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*

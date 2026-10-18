@@ -1,0 +1,72 @@
+[
+  {
+    "id": "airflow-make-workflow-dependencies-visible",
+    "title": "Airflow: make workflow dependencies visible",
+    "lead": "Orchestration supports task order, failure handling, and execution evidence.",
+    "owner": "TBD",
+    "bullets": [
+      "<b>Architecture role:</b> order dependent pipeline work.",
+      "<b>Evidence:</b> task state, timing, and run context.",
+      "<b>Action:</b> operators and source owners inspect failed dependencies.",
+      "<b>Limit:</b> orchestration does not supply predictive or release approval evidence by itself."
+    ],
+    "example": "The required CRM validation must sit upstream of scoring and export so its failure blocks dependent work.",
+    "takeaway": "Connect each tool to a responsibility, evidence, and a response owner."
+  },
+  {
+    "id": "mlflow-connect-experiments-and-artifacts",
+    "title": "MLflow: connect experiments and artifacts",
+    "lead": "Model tracking supports reproducibility and review when evidence links are designed explicitly.",
+    "owner": "TBD",
+    "bullets": [
+      "<b>Architecture role:</b> connect training evidence and model artifacts.",
+      "<b>Evidence:</b> runs, configuration, metrics, and artifact identity.",
+      "<b>Action:</b> reviewers compare candidates and verify compatible releases.",
+      "<b>Limit:</b> no single tracking tool provides every governance control."
+    ],
+    "example": "Link the approved M1 to its evidence while recording B017-R1’s separate input and execution context.",
+    "takeaway": "Tool records support the release decision; they do not replace its policy."
+  },
+  {
+    "id": "validation-and-drift-reports-support-diagnosis",
+    "title": "Validation and drift reports support diagnosis",
+    "lead": "A report is useful when its reference, feature meaning, cohort, and response are clear.",
+    "owner": "TBD",
+    "bullets": [
+      "<b>Validation:</b> test declared expectations before use.",
+      "<b>Drift comparison:</b> inspect change against a named reference.",
+      "<b>Tool choice:</b> reports can support these roles; keep policy outside the screenshot.",
+      "<b>Action:</b> preserve evidence and assign a response owner."
+    ],
+    "example": "A missing CRM feature needs a contract-failure response; a changed valid population needs a different investigation.",
+    "takeaway": "Tools make evidence easier to collect; architecture defines what that evidence means."
+  },
+  {
+    "id": "ml-architecture-connects-five-responsibilities",
+    "title": "ML architecture connects five responsibilities",
+    "lead": "Return to the full system and the choices that make a prediction usable.",
+    "owner": "All presenters",
+    "bullets": [
+      "<b>Data:</b> preserve meaning, validity, and temporal consistency.",
+      "<b>Models:</b> evaluate uncertainty and manage compatible approved artifacts.",
+      "<b>Operations:</b> observe, diagnose, release, and recover.",
+      "<b>Decisions:</b> protect access and govern appropriate business action."
+    ],
+    "example": "Ana’s score becomes usable through validated inputs, traceable execution, an approved release, and a separate campaign policy.",
+    "takeaway": "Day 2: foundation models and agents retain these control needs, while components and failure modes change."
+  },
+  {
+    "id": "sources-and-adaptation-boundaries",
+    "title": "Sources and adaptation boundaries",
+    "lead": "The bibliography supplies concepts; the bank diagrams and incidents are explicit teaching applications.",
+    "owner": "All presenters",
+    "bullets": [
+      "<b>Core readings:</b> architectural decisions, serving, maintenance, and quality concerns.",
+      "<b>Supporting readings</b> extend monitoring, governance, and security.",
+      "<b>Illustrations:</b> Ana, scores, dates, batches, and incidents are invented.",
+      "<b>Source limit:</b> the separately catalogued checklist corrigendum remains unread."
+    ],
+    "example": "No new churn outcome, repaired score, retention benefit, or real bank tool execution is claimed.",
+    "takeaway": "The separate guide records reading anchors and adaptation limits."
+  }
+]

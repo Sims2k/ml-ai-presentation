@@ -1,0 +1,72 @@
+[
+  {
+    "id": "ci-cd-and-ct-need-different-evidence",
+    "title": "CI, CD, and CT need different evidence",
+    "lead": "Integration, delivery, deployment, and training automate different responsibilities.",
+    "owner": "Matheus",
+    "bullets": [
+      "<b>CI:</b> integrate changes and run code, contract, and path checks.",
+      "<b>Delivery:</b> keep a compatible change ready for an approval decision.",
+      "<b>Deployment:</b> automatically release changes passing the defined policy.",
+      "<b>CT:</b> train and evaluate candidates; completion is not production approval."
+    ],
+    "example": "A connector repair can use CI/CD while retaining M1. Retraining is not required for every pipeline change.",
+    "takeaway": "Automation executes policy; it does not make acceptance criteria identical."
+  },
+  {
+    "id": "candidate-training-ends-before-promotion",
+    "title": "Candidate training ends before promotion",
+    "lead": "A registry stores candidate evidence; a separate release decision controls production use.",
+    "owner": "Matheus",
+    "bullets": [
+      "<b>Reproducibility:</b> record data, code, configuration, and artifacts.",
+      "<b>Evaluation:</b> compare candidate evidence against the baseline and relevant cohorts.",
+      "<b>Registration:</b> preserve identity and lineage for review.",
+      "<b>Promotion:</b> authorize a specific compatible set with recovery planned."
+    ],
+    "example": "M2 remains a candidate until reviewed. M1 remains the approved scoring artifact during the CRM repair.",
+    "takeaway": "The registry is part of governance, not the whole approval process."
+  },
+  {
+    "id": "repair-the-input-path-retain-m1-when-appropriate",
+    "title": "Repair the input path; retain M1 when appropriate",
+    "lead": "The CRM incident requires a verified source repair, not an assumed new model.",
+    "owner": "Matheus",
+    "bullets": [
+      "<b>Repair</b> the source or preparation defect.",
+      "<b>Version</b> the reviewed fix and compatible configuration.",
+      "<b>Re-run</b> under a new execution identity and validate the complete path.",
+      "<b>Publish</b> only after the configured evidence and approval requirements pass."
+    ],
+    "example": "B017 is the held attempt. B017-R1 links the reviewed fix, compatible M1, validation evidence, and publication approval.",
+    "takeaway": "A successful fix needs evidence at the consumer boundary, not only a passing connector test."
+  },
+  {
+    "id": "trace-the-prediction-and-the-decision",
+    "title": "Trace the prediction and the decision",
+    "lead": "Lineage connects input evidence, execution, approval, and downstream action.",
+    "owner": "Matheus",
+    "bullets": [
+      "<b>Prediction identity</b> links customer, time, and target window.",
+      "<b>Execution evidence</b> identifies compatible code, features, model, and config.",
+      "<b>Decision evidence</b> records policy version and action.",
+      "<b>Access controls</b> protect sensitive reconstruction material."
+    ],
+    "example": "An investigator can trace Ana’s original score and the campaign’s separate no-contact or contact decision.",
+    "takeaway": "A model version alone cannot reconstruct the full decision."
+  },
+  {
+    "id": "recovery-restores-a-compatible-path",
+    "title": "Recovery restores a compatible path",
+    "lead": "Rehearse restoration before release, and verify it at the consumer boundary.",
+    "owner": "Matheus",
+    "bullets": [
+      "<b>Know the target:</b> identify the last compatible release or validated fallback.",
+      "<b>Rehearse:</b> test the recovery procedure before relying on it.",
+      "<b>Restore the set:</b> include data meaning, runtime, and configuration.",
+      "<b>Verify:</b> inspect stored scores and actual consumer behavior."
+    ],
+    "example": "Rolling M1 back cannot repair a CRM field that is still missing; the input path must be restored.",
+    "takeaway": "Handoff to security: who may read, change, approve, or operate these paths?"
+  }
+]

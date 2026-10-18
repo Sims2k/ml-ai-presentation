@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ml-architecture",
+    "title": "ML Architecture",
+    "lead": "From a trained model to a maintainable, observable, governed system.",
+    "owner": "All presenters",
+    "bullets": [
+      "<b>Software engineering</b> for systems that depend on learned behavior.",
+      "<b>One shared case:</b> bank customer-churn prediction.",
+      "<b>Two blocks:</b> model-to-system foundations, then architecture and quality.",
+      "<b>Five presenters:</b> Ricardo, Tomás, Simon, Luca, and Matheus."
+    ],
+    "example": "Bank churn supplies the shared case. Examples, records, schedules, and incidents are illustrative.",
+    "takeaway": "A useful model needs an engineered system around it."
+  },
+  {
+    "id": "two-blocks-one-shared-bank-case",
+    "title": "Two blocks, one shared bank case",
+    "lead": "Follow the group’s topic outline; use the case to connect each architectural decision.",
+    "owner": "All presenters",
+    "bullets": [
+      "<b>Block 1:</b> lifecycle, serving, monitoring, and design decisions.",
+      "<b>Block 2:</b> tactics, MLOps, security, privacy, and quality.",
+      "<b>Concept first:</b> explain the mechanism, then apply it to churn.",
+      "<b>Named handoffs:</b> each section identifies its presenter; unassigned topics remain TBD."
+    ],
+    "example": "The same source → feature → model → score → policy path returns throughout the lecture.",
+    "takeaway": "Each architectural decision connects predictive behavior to a system responsibility."
+  },
+  {
+    "id": "the-bank-case-features-labels-and-predictions",
+    "title": "The bank case: features, labels, and predictions",
+    "lead": "A few ML terms connect familiar application data to a learned risk estimate.",
+    "owner": "Ricardo",
+    "bullets": [
+      "<b>Feature:</b> a prepared input, such as logins during the previous seven days.",
+      "<b>Label:</b> the observed churn outcome used for training and later evaluation.",
+      "<b>Prediction:</b> an estimate produced before the customer’s future outcome is known.",
+      "<b>Training vs. inference:</b> learn from earlier examples; apply the approved model to current inputs."
+    ],
+    "example": "Ana / C042: logins fall from 7 to 1; the illustrative score is 0.70. Her next-30-day outcome is unknown.",
+    "takeaway": "Lower activity is evidence for a model input, not proof that a customer will leave."
+  },
+  {
+    "id": "from-a-trained-model-to-an-ml-system",
+    "title": "From a trained model to an ML system",
+    "lead": "Architecture connects learning, production data, operational controls, and business decisions.",
+    "owner": "Ricardo",
+    "bullets": [
+      "<b>Training</b> uses historical features and labels to build and evaluate candidates.",
+      "<b>Production</b> validates current data and applies an approved, compatible model.",
+      "<b>Stored scores</b> link predictions to customer, time, input evidence, and versions.",
+      "<b>Business policy</b> determines the permitted action; it remains separate from the score."
+    ],
+    "example": "The bank computes a monthly batch of churn scores, then applies campaign eligibility and contact rules.",
+    "takeaway": "Keep the learning path and production path distinct, but traceable."
+  },
+  {
+    "id": "two-lifecycles-one-compatible-system",
+    "title": "Two lifecycles, one compatible system",
+    "lead": "Code correctness and predictive usefulness depend on different feedback and release cycles.",
+    "owner": "Ricardo",
+    "bullets": [
+      "<b>Software changes</b> can be checked through code, contract, and integration tests.",
+      "<b>Model development</b> also needs representative data, suitable labels, and evaluation.",
+      "<b>Feedback differs:</b> execution checks may be immediate; churn labels arrive later.",
+      "<b>Co-versioning</b> links changes across code, feature meaning, model, and configuration."
+    ],
+    "example": "A CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions.",
+    "takeaway": "A passing software test does not establish future predictive quality."
+  },
+  {
+    "id": "prediction-and-business-action-are-separate",
+    "title": "Prediction and business action are separate",
+    "lead": "A model estimates risk. Business rules decide whether and how the bank may act.",
+    "owner": "Ricardo",
+    "bullets": [
+      "<b>Score:</b> estimated churn risk, not a guaranteed outcome.",
+      "<b>Policy:</b> preferences, eligibility, contact limits, and campaign budget.",
+      "<b>Action:</b> an offer, another response, or no contact at all.",
+      "<b>Separate evaluation:</b> predictive quality and the benefit of an offer are different questions."
+    ],
+    "example": "Ana may have a high risk score and still receive no offer because contact preferences or policy prohibit it.",
+    "takeaway": "A policy change should not require retraining the prediction model."
+  }
+]

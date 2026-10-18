@@ -1,0 +1,72 @@
+[
+  {
+    "id": "security-threats-depend-on-attacker-access",
+    "title": "Security threats depend on attacker access",
+    "lead": "Locate the attacker’s control before naming the ML attack mechanism.",
+    "owner": "Simon + Matheus",
+    "bullets": [
+      "<b>Poisoning:</b> altered learning inputs influence the trained model.",
+      "<b>Inference manipulation:</b> altered production inputs affect an existing model’s output.",
+      "<b>Privacy inference:</b> access can reveal sensitive membership or attributes.",
+      "<b>Assumptions matter:</b> access, knowledge, and goals differ by threat."
+    ],
+    "example": "A compromised CRM writer could affect current inputs; those records create a poisoning path only if later used for training.",
+    "takeaway": "The accidental CRM migration remains a different scenario."
+  },
+  {
+    "id": "enforce-access-at-the-resource-boundary",
+    "title": "Enforce access at the resource boundary",
+    "lead": "Authentication, authorization, validation, and audit solve different parts of the problem.",
+    "owner": "Simon + Matheus",
+    "bullets": [
+      "<b>Authenticate:</b> establish caller identity.",
+      "<b>Authorize:</b> check operation, resource, and scope.",
+      "<b>Validate:</b> enforce the input contract independently.",
+      "<b>Audit:</b> preserve useful access and change evidence."
+    ],
+    "example": "The scorer may read the approved M1 artifact; it must not gain permission to promote M2 merely by reaching the registry.",
+    "takeaway": "A trust boundary needs an enforced policy, not only a box on a diagram."
+  },
+  {
+    "id": "least-privilege-follows-responsibilities",
+    "title": "Least privilege follows responsibilities",
+    "lead": "Separate source writes, candidate creation, release approval, and campaign use.",
+    "owner": "Simon + Matheus",
+    "bullets": [
+      "<b>Scope identities</b> to the operations and resources they need.",
+      "<b>Separate duties:</b> training does not imply release authority.",
+      "<b>Protect credentials</b> and avoid secrets in code or broad logs.",
+      "<b>Review changes:</b> connect access, source updates, and approvals."
+    ],
+    "example": "A campaign user reads an approved score view, not unrestricted training data or production deployment credentials.",
+    "takeaway": "This abbreviated teaching matrix is a starting point, not a complete bank permission design."
+  },
+  {
+    "id": "privacy-expose-what-each-role-needs",
+    "title": "Privacy: expose what each role needs",
+    "lead": "Campaign use and incident investigation require different views of customer information.",
+    "owner": "Simon + Matheus",
+    "bullets": [
+      "<b>Minimize collection</b> and the information exposed in outputs.",
+      "<b>Separate views:</b> campaigns and investigators have different purposes.",
+      "<b>Protect logs</b> and define retention and access rules.",
+      "<b>Preserve accountability</b> without making raw evidence broadly available."
+    ],
+    "example": "Campaign staff may need Ana’s approved score and eligibility context; investigators may need restricted versioned evidence.",
+    "takeaway": "Privacy is an access-and-data-use design, not a label attached to a technique."
+  },
+  {
+    "id": "privacy-techniques-have-specific-limits",
+    "title": "Privacy techniques have specific limits",
+    "lead": "Choose a mechanism for a defined objective rather than claiming privacy by technique name.",
+    "owner": "Simon + Matheus",
+    "bullets": [
+      "<b>Specify the objective:</b> what information should be protected from whom?",
+      "<b>Tokens</b> and synthetic data do not automatically establish anonymity.",
+      "<b>Federation</b> changes data location, not every leakage risk.",
+      "<b>DP</b> needs a defined protected unit and accounting across releases; no derivation here."
+    ],
+    "example": "Protecting one transaction differs from protecting all contributions of a bank customer.",
+    "takeaway": "Do not announce a guarantee without its assumptions and evidence."
+  }
+]

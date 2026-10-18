@@ -1,0 +1,156 @@
+[
+  {
+    "id": "how-the-world-changes-over-time",
+    "title": "How the world changes over time",
+    "lead": "Sudden, gradual, incremental, and recurring changes are different time patterns—not different input features.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Sudden:</b> the old regime switches abruptly.",
+      "<b>Gradual:</b> old and new regimes coexist during a transition.",
+      "<b>Incremental / recurring:</b> intermediate change differs from a returning regime.",
+      "<b>Blips:</b> isolated noise is not necessarily a lasting regime change."
+    ],
+    "example": "Bank illustrations: a pricing change can be sudden; staggered adoption gradual; evolving habits incremental; seasonal activity recurring.",
+    "takeaway": "First ask how change unfolds over time. Then ask what changed: input data, outcome relationships, or data validity."
+  },
+  {
+    "id": "monitoring-observe-more-than-model-accuracy",
+    "title": "Monitoring: observe more than model accuracy",
+    "lead": "Inputs, system execution, predictions, and business actions need different evidence.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Inputs:</b> are the right records available and meaningful?",
+      "<b>System:</b> did the pipeline complete correctly and on time?",
+      "<b>Model:</b> are predictions useful on the current population?",
+      "<b>Business:</b> are permitted actions and outcomes being tracked?"
+    ],
+    "example": "A healthy churn job can still use a shifted population. A useful score can still lead to an inappropriate contact.",
+    "takeaway": "Observability connects evidence to investigation; dashboards alone do not decide the remedy."
+  },
+  {
+    "id": "monitoring-architecture-from-signal-to-response",
+    "title": "Monitoring architecture: from signal to response",
+    "lead": "Collect linked evidence and route it to an owner who can investigate and act.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Signals:</b> input, execution, and predictive evidence arrive at different times.",
+      "<b>Context:</b> link observations to run, feature, model, and cohort identity.",
+      "<b>Routing:</b> an alert has a defined recipient and response policy.",
+      "<b>Authority:</b> investigation and release approval remain separate."
+    ],
+    "example": "A CRM missingness alert links to B017 and reaches source / operations owners; it does not promote M2.",
+    "takeaway": "A useful monitoring design connects evidence, ownership, and a controlled response."
+  },
+  {
+    "id": "data-drift-a-different-customer-mix",
+    "title": "Data drift: a different customer mix",
+    "lead": "Compare the same input definition across a reference cohort and the current cohort.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>What changes:</b> the distribution of valid model inputs.",
+      "<b>Bank example:</b> a campaign attracts more low-activity customers.",
+      "<b>Available now:</b> compare inputs without waiting for churn labels.",
+      "<b>Limit:</b> a changed distribution alone does not prove lost accuracy."
+    ],
+    "example": "Both diagrams count 100 fictional customers using the same seven-day login bins. Only the customer mix changes.",
+    "takeaway": "Choose a meaningful reference, comparable cohorts, and a defined response."
+  },
+  {
+    "id": "concept-drift-a-different-relationship",
+    "title": "Concept drift: a different relationship",
+    "lead": "The same inputs can have different outcomes while the deployed model keeps its earlier boundary.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>What changes:</b> churn risk given the same valid input information.",
+      "<b>Bank example:</b> new fees make active customers leave more often.",
+      "<b>Evidence:</b> link predictions to mature, reliable churn outcomes.",
+      "<b>Model status:</b> M1 stays fixed until a separately evaluated release changes it."
+    ],
+    "example": "The two panels use the same 15 fictional feature positions. After the hypothetical change, some previously staying customers churn.",
+    "takeaway": "A missing field is not concept drift; a statistical alarm is not a retraining approval."
+  },
+  {
+    "id": "concept-drift-how-m1-starts-making-errors",
+    "title": "Concept drift: how M1 starts making errors",
+    "lead": "A fixed model can miss churners because the world changed—not because its software stopped running.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Inputs stay fixed:</b> the two cohorts use identical feature positions.",
+      "<b>M1 stays fixed:</b> its earlier decision boundary is unchanged.",
+      "<b>Outcomes change:</b> a different relationship creates missed churners.",
+      "<b>Evidence:</b> the example uses mature labels, not outcomes already known on scoring day."
+    ],
+    "example": "C1 has 5 logins and 5 products; C2 has 11 logins and 1 product. The same inputs now accompany different observed churn outcomes.",
+    "takeaway": "Changed labels reveal the mismatch. Investigate causes, evaluate candidates, and use controlled release rather than automatic promotion."
+  },
+  {
+    "id": "input-checks-now-quality-checks-later",
+    "title": "Input checks now; quality checks later",
+    "lead": "The target window creates a delay between a prediction and complete outcome evidence.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>At scoring time:</b> check freshness, missingness, execution, and coverage.",
+      "<b>During the window:</b> the full churn outcome is still unknown.",
+      "<b>After ingestion:</b> join labels to the original score and target window.",
+      "<b>Evaluate by cohort:</b> precision, recall, and calibration answer different questions."
+    ],
+    "example": "Ana’s D0 score is saved with its context. Complete next-30-day evaluation must wait for that window and ingestion.",
+    "takeaway": "An absent label does not mean the customer stayed."
+  },
+  {
+    "id": "drift-detection-methods-and-their-purpose",
+    "title": "Drift detection: methods and their purpose",
+    "lead": "Methods compare inputs; they do not directly measure business value or model correctness.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Reference:</b> name the population, period, and feature definition.",
+      "<b>Thresholds:</b> calibrate for the application rather than copying a universal rule.",
+      "<b>Segments:</b> inspect affected cohorts instead of relying only on an aggregate.",
+      "<b>Action:</b> investigate drift alongside quality, change, and business evidence."
+    ],
+    "example": "Compare the same seven-day login feature before and after a campaign; investigate why the cohort mix changed.",
+    "takeaway": "Interpret the signal alongside data validity, sample size, and downstream quality."
+  },
+  {
+    "id": "data-quality-faults-and-training-serving-skew",
+    "title": "Data-quality faults and training-serving skew",
+    "lead": "Invalid data and inconsistent preparation differ from a shifted valid population.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Data-quality fault:</b> missing, stale, corrupt, or incompatible records.",
+      "<b>Skew:</b> training and production prepare the feature differently.",
+      "<b>Inspect:</b> definitions, cutoffs, joins, source changes, and code versions.",
+      "<b>Repair the cause:</b> retraining on defective inputs can preserve the defect."
+    ],
+    "example": "A missing engagement field after CRM migration is invalid input. A 30-day production count replacing seven days is skew.",
+    "takeaway": "Do not use the word “drift” as a diagnosis for every alarm."
+  },
+  {
+    "id": "a-publication-gate-contains-a-bad-batch",
+    "title": "A publication gate contains a bad batch",
+    "lead": "The CRM incident illustrates a concrete input fault and a controlled response.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Detect:</b> invalid records violate the agreed input contract.",
+      "<b>Contain:</b> hold the entire B017 batch before publication.",
+      "<b>Investigate:</b> relate cohort, source change, feature definition, and execution.",
+      "<b>Keep M1:</b> a source fault does not itself justify a new learned model."
+    ],
+    "example": "Ana’s engagement value is missing, not zero. No new score or completed customer contact is invented.",
+    "takeaway": "A gate blocks unsafe use; an alert sends evidence to someone who can investigate."
+  },
+  {
+    "id": "respond-investigate-contain-repair-verify",
+    "title": "Respond: investigate, contain, repair, verify",
+    "lead": "A monitoring signal opens a decision process; it does not select or approve a remedy.",
+    "owner": "Simon",
+    "bullets": [
+      "<b>Diagnose</b> before choosing repair, rollback, fallback, or training.",
+      "<b>Preserve evidence</b> and the identity of failed attempts.",
+      "<b>Validate the complete path</b> after the chosen repair.",
+      "<b>Request a model change</b> only when evidence supports one."
+    ],
+    "example": "Repair the CRM path, validate a new execution B017-R1, and retain M1 unless a separate model change is justified.",
+    "takeaway": "Handoff to Luca: which dependencies made this failure possible?"
+  }
+]

@@ -1,0 +1,1405 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=18mm,headheight=16pt]{geometry}
+\usepackage{fontspec}
+\setmainfont{DejaVu Sans}
+\usepackage{microtype,parskip,setspace,ragged2e}
+\usepackage{xcolor,graphicx,enumitem,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\definecolor{teal}{HTML}{187C80}
+\definecolor{pale}{HTML}{EEF6F5}
+\definecolor{ink}{HTML}{203342}
+\definecolor{accent}{HTML}{A62C40}
+\setstretch{1.12}
+\setlength{\parindent}{0pt}
+\setlist[itemize]{leftmargin=1.3em,itemsep=0.25em,topsep=0.2em,parsep=0.1em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small ML Architecture --- Speaker Notes}
+\rhead{\small Bank customer-churn example}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=6pt,after skip=6pt,fonttitle=\bfseries\small,before upper={\setlength{\parskip}{0.4em}\RaggedRight}}
+\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY}}
+\newtcolorbox{cuebox}{colback=accent!5,colframe=accent!70!black,title={CUES}}
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+{\Huge\bfseries ML Architecture}\\[4mm]
+{\Large Speaker Notes}\\[2mm]
+{\large A bank customer-churn case --- 20 October 2026}\\[8mm]
+\end{center}
+\noindent Each page shows one slide exactly as presenters will see it, the words to speak, and short delivery cues. The script is a speaking aid, not a transcript to read verbatim --- adapt it to your own voice. Animated builds are marked; press the arrow key the stated number of times before moving to the next slide.
+\clearpage
+
+\section*{\normalsize 01 / 55 \quad ML Architecture}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Foundations \textbullet\ All presenters}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-01.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item From a trained model to a maintainable, observable, governed system.
+\item \textbf{Software engineering} for systems that depend on learned behavior.
+\item \textbf{One shared case:} bank customer-churn prediction.
+\item \textbf{Two blocks:} model-to-system foundations, then architecture and quality.
+\item \textbf{Five presenters:} Ricardo, Tomás, Simon, Luca, and Matheus.
+\item \textit{At our bank:} Bank churn supplies the shared case. Examples, records, schedules, and incidents are illustrative.
+\item \textit{A useful model needs an engineered system around it.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 1 / Foundations}.
+\item Presenter: \textbf{All presenters}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, Ch. 13–14}}
+\clearpage
+\section*{\normalsize 02 / 55 \quad Two blocks, one shared bank case}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Foundations \textbullet\ All presenters}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-02.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Follow the group’s topic outline; use the case to connect each architectural decision.
+\item \textbf{Block 1:} lifecycle, serving, monitoring, and design decisions.
+\item \textbf{Block 2:} tactics, MLOps, security, privacy, and quality.
+\item \textbf{Concept first:} explain the mechanism, then apply it to churn.
+\item \textbf{Named handoffs:} each section identifies its presenter; unassigned topics remain TBD.
+\item \textit{At our bank:} The same source → feature → model → score → policy path returns throughout the lecture.
+\item \textit{Each architectural decision connects predictive behavior to a system responsibility.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{All presenters}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Group discussion document · Agreed lecture redesign}}
+\clearpage
+\section*{\normalsize 03 / 55 \quad The bank case: features, labels, and predictions}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Foundations \textbullet\ Ricardo}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-03.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A few ML terms connect familiar application data to a learned risk estimate.
+\item \textbf{Feature:} a prepared input, such as logins during the previous seven days.
+\item \textbf{Label:} the observed churn outcome used for training and later evaluation.
+\item \textbf{Prediction:} an estimate produced before the customer’s future outcome is known.
+\item \textbf{Training vs. inference:} learn from earlier examples; apply the approved model to current inputs.
+\item \textit{At our bank:} Ana / C042: logins fall from 7 to 1; the illustrative score is 0.70. Her next-30-day outcome is unknown.
+\item \textit{Lower activity is evidence for a model input, not proof that a customer will leave.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Ricardo}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Simon’s notes, §1}}
+\clearpage
+\section*{\normalsize 04 / 55 \quad From a trained model to an ML system}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Foundations \textbullet\ Ricardo}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-04.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Architecture connects learning, production data, operational controls, and business decisions.
+\item \textbf{Training} uses historical features and labels to build and evaluate candidates.
+\item \textbf{Production} validates current data and applies an approved, compatible model.
+\item \textbf{Stored scores} link predictions to customer, time, input evidence, and versions.
+\item \textbf{Business policy} determines the permitted action; it remains separate from the score.
+\item \textit{At our bank:} The bank computes a monthly batch of churn scores, then applies campaign eligibility and contact rules.
+\item \textit{Keep the learning path and production path distinct, but traceable.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Ricardo}.
+\item Animated build: click 4 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, §13.2–13.3}}
+\clearpage
+\section*{\normalsize 05 / 55 \quad Two lifecycles, one compatible system}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Foundations \textbullet\ Ricardo}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-05.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Code correctness and predictive usefulness depend on different feedback and release cycles.
+\item \textbf{Software changes} can be checked through code, contract, and integration tests.
+\item \textbf{Model development} also needs representative data, suitable labels, and evaluation.
+\item \textbf{Feedback differs:} execution checks may be immediate; churn labels arrive later.
+\item \textbf{Co-versioning} links changes across code, feature meaning, model, and configuration.
+\item \textit{At our bank:} A CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions.
+\item \textit{A passing software test does not establish future predictive quality.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Ricardo}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 13–14 · Bass, Ch. 11 · Simon’s notes, §1}}
+\clearpage
+\section*{\normalsize 06 / 55 \quad Prediction and business action are separate}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Foundations \textbullet\ Ricardo}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-06.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A model estimates risk. Business rules decide whether and how the bank may act.
+\item \textbf{Score:} estimated churn risk, not a guaranteed outcome.
+\item \textbf{Policy:} preferences, eligibility, contact limits, and campaign budget.
+\item \textbf{Action:} an offer, another response, or no contact at all.
+\item \textbf{Separate evaluation:} predictive quality and the benefit of an offer are different questions.
+\item \textit{At our bank:} Ana may have a high risk score and still receive no offer because contact preferences or policy prohibit it.
+\item \textit{A policy change should not require retraining the prediction model.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Ricardo}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Teaching policy decomposition}}
+\clearpage
+\section*{\normalsize 07 / 55 \quad Serving patterns: when is a prediction needed?}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-07.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Select the interaction pattern from the decision’s timing and failure behavior.
+\item \textbf{Batch:} compute many predictions; consumers read stored results later.
+\item \textbf{Synchronous:} the caller waits for a result during its request.
+\item \textbf{Asynchronous:} an event producer and consumer are decoupled through messaging.
+\item \textbf{Edge:} a deployment location, independent of prediction timing.
+\item \textit{At our bank:} The churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need.
+\item \textit{Timing, location, and release strategy are separate choices.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 1 / Deployment \& serving}.
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, §13.3–13.4; supporting Ch. 12}}
+\clearpage
+\section*{\normalsize 08 / 55 \quad Batch serving: validate, score, publish}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-08.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A complete validated batch must be available before its business deadline.
+\item \textbf{Snapshot:} define population, cutoff, and required source freshness.
+\item \textbf{Validate:} reject incompatible inputs before scoring.
+\item \textbf{Reconcile:} account for written, rejected, and withheld records.
+\item \textbf{Publish:} expose a validated batch under a defined consumer contract.
+\item \textit{At our bank:} Monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners.
+\item \textit{Optimize the whole batch deadline, not only per-record prediction speed.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, §13.3}}
+\clearpage
+\section*{\normalsize 09 / 55 \quad Synchronous serving: the caller waits}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-09.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Prediction becomes part of the application’s response path.
+\item \textbf{Response time} includes lookup, preparation, inference, and network work.
+\item \textbf{Availability} now affects the waiting application’s request.
+\item \textbf{Failure behavior} needs explicit timeout, error, and fallback policies.
+\item \textbf{Consistency} still requires compatible feature meanings and model versions.
+\item \textit{At our bank:} An immediate fraud check can justify this pattern. The monthly churn campaign does not require it.
+\item \textit{A fast model does not guarantee a fast end-to-end service.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, §13.3–13.4 · Teaching comparison}}
+\clearpage
+\section*{\normalsize 10 / 55 \quad Asynchronous serving: decouple the work}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-10.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Messages separate production, processing, and consumption of a prediction.
+\item \textbf{Buffering} absorbs bursts and supports independent processing.
+\item \textbf{Lag} and queue health become operational concerns.
+\item \textbf{Retries} require failure handling and idempotent processing.
+\item \textbf{Contracts} define message identity, timing, schema, and result interpretation.
+\item \textit{At our bank:} If a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts.
+\item \textit{Decoupling adds messaging responsibilities; it does not remove timing requirements.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, §13.3 · Bank application is hypothetical}}
+\clearpage
+\section*{\normalsize 11 / 55 \quad Deployment location is a separate decision}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-11.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Central, embedded, and edge deployments change operations and constraints.
+\item \textbf{Central:} simplify shared operation and governance.
+\item \textbf{Embedded:} deploy the model with its host application.
+\item \textbf{Edge:} account for constrained hardware and intermittent connectivity.
+\item \textbf{Choose independently:} location does not uniquely determine batch or request timing.
+\item \textit{At our bank:} Keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here.
+\item \textit{Architecture follows the operational context.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, supporting Ch. 12; §13.3–13.4}}
+\clearpage
+\section*{\normalsize 12 / 55 \quad Package the whole compatible set}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-12.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A deployable release contains more than the learned model file.
+\item \textbf{Model artifact:} the learned parameters and required format.
+\item \textbf{Runtime:} dependencies, preparation code, and execution environment.
+\item \textbf{Contract:} feature meaning, types, missingness, and temporal cutoff.
+\item \textbf{Configuration:} scoring population and execution settings.
+\item \textit{At our bank:} The bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot.
+\item \textit{A package that loads successfully still needs release and quality evidence.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, §13.3–13.4}}
+\clearpage
+\section*{\normalsize 13 / 55 \quad Shadow deployment: observe without acting}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-13.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A candidate scores real inputs while the approved model remains the action source.
+\item \textbf{Run in parallel} against comparable production inputs.
+\item \textbf{Record identity:} distinguish M1 and M2 outputs explicitly.
+\item \textbf{Compare} operational behavior and score differences first.
+\item \textbf{Wait for labels} to compare future churn quality.
+\item \textit{At our bank:} Only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer.
+\item \textit{Shadow checks observation, not the business effect of acting on the candidate.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 4 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Group outline · Breck, infrastructure 6–7 · Teaching application}}
+\clearpage
+\section*{\normalsize 14 / 55 \quad Canary deployment: limit exposure}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-14.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item An approved limited cohort uses the candidate before broader rollout.
+\item \textbf{Restrict exposure} to a defined cohort and scope.
+\item \textbf{Observe} execution, compatibility, coverage, and policy behavior.
+\item \textbf{Define stop rules} and a rehearsed recovery path.
+\item \textbf{Separate evidence:} short operational success cannot prove 30-day predictive quality.
+\item \textit{At our bank:} The bank may authorize a small cohort to use M2 while retaining M1 for the remainder.
+\item \textit{A canary controls risk; it is not automatically a valid business experiment.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Breck, infrastructure test 6 · Bank teaching application}}
+\clearpage
+\section*{\normalsize 15 / 55 \quad A/B testing: define the intervention}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Deployment \& serving \textbullet\ Tomás}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-15.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Assigned groups and a stated outcome make the comparison interpretable.
+\item \textbf{State what changes:} model, decision policy, or retention treatment.
+\item \textbf{Assign comparable groups} under an appropriate experiment design.
+\item \textbf{Define outcomes} and the observation window before interpreting results.
+\item \textbf{Avoid confounding:} changing model and offer together obscures their separate effects.
+\item \textit{At our bank:} Compare two offer policies separately from asking whether M2 ranks churn risk better than M1.
+\item \textit{Prediction accuracy and the effect of contacting a customer are different targets.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Tomás}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Group outline · Simon’s notes, §3 · Teaching application}}
+\clearpage
+\section*{\normalsize 16 / 55 \quad How the world changes over time}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-16.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Sudden, gradual, incremental, and recurring changes are different time patterns—not different input features.
+\item \textbf{Sudden:} the old regime switches abruptly.
+\item \textbf{Gradual:} old and new regimes coexist during a transition.
+\item \textbf{Incremental / recurring:} intermediate change differs from a returning regime.
+\item \textbf{Blips:} isolated noise is not necessarily a lasting regime change.
+\item \textit{At our bank:} Bank illustrations: a pricing change can be sudden; staggered adoption gradual; evolving habits incremental; seasonal activity recurring.
+\item \textit{First ask how change unfolds over time. Then ask what changed: input data, outcome relationships, or data validity.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 1 / Monitoring \& degradation}.
+\item Presenter: \textbf{Simon}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\item Adaptation note on file for this slide; do not read aloud unless asked.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Schematic redraw after Krawczyk \& Cano (2018), Fig. 2 · attribution and source link in guide}}
+\clearpage
+\section*{\normalsize 17 / 55 \quad Monitoring: observe more than model accuracy}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-17.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Inputs, system execution, predictions, and business actions need different evidence.
+\item \textbf{Inputs:} are the right records available and meaningful?
+\item \textbf{System:} did the pipeline complete correctly and on time?
+\item \textbf{Model:} are predictions useful on the current population?
+\item \textbf{Business:} are permitted actions and outcomes being tracked?
+\item \textit{At our bank:} A healthy churn job can still use a shifted population. A useful score can still lead to an inappropriate contact.
+\item \textit{Observability connects evidence to investigation; dashboards alone do not decide the remedy.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5}}
+\clearpage
+\section*{\normalsize 18 / 55 \quad Monitoring architecture: from signal to response}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-18.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Collect linked evidence and route it to an owner who can investigate and act.
+\item \textbf{Signals:} input, execution, and predictive evidence arrive at different times.
+\item \textbf{Context:} link observations to run, feature, model, and cohort identity.
+\item \textbf{Routing:} an alert has a defined recipient and response policy.
+\item \textbf{Authority:} investigation and release approval remain separate.
+\item \textit{At our bank:} A CRM missingness alert links to B017 and reaches source / operations owners; it does not promote M2.
+\item \textit{A useful monitoring design connects evidence, ownership, and a controlled response.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching expansion of monitoring responsibilities}}
+\clearpage
+\section*{\normalsize 19 / 55 \quad Data drift: a different customer mix}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-19.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Compare the same input definition across a reference cohort and the current cohort.
+\item \textbf{What changes:} the distribution of valid model inputs.
+\item \textbf{Bank example:} a campaign attracts more low-activity customers.
+\item \textbf{Available now:} compare inputs without waiting for churn labels.
+\item \textbf{Limit:} a changed distribution alone does not prove lost accuracy.
+\item \textit{At our bank:} Both diagrams count 100 fictional customers using the same seven-day login bins. Only the customer mix changes.
+\item \textit{Choose a meaningful reference, comparable cohorts, and a defined response.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 1 time to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented counts}}
+\clearpage
+\section*{\normalsize 20 / 55 \quad Concept drift: a different relationship}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-20.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item The same inputs can have different outcomes while the deployed model keeps its earlier boundary.
+\item \textbf{What changes:} churn risk given the same valid input information.
+\item \textbf{Bank example:} new fees make active customers leave more often.
+\item \textbf{Evidence:} link predictions to mature, reliable churn outcomes.
+\item \textbf{Model status:} M1 stays fixed until a separately evaluated release changes it.
+\item \textit{At our bank:} The two panels use the same 15 fictional feature positions. After the hypothetical change, some previously staying customers churn.
+\item \textit{A missing field is not concept drift; a statistical alarm is not a retraining approval.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 1 time to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Schematic relationships}}
+\clearpage
+\section*{\normalsize 21 / 55 \quad Concept drift: how M1 starts making errors}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-21.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A fixed model can miss churners because the world changed—not because its software stopped running.
+\item \textbf{Inputs stay fixed:} the two cohorts use identical feature positions.
+\item \textbf{M1 stays fixed:} its earlier decision boundary is unchanged.
+\item \textbf{Outcomes change:} a different relationship creates missed churners.
+\item \textbf{Evidence:} the example uses mature labels, not outcomes already known on scoring day.
+\item \textit{At our bank:} C1 has 5 logins and 5 products; C2 has 11 logins and 1 product. The same inputs now accompany different observed churn outcomes.
+\item \textit{Changed labels reveal the mismatch. Investigate causes, evaluate candidates, and use controlled release rather than automatic promotion.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 1 time to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\item Adaptation note on file for this slide; do not read aloud unless asked.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented mature cohorts and deliberately simplified decision rule}}
+\clearpage
+\section*{\normalsize 22 / 55 \quad Input checks now; quality checks later}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-22.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item The target window creates a delay between a prediction and complete outcome evidence.
+\item \textbf{At scoring time:} check freshness, missingness, execution, and coverage.
+\item \textbf{During the window:} the full churn outcome is still unknown.
+\item \textbf{After ingestion:} join labels to the original score and target window.
+\item \textbf{Evaluate by cohort:} precision, recall, and calibration answer different questions.
+\item \textit{At our bank:} Ana’s D0 score is saved with its context. Complete next-30-day evaluation must wait for that window and ingestion.
+\item \textit{An absent label does not mean the customer stayed.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching 30-day window}}
+\clearpage
+\section*{\normalsize 23 / 55 \quad Drift detection: methods and their purpose}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-23.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Methods compare inputs; they do not directly measure business value or model correctness.
+\item \textbf{Reference:} name the population, period, and feature definition.
+\item \textbf{Thresholds:} calibrate for the application rather than copying a universal rule.
+\item \textbf{Segments:} inspect affected cohorts instead of relying only on an aggregate.
+\item \textbf{Action:} investigate drift alongside quality, change, and business evidence.
+\item \textit{At our bank:} Compare the same seven-day login feature before and after a campaign; investigate why the cohort mix changed.
+\item \textit{Interpret the signal alongside data validity, sample size, and downstream quality.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Simon’s technical atlas}}
+\clearpage
+\section*{\normalsize 24 / 55 \quad Data-quality faults and training-serving skew}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-24.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Invalid data and inconsistent preparation differ from a shifted valid population.
+\item \textbf{Data-quality fault:} missing, stale, corrupt, or incompatible records.
+\item \textbf{Skew:} training and production prepare the feature differently.
+\item \textbf{Inspect:} definitions, cutoffs, joins, source changes, and code versions.
+\item \textbf{Repair the cause:} retraining on defective inputs can preserve the defect.
+\item \textit{At our bank:} A missing engagement field after CRM migration is invalid input. A 30-day production count replacing seven days is skew.
+\item \textit{Do not use the word “drift” as a diagnosis for every alarm.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5}}
+\clearpage
+\section*{\normalsize 25 / 55 \quad A publication gate contains a bad batch}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-25.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item The CRM incident illustrates a concrete input fault and a controlled response.
+\item \textbf{Detect:} invalid records violate the agreed input contract.
+\item \textbf{Contain:} hold the entire B017 batch before publication.
+\item \textbf{Investigate:} relate cohort, source change, feature definition, and execution.
+\item \textbf{Keep M1:} a source fault does not itself justify a new learned model.
+\item \textit{At our bank:} Ana’s engagement value is missing, not zero. No new score or completed customer contact is invented.
+\item \textit{A gate blocks unsafe use; an alert sends evidence to someone who can investigate.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Fictional B017 incident}}
+\clearpage
+\section*{\normalsize 26 / 55 \quad Respond: investigate, contain, repair, verify}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Monitoring \& degradation \textbullet\ Simon}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-26.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A monitoring signal opens a decision process; it does not select or approve a remedy.
+\item \textbf{Diagnose} before choosing repair, rollback, fallback, or training.
+\item \textbf{Preserve evidence} and the identity of failed attempts.
+\item \textbf{Validate the complete path} after the chosen repair.
+\item \textbf{Request a model change} only when evidence supports one.
+\item \textit{At our bank:} Repair the CRM path, validate a new execution B017-R1, and retain M1 unless a separate model change is justified.
+\item \textit{Handoff to Luca: which dependencies made this failure possible?}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5}}
+\clearpage
+\section*{\normalsize 27 / 55 \quad Hidden dependencies create technical debt}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-27.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item An innocent upstream change can alter ML behavior without changing the model.
+\item \textbf{Hidden coupling:} features depend on sources owned by other teams.
+\item \textbf{Pipeline complexity:} parallel preparation paths can diverge.
+\item \textbf{Versioning gaps:} a model artifact alone cannot reproduce a decision.
+\item \textbf{Context matters:} architecture decisions depend on requirements and constraints.
+\item \textit{At our bank:} CRM changes its engagement export for another purpose; both training and production can inherit the change.
+\item \textit{Make data dependencies as reviewable as code dependencies.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 1 / Design decisions}.
+\item Presenter: \textbf{Luca}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
+\clearpage
+\section*{\normalsize 28 / 55 \quad Make the feature contract explicit}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-28.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A contract records meaning and ownership as well as structural schema.
+\item \textbf{Semantics:} define what the feature actually measures.
+\item \textbf{Time:} specify window, cutoff, and joins consistently.
+\item \textbf{Validity:} define types, ranges, freshness, and missingness.
+\item \textbf{Ownership:} review upstream changes with affected consumers.
+\item \textit{At our bank:} engagement\_7d means app logins during seven days ending at the scoring cutoff; missing must not silently become zero.
+\item \textit{Schema checks alone cannot detect every change in meaning.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Nazir, §§5–6 · Teaching contract}}
+\clearpage
+\section*{\normalsize 29 / 55 \quad Separate responsibilities where change happens}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-29.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Clear interfaces let different concerns evolve without unnecessary relearning.
+\item \textbf{Single responsibility:} identify each module’s reason to change.
+\item \textbf{Interfaces:} specify data and behavior at each boundary.
+\item \textbf{Dependency injection:} provide implementations through explicit contracts.
+\item \textbf{Deployment:} logical modules do not automatically require separate services.
+\item \textit{At our bank:} A connector fix changes preparation; a contact-frequency rule changes campaign policy; a new M2 changes inference.
+\item \textit{Separate concerns first; choose deployment units from the actual trade-offs.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
+\clearpage
+\section*{\normalsize 30 / 55 \quad Pipeline pattern: order the responsibilities}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-30.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Make preparation and validation steps explicit and testable.
+\item \textbf{Explicit stages} clarify transformations and dependencies.
+\item \textbf{Stage contracts} make intermediate data understandable.
+\item \textbf{Tests} cover local behavior and end-to-end compatibility.
+\item \textbf{Failure handling} prevents a partial result from masquerading as a complete batch.
+\item \textit{At our bank:} Validate CRM records before computing engagement\_7d and invoking M1.
+\item \textit{Use structure to expose the dependency, not to hide it in orchestration code.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
+\clearpage
+\section*{\normalsize 31 / 55 \quad Strategy pattern: replace one implementation}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-31.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A stable interface separates the client from a specific implementation choice.
+\item \textbf{Stable interface:} the client relies on a contract, not a specific class.
+\item \textbf{Alternative implementations} can be supplied through that interface.
+\item \textbf{Compatibility} still includes meaning, not only types.
+\item \textbf{Evaluation} and release approval still apply when behavior changes.
+\item \textit{At our bank:} Replace a feature-preparation implementation behind a stable interface; verify equivalent semantics before scoring.
+\item \textit{Interchangeability in code is not equivalence in predictive behavior.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
+\clearpage
+\section*{\normalsize 32 / 55 \quad Observer pattern: notify, then investigate}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-32.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A change notification decouples the signal producer from interested responders.
+\item \textbf{Subject:} emits a meaningful change event.
+\item \textbf{Subscribers:} receive notifications without tightly coupling the producer.
+\item \textbf{Context:} include cohort, reference, and evidence links.
+\item \textbf{Authority:} receiving a notification does not grant release privileges.
+\item \textit{At our bank:} A missingness event notifies data and operations owners; it does not instruct the registry to promote M2.
+\item \textit{A useful notification requests attention and preserves the decision boundary.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
+\clearpage
+\section*{\normalsize 33 / 55 \quad Version the system, not only the model}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-33.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A prediction depends on a compatible set of data meaning, code, model, and configuration.
+\item \textbf{Data meaning:} record source and feature definitions.
+\item \textbf{Code:} identify preparation and scoring revisions.
+\item \textbf{Model:} identify artifact, runtime, and configuration.
+\item \textbf{Outputs:} connect the compatible set to score and decision records.
+\item \textit{At our bank:} M1 alone cannot explain Ana’s score if a CRM migration changed the meaning of its engagement input.
+\item \textit{Co-versioning connects system and model lifecycles.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 13–14 · Bass, Ch. 11 / §14.1 · Simon’s notes}}
+\clearpage
+\section*{\normalsize 34 / 55 \quad Modules or services? Make the trade-off}
+\noindent\textcolor{teal!70!black}{\small Block 1 / Design decisions \textbullet\ Luca}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-34.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Independent deployment is useful only when it justifies its operating cost.
+\item \textbf{Modules} can provide strong logical boundaries with simpler operation.
+\item \textbf{Services} can support independent change and scaling.
+\item \textbf{Distribution} adds failure modes and version coordination.
+\item \textbf{Evidence} and requirements should drive the choice.
+\item \textit{At our bank:} Separate preparation from policy logically; deploy them independently only when the bank’s needs justify it.
+\item \textit{There is no universal best ML architecture.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Luca}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
+\clearpage
+\section*{\normalsize 35 / 55 \quad Architectural tactics connect concerns to controls}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Architectural tactics \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-35.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Use explicit mechanisms to address uncertainty, change, recovery, and auditability.
+\item \textbf{Separation} isolates data preparation, model execution, and business policy.
+\item \textbf{Observation} makes operational and predictive behavior reviewable.
+\item \textbf{Recovery} restores a compatible path rather than only one artifact.
+\item \textbf{Governance} links evidence, approval, access, and responsibility.
+\item \textit{At our bank:} A validation boundary contains a bad CRM batch; version links and approvals support controlled repair.
+\item \textit{A tactic is credible when its mechanism, owner, and evidence are clear.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 2 / Architectural tactics}.
+\item Presenter: \textbf{TBD}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Bass, Ch. 9–11 · Group Block 2 outline}}
+\clearpage
+\section*{\normalsize 36 / 55 \quad CI, CD, and CT need different evidence}
+\noindent\textcolor{teal!70!black}{\small Block 2 / DevOps \& MLOps \textbullet\ Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-36.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Integration, delivery, deployment, and training automate different responsibilities.
+\item \textbf{CI:} integrate changes and run code, contract, and path checks.
+\item \textbf{Delivery:} keep a compatible change ready for an approval decision.
+\item \textbf{Deployment:} automatically release changes passing the defined policy.
+\item \textbf{CT:} train and evaluate candidates; completion is not production approval.
+\item \textit{At our bank:} A connector repair can use CI/CD while retaining M1. Retraining is not required for every pipeline change.
+\item \textit{Automation executes policy; it does not make acceptance criteria identical.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 2 / DevOps \& MLOps}.
+\item Presenter: \textbf{Matheus}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)}}
+\clearpage
+\section*{\normalsize 37 / 55 \quad Candidate training ends before promotion}
+\noindent\textcolor{teal!70!black}{\small Block 2 / DevOps \& MLOps \textbullet\ Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-37.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A registry stores candidate evidence; a separate release decision controls production use.
+\item \textbf{Reproducibility:} record data, code, configuration, and artifacts.
+\item \textbf{Evaluation:} compare candidate evidence against the baseline and relevant cohorts.
+\item \textbf{Registration:} preserve identity and lineage for review.
+\item \textbf{Promotion:} authorize a specific compatible set with recovery planned.
+\item \textit{At our bank:} M2 remains a candidate until reviewed. M1 remains the approved scoring artifact during the CRM repair.
+\item \textit{The registry is part of governance, not the whole approval process.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Matheus}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)}}
+\clearpage
+\section*{\normalsize 38 / 55 \quad Repair the input path; retain M1 when appropriate}
+\noindent\textcolor{teal!70!black}{\small Block 2 / DevOps \& MLOps \textbullet\ Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-38.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item The CRM incident requires a verified source repair, not an assumed new model.
+\item \textbf{Repair} the source or preparation defect.
+\item \textbf{Version} the reviewed fix and compatible configuration.
+\item \textbf{Re-run} under a new execution identity and validate the complete path.
+\item \textbf{Publish} only after the configured evidence and approval requirements pass.
+\item \textit{At our bank:} B017 is the held attempt. B017-R1 links the reviewed fix, compatible M1, validation evidence, and publication approval.
+\item \textit{A successful fix needs evidence at the consumer boundary, not only a passing connector test.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Matheus}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4}}
+\clearpage
+\section*{\normalsize 39 / 55 \quad Trace the prediction and the decision}
+\noindent\textcolor{teal!70!black}{\small Block 2 / DevOps \& MLOps \textbullet\ Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-39.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Lineage connects input evidence, execution, approval, and downstream action.
+\item \textbf{Prediction identity} links customer, time, and target window.
+\item \textbf{Execution evidence} identifies compatible code, features, model, and config.
+\item \textbf{Decision evidence} records policy version and action.
+\item \textbf{Access controls} protect sensitive reconstruction material.
+\item \textit{At our bank:} An investigator can trace Ana’s original score and the campaign’s separate no-contact or contact decision.
+\item \textit{A model version alone cannot reconstruct the full decision.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Matheus}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4–6}}
+\clearpage
+\section*{\normalsize 40 / 55 \quad Recovery restores a compatible path}
+\noindent\textcolor{teal!70!black}{\small Block 2 / DevOps \& MLOps \textbullet\ Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-40.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Rehearse restoration before release, and verify it at the consumer boundary.
+\item \textbf{Know the target:} identify the last compatible release or validated fallback.
+\item \textbf{Rehearse:} test the recovery procedure before relying on it.
+\item \textbf{Restore the set:} include data meaning, runtime, and configuration.
+\item \textbf{Verify:} inspect stored scores and actual consumer behavior.
+\item \textit{At our bank:} Rolling M1 back cannot repair a CRM field that is still missing; the input path must be restored.
+\item \textit{Handoff to security: who may read, change, approve, or operate these paths?}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Matheus}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Breck, infrastructure tests 6–7 · Simon’s notes, §4}}
+\clearpage
+\section*{\normalsize 41 / 55 \quad Security threats depend on attacker access}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Security \& privacy \textbullet\ Simon + Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-41.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Locate the attacker’s control before naming the ML attack mechanism.
+\item \textbf{Poisoning:} altered learning inputs influence the trained model.
+\item \textbf{Inference manipulation:} altered production inputs affect an existing model’s output.
+\item \textbf{Privacy inference:} access can reveal sensitive membership or attributes.
+\item \textbf{Assumptions matter:} access, knowledge, and goals differ by threat.
+\item \textit{At our bank:} A compromised CRM writer could affect current inputs; those records create a poisoning path only if later used for training.
+\item \textit{The accidental CRM migration remains a different scenario.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 2 / Security \& privacy}.
+\item Presenter: \textbf{Simon + Matheus}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST AI 100-2e2025}}
+\clearpage
+\section*{\normalsize 42 / 55 \quad Enforce access at the resource boundary}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Security \& privacy \textbullet\ Simon + Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-42.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Authentication, authorization, validation, and audit solve different parts of the problem.
+\item \textbf{Authenticate:} establish caller identity.
+\item \textbf{Authorize:} check operation, resource, and scope.
+\item \textbf{Validate:} enforce the input contract independently.
+\item \textbf{Audit:} preserve useful access and change evidence.
+\item \textit{At our bank:} The scorer may read the approved M1 artifact; it must not gain permission to promote M2 merely by reaching the registry.
+\item \textit{A trust boundary needs an enforced policy, not only a box on a diagram.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon + Matheus}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-207, §3}}
+\clearpage
+\section*{\normalsize 43 / 55 \quad Least privilege follows responsibilities}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Security \& privacy \textbullet\ Simon + Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-43.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Separate source writes, candidate creation, release approval, and campaign use.
+\item \textbf{Scope identities} to the operations and resources they need.
+\item \textbf{Separate duties:} training does not imply release authority.
+\item \textbf{Protect credentials} and avoid secrets in code or broad logs.
+\item \textbf{Review changes:} connect access, source updates, and approvals.
+\item \textit{At our bank:} A campaign user reads an approved score view, not unrestricted training data or production deployment credentials.
+\item \textit{This abbreviated teaching matrix is a starting point, not a complete bank permission design.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon + Matheus}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · Proposed permissions}}
+\clearpage
+\section*{\normalsize 44 / 55 \quad Privacy: expose what each role needs}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Security \& privacy \textbullet\ Simon + Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-44.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Campaign use and incident investigation require different views of customer information.
+\item \textbf{Minimize collection} and the information exposed in outputs.
+\item \textbf{Separate views:} campaigns and investigators have different purposes.
+\item \textbf{Protect logs} and define retention and access rules.
+\item \textbf{Preserve accountability} without making raw evidence broadly available.
+\item \textit{At our bank:} Campaign staff may need Ana’s approved score and eligibility context; investigators may need restricted versioned evidence.
+\item \textit{Privacy is an access-and-data-use design, not a label attached to a technique.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon + Matheus}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2}}
+\clearpage
+\section*{\normalsize 45 / 55 \quad Privacy techniques have specific limits}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Security \& privacy \textbullet\ Simon + Matheus}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-45.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Choose a mechanism for a defined objective rather than claiming privacy by technique name.
+\item \textbf{Specify the objective:} what information should be protected from whom?
+\item \textbf{Tokens} and synthetic data do not automatically establish anonymity.
+\item \textbf{Federation} changes data location, not every leakage risk.
+\item \textbf{DP} needs a defined protected unit and accounting across releases; no derivation here.
+\item \textit{At our bank:} Protecting one transaction differs from protecting all contributions of a bank customer.
+\item \textit{Do not announce a guarantee without its assumptions and evidence.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{Simon + Matheus}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-226}}
+\clearpage
+\section*{\normalsize 46 / 55 \quad Use the quality checklist as a review tool}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Quality concerns \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-46.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Connect concerns to architectural controls, ownership, and observable evidence.
+\item \textbf{System and process concerns} both matter in ML-intensive systems.
+\item \textbf{Select relevant checks} rather than treating a short list as the entire checklist.
+\item \textbf{Map each concern} to a control, owner, and evidence.
+\item \textbf{Keep limits visible:} the separate corrigendum remains unread.
+\item \textit{At our bank:} Completeness validation addresses input quality; it is not by itself evidence of SS5 cyberattack defense.
+\item \textit{A checklist supports structured review; it is not a certification claim.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 2 / Quality concerns}.
+\item Presenter: \textbf{TBD}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Corrigendum contents not reviewed}}
+\clearpage
+\section*{\normalsize 47 / 55 \quad Predictive quality and system performance}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Quality concerns \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-47.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Choose an acceptable model and system from several quality objectives.
+\item \textbf{Accuracy} alone is an incomplete objective, especially with imbalanced outcomes.
+\item \textbf{Performance} includes the end-to-end deadline and resource use.
+\item \textbf{Complexity} must justify training and operating costs.
+\item \textbf{Acceptance} depends on the task and the consequences of errors.
+\item \textit{At our bank:} A heavier churn model is useful only if its quality benefit justifies cost and still meets the campaign’s deadline.
+\item \textit{Define acceptance criteria before selecting a more complex model.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{TBD}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Kalinowski, §13.4}}
+\clearpage
+\section*{\normalsize 48 / 55 \quad Robustness: invalid, unfamiliar, or ordinary?}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Quality concerns \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-48.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Different inputs need different responses; do not treat every unusual value as the same failure.
+\item \textbf{Contract validity} and model applicability are distinct.
+\item \textbf{OOD inputs} may be structurally valid but poorly represented in training.
+\item \textbf{Confidence} alone is not a guaranteed detector of unfamiliar inputs.
+\item \textbf{Fallbacks} must be validated for the intended situation.
+\item \textit{At our bank:} A missing activity value is invalid; a new customer population may be valid but outside the model’s reliable coverage.
+\item \textit{An architecture needs an explicit response when the model should not be trusted.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{TBD}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Simon’s notes, §2–4}}
+\clearpage
+\section*{\normalsize 49 / 55 \quad Explainability and auditability differ}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Quality concerns \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-49.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Explaining feature influence and reconstructing a historical decision are complementary tasks.
+\item \textbf{Explanation} helps interpret model behavior in context.
+\item \textbf{Auditability} needs historical evidence and traceable versions.
+\item \textbf{Decision review} includes business policy and action, not only the model.
+\item \textbf{Limits:} SHAP and LIME do not prove causality or fairness.
+\item \textit{At our bank:} An engagement contribution may help explain Ana’s score; it cannot prove why she would leave the bank.
+\item \textit{Protect evidence and test whether authorized reviewers can actually retrieve it.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{TBD}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Simon’s notes, §6–7}}
+\clearpage
+\section*{\normalsize 50 / 55 \quad Fairness: prediction versus treatment}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Quality concerns \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-50.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Name what is being compared before selecting a metric or declaring an improvement.
+\item \textbf{Prediction fairness:} compare errors or calibration across relevant groups.
+\item \textbf{Treatment fairness:} inspect access to offers and policy effects.
+\item \textbf{Context:} select targets based on harms and requirements.
+\item \textbf{Trade-offs:} one metric does not settle every fairness concern.
+\item \textit{At our bank:} Equal churn prediction errors do not imply equal access to retention offers under campaign allocation rules.
+\item \textit{Keep predictive quality and the consequences of intervention distinct.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{TBD}.
+\item Animated build: click 3 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Bass, Ch. 10 / §14.2}}
+\clearpage
+\section*{\normalsize 51 / 55 \quad Airflow: make workflow dependencies visible}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Practical tools \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-51.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Orchestration supports task order, failure handling, and execution evidence.
+\item \textbf{Architecture role:} order dependent pipeline work.
+\item \textbf{Evidence:} task state, timing, and run context.
+\item \textbf{Action:} operators and source owners inspect failed dependencies.
+\item \textbf{Limit:} orchestration does not supply predictive or release approval evidence by itself.
+\item \textit{At our bank:} The required CRM validation must sit upstream of scoring and export so its failure blocks dependent work.
+\item \textit{Connect each tool to a responsibility, evidence, and a response owner.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item New block: \textbf{Block 2 / Practical tools}.
+\item Presenter: \textbf{TBD}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Illustrative Airflow role}}
+\clearpage
+\section*{\normalsize 52 / 55 \quad MLflow: connect experiments and artifacts}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Practical tools \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-52.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Model tracking supports reproducibility and review when evidence links are designed explicitly.
+\item \textbf{Architecture role:} connect training evidence and model artifacts.
+\item \textbf{Evidence:} runs, configuration, metrics, and artifact identity.
+\item \textbf{Action:} reviewers compare candidates and verify compatible releases.
+\item \textbf{Limit:} no single tracking tool provides every governance control.
+\item \textit{At our bank:} Link the approved M1 to its evidence while recording B017-R1’s separate input and execution context.
+\item \textit{Tool records support the release decision; they do not replace its policy.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{TBD}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Illustrative MLflow role}}
+\clearpage
+\section*{\normalsize 53 / 55 \quad Validation and drift reports support diagnosis}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Practical tools \textbullet\ TBD}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-53.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item A report is useful when its reference, feature meaning, cohort, and response are clear.
+\item \textbf{Validation:} test declared expectations before use.
+\item \textbf{Drift comparison:} inspect change against a named reference.
+\item \textbf{Tool choice:} reports can support these roles; keep policy outside the screenshot.
+\item \textbf{Action:} preserve evidence and assign a response owner.
+\item \textit{At our bank:} A missing CRM feature needs a contract-failure response; a changed valid population needs a different investigation.
+\item \textit{Tools make evidence easier to collect; architecture defines what that evidence means.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{TBD}.
+\item Animated build: click 2 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Group tool-showcase topic}}
+\clearpage
+\section*{\normalsize 54 / 55 \quad ML architecture connects five responsibilities}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Practical tools \textbullet\ All presenters}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-54.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item Return to the full system and the choices that make a prediction usable.
+\item \textbf{Data:} preserve meaning, validity, and temporal consistency.
+\item \textbf{Models:} evaluate uncertainty and manage compatible approved artifacts.
+\item \textbf{Operations:} observe, diagnose, release, and recover.
+\item \textbf{Decisions:} protect access and govern appropriate business action.
+\item \textit{At our bank:} Ana’s score becomes usable through validated inputs, traceable execution, an approved release, and a separate campaign policy.
+\item \textit{Day 2: foundation models and agents retain these control needs, while components and failure modes change.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{All presenters}.
+\item Animated build: click 4 times to reveal the remaining steps before moving on.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Group synthesis}}
+\clearpage
+\section*{\normalsize 55 / 55 \quad Sources and adaptation boundaries}
+\noindent\textcolor{teal!70!black}{\small Block 2 / Practical tools \textbullet\ All presenters}\par\vspace{2mm}
+\begin{center}\includegraphics[width=0.92\textwidth]{previews/speaker-notes/slide-55.png}\end{center}
+\vspace{2mm}
+\begin{saybox}
+\begin{itemize}
+\item The bibliography supplies concepts; the bank diagrams and incidents are explicit teaching applications.
+\item \textbf{Core readings:} architectural decisions, serving, maintenance, and quality concerns.
+\item \textbf{Supporting readings} extend monitoring, governance, and security.
+\item \textbf{Illustrations:} Ana, scores, dates, batches, and incidents are invented.
+\item \textbf{Source limit:} the separately catalogued checklist corrigendum remains unread.
+\item \textit{At our bank:} No new churn outcome, repaired score, retention benefit, or real bank tool execution is claimed.
+\item \textit{The separate guide records reading anchors and adaptation limits.}
+\end{itemize}
+\end{saybox}
+\begin{cuebox}
+\begin{itemize}
+\item Presenter: \textbf{All presenters}.
+\item Pause briefly before the bank example — let the concept land first.
+\item Close on the takeaway line before advancing.
+\end{itemize}
+\end{cuebox}
+\par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: See source-review.md and presenter guide}}
+\clearpage
+\end{document}

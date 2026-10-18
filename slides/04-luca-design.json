@@ -1,0 +1,114 @@
+[
+  {
+    "id": "hidden-dependencies-create-technical-debt",
+    "title": "Hidden dependencies create technical debt",
+    "lead": "An innocent upstream change can alter ML behavior without changing the model.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Hidden coupling:</b> features depend on sources owned by other teams.",
+      "<b>Pipeline complexity:</b> parallel preparation paths can diverge.",
+      "<b>Versioning gaps:</b> a model artifact alone cannot reproduce a decision.",
+      "<b>Context matters:</b> architecture decisions depend on requirements and constraints."
+    ],
+    "example": "CRM changes its engagement export for another purpose; both training and production can inherit the change.",
+    "takeaway": "Make data dependencies as reviewable as code dependencies."
+  },
+  {
+    "id": "make-the-feature-contract-explicit",
+    "title": "Make the feature contract explicit",
+    "lead": "A contract records meaning and ownership as well as structural schema.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Semantics:</b> define what the feature actually measures.",
+      "<b>Time:</b> specify window, cutoff, and joins consistently.",
+      "<b>Validity:</b> define types, ranges, freshness, and missingness.",
+      "<b>Ownership:</b> review upstream changes with affected consumers."
+    ],
+    "example": "engagement_7d means app logins during seven days ending at the scoring cutoff; missing must not silently become zero.",
+    "takeaway": "Schema checks alone cannot detect every change in meaning."
+  },
+  {
+    "id": "separate-responsibilities-where-change-happens",
+    "title": "Separate responsibilities where change happens",
+    "lead": "Clear interfaces let different concerns evolve without unnecessary relearning.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Single responsibility:</b> identify each module’s reason to change.",
+      "<b>Interfaces:</b> specify data and behavior at each boundary.",
+      "<b>Dependency injection:</b> provide implementations through explicit contracts.",
+      "<b>Deployment:</b> logical modules do not automatically require separate services."
+    ],
+    "example": "A connector fix changes preparation; a contact-frequency rule changes campaign policy; a new M2 changes inference.",
+    "takeaway": "Separate concerns first; choose deployment units from the actual trade-offs."
+  },
+  {
+    "id": "pipeline-pattern-order-the-responsibilities",
+    "title": "Pipeline pattern: order the responsibilities",
+    "lead": "Make preparation and validation steps explicit and testable.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Explicit stages</b> clarify transformations and dependencies.",
+      "<b>Stage contracts</b> make intermediate data understandable.",
+      "<b>Tests</b> cover local behavior and end-to-end compatibility.",
+      "<b>Failure handling</b> prevents a partial result from masquerading as a complete batch."
+    ],
+    "example": "Validate CRM records before computing engagement_7d and invoking M1.",
+    "takeaway": "Use structure to expose the dependency, not to hide it in orchestration code."
+  },
+  {
+    "id": "strategy-pattern-replace-one-implementation",
+    "title": "Strategy pattern: replace one implementation",
+    "lead": "A stable interface separates the client from a specific implementation choice.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Stable interface:</b> the client relies on a contract, not a specific class.",
+      "<b>Alternative implementations</b> can be supplied through that interface.",
+      "<b>Compatibility</b> still includes meaning, not only types.",
+      "<b>Evaluation</b> and release approval still apply when behavior changes."
+    ],
+    "example": "Replace a feature-preparation implementation behind a stable interface; verify equivalent semantics before scoring.",
+    "takeaway": "Interchangeability in code is not equivalence in predictive behavior."
+  },
+  {
+    "id": "observer-pattern-notify-then-investigate",
+    "title": "Observer pattern: notify, then investigate",
+    "lead": "A change notification decouples the signal producer from interested responders.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Subject:</b> emits a meaningful change event.",
+      "<b>Subscribers:</b> receive notifications without tightly coupling the producer.",
+      "<b>Context:</b> include cohort, reference, and evidence links.",
+      "<b>Authority:</b> receiving a notification does not grant release privileges."
+    ],
+    "example": "A missingness event notifies data and operations owners; it does not instruct the registry to promote M2.",
+    "takeaway": "A useful notification requests attention and preserves the decision boundary."
+  },
+  {
+    "id": "version-the-system-not-only-the-model",
+    "title": "Version the system, not only the model",
+    "lead": "A prediction depends on a compatible set of data meaning, code, model, and configuration.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Data meaning:</b> record source and feature definitions.",
+      "<b>Code:</b> identify preparation and scoring revisions.",
+      "<b>Model:</b> identify artifact, runtime, and configuration.",
+      "<b>Outputs:</b> connect the compatible set to score and decision records."
+    ],
+    "example": "M1 alone cannot explain Ana’s score if a CRM migration changed the meaning of its engagement input.",
+    "takeaway": "Co-versioning connects system and model lifecycles."
+  },
+  {
+    "id": "modules-or-services-make-the-trade-off",
+    "title": "Modules or services? Make the trade-off",
+    "lead": "Independent deployment is useful only when it justifies its operating cost.",
+    "owner": "Luca",
+    "bullets": [
+      "<b>Modules</b> can provide strong logical boundaries with simpler operation.",
+      "<b>Services</b> can support independent change and scaling.",
+      "<b>Distribution</b> adds failure modes and version coordination.",
+      "<b>Evidence</b> and requirements should drive the choice."
+    ],
+    "example": "Separate preparation from policy logically; deploy them independently only when the bank’s needs justify it.",
+    "takeaway": "There is no universal best ML architecture."
+  }
+]

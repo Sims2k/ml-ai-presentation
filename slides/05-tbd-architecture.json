@@ -1,0 +1,16 @@
+[
+  {
+    "id": "architectural-tactics-connect-concerns-to-controls",
+    "title": "Architectural tactics connect concerns to controls",
+    "lead": "Use explicit mechanisms to address uncertainty, change, recovery, and auditability.",
+    "owner": "TBD",
+    "bullets": [
+      "<b>Separation</b> isolates data preparation, model execution, and business policy.",
+      "<b>Observation</b> makes operational and predictive behavior reviewable.",
+      "<b>Recovery</b> restores a compatible path rather than only one artifact.",
+      "<b>Governance</b> links evidence, approval, access, and responsibility."
+    ],
+    "example": "A validation boundary contains a bad CRM batch; version links and approvals support controlled repair.",
+    "takeaway": "A tactic is credible when its mechanism, owner, and evidence are clear."
+  }
+]

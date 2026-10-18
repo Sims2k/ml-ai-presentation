@@ -1,0 +1,128 @@
+[
+  {
+    "id": "serving-patterns-when-is-a-prediction-needed",
+    "title": "Serving patterns: when is a prediction needed?",
+    "lead": "Select the interaction pattern from the decision’s timing and failure behavior.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Batch:</b> compute many predictions; consumers read stored results later.",
+      "<b>Synchronous:</b> the caller waits for a result during its request.",
+      "<b>Asynchronous:</b> an event producer and consumer are decoupled through messaging.",
+      "<b>Edge:</b> a deployment location, independent of prediction timing."
+    ],
+    "example": "The churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need.",
+    "takeaway": "Timing, location, and release strategy are separate choices."
+  },
+  {
+    "id": "batch-serving-validate-score-publish",
+    "title": "Batch serving: validate, score, publish",
+    "lead": "A complete validated batch must be available before its business deadline.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Snapshot:</b> define population, cutoff, and required source freshness.",
+      "<b>Validate:</b> reject incompatible inputs before scoring.",
+      "<b>Reconcile:</b> account for written, rejected, and withheld records.",
+      "<b>Publish:</b> expose a validated batch under a defined consumer contract."
+    ],
+    "example": "Monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners.",
+    "takeaway": "Optimize the whole batch deadline, not only per-record prediction speed."
+  },
+  {
+    "id": "synchronous-serving-the-caller-waits",
+    "title": "Synchronous serving: the caller waits",
+    "lead": "Prediction becomes part of the application’s response path.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Response time</b> includes lookup, preparation, inference, and network work.",
+      "<b>Availability</b> now affects the waiting application’s request.",
+      "<b>Failure behavior</b> needs explicit timeout, error, and fallback policies.",
+      "<b>Consistency</b> still requires compatible feature meanings and model versions."
+    ],
+    "example": "An immediate fraud check can justify this pattern. The monthly churn campaign does not require it.",
+    "takeaway": "A fast model does not guarantee a fast end-to-end service."
+  },
+  {
+    "id": "asynchronous-serving-decouple-the-work",
+    "title": "Asynchronous serving: decouple the work",
+    "lead": "Messages separate production, processing, and consumption of a prediction.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Buffering</b> absorbs bursts and supports independent processing.",
+      "<b>Lag</b> and queue health become operational concerns.",
+      "<b>Retries</b> require failure handling and idempotent processing.",
+      "<b>Contracts</b> define message identity, timing, schema, and result interpretation."
+    ],
+    "example": "If a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts.",
+    "takeaway": "Decoupling adds messaging responsibilities; it does not remove timing requirements."
+  },
+  {
+    "id": "deployment-location-is-a-separate-decision",
+    "title": "Deployment location is a separate decision",
+    "lead": "Central, embedded, and edge deployments change operations and constraints.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Central:</b> simplify shared operation and governance.",
+      "<b>Embedded:</b> deploy the model with its host application.",
+      "<b>Edge:</b> account for constrained hardware and intermittent connectivity.",
+      "<b>Choose independently:</b> location does not uniquely determine batch or request timing."
+    ],
+    "example": "Keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here.",
+    "takeaway": "Architecture follows the operational context."
+  },
+  {
+    "id": "package-the-whole-compatible-set",
+    "title": "Package the whole compatible set",
+    "lead": "A deployable release contains more than the learned model file.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Model artifact:</b> the learned parameters and required format.",
+      "<b>Runtime:</b> dependencies, preparation code, and execution environment.",
+      "<b>Contract:</b> feature meaning, types, missingness, and temporal cutoff.",
+      "<b>Configuration:</b> scoring population and execution settings."
+    ],
+    "example": "The bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot.",
+    "takeaway": "A package that loads successfully still needs release and quality evidence."
+  },
+  {
+    "id": "shadow-deployment-observe-without-acting",
+    "title": "Shadow deployment: observe without acting",
+    "lead": "A candidate scores real inputs while the approved model remains the action source.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Run in parallel</b> against comparable production inputs.",
+      "<b>Record identity:</b> distinguish M1 and M2 outputs explicitly.",
+      "<b>Compare</b> operational behavior and score differences first.",
+      "<b>Wait for labels</b> to compare future churn quality."
+    ],
+    "example": "Only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer.",
+    "takeaway": "Shadow checks observation, not the business effect of acting on the candidate."
+  },
+  {
+    "id": "canary-deployment-limit-exposure",
+    "title": "Canary deployment: limit exposure",
+    "lead": "An approved limited cohort uses the candidate before broader rollout.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>Restrict exposure</b> to a defined cohort and scope.",
+      "<b>Observe</b> execution, compatibility, coverage, and policy behavior.",
+      "<b>Define stop rules</b> and a rehearsed recovery path.",
+      "<b>Separate evidence:</b> short operational success cannot prove 30-day predictive quality."
+    ],
+    "example": "The bank may authorize a small cohort to use M2 while retaining M1 for the remainder.",
+    "takeaway": "A canary controls risk; it is not automatically a valid business experiment."
+  },
+  {
+    "id": "a-b-testing-define-the-intervention",
+    "title": "A/B testing: define the intervention",
+    "lead": "Assigned groups and a stated outcome make the comparison interpretable.",
+    "owner": "Tomás",
+    "bullets": [
+      "<b>State what changes:</b> model, decision policy, or retention treatment.",
+      "<b>Assign comparable groups</b> under an appropriate experiment design.",
+      "<b>Define outcomes</b> and the observation window before interpreting results.",
+      "<b>Avoid confounding:</b> changing model and offer together obscures their separate effects."
+    ],
+    "example": "Compare two offer policies separately from asking whether M2 ranks churn risk better than M1.",
+    "takeaway": "Prediction accuracy and the effect of contacting a customer are different targets."
+  }
+]
