@@ -9,6 +9,7 @@ import re,subprocess
 from pathlib import Path
 from html import unescape
 from lecture_content import build_lecture
+from speaker_scripts import SCRIPTS
 
 ROOT=Path(__file__).resolve().parents[1]
 SHOTS=ROOT/'previews/speaker-notes'
@@ -79,7 +80,7 @@ def bullets_for(slide):
         items.append(clause(b))
     if slide['example']:
         ex=slide['example']
-        if ex.lower().startswith('bank'):
+        if ex.lower().startswith('bank') or ex.startswith('Ana'):
             items.append(escape_keep_bold(ex))
         else:
             ex=ex[0:1].lower()+ex[1:]
@@ -88,35 +89,12 @@ def bullets_for(slide):
         items.append('\\textit{'+escape_keep_bold(slide['takeaway'])+'}')
     return items
 
-def plain(s):
-    # Strip the <b>/</b> markers entirely, keeping the words, for flowing prose.
-    return re.sub(r'</?b>','',s)
-
 def paragraph_for(slide):
-    sentences=[]
-    if slide['lead']:
-        sentences.append(slide['lead'])
-    for b in slide['bullets']:
-        m=re.match(r'^<b>([^<]*?):?</b>\s*(.*)$',b)
-        if m:
-            label,rest=m.groups()
-            rest=rest[0:1].lower()+rest[1:] if rest else rest
-            sentences.append(f'{label} means {rest}' if not rest.startswith(label.lower()) else rest)
-        else:
-            sentences.append(plain(b))
-    if slide['example']:
-        ex=slide['example']
-        if ex.lower().startswith('bank'):
-            sentences.append(ex)
-        else:
-            sentences.append('At our bank, '+ex[0:1].lower()+ex[1:])
-    if slide['takeaway']:
-        sentences.append(slide['takeaway'])
-    para=' '.join(sentences)
-    para=re.sub(r'\s+',' ',para).strip()
-    if para and para[-1] not in '.!?':
-        para+='.'
-    return esc(para)
+    # Hand-written lecture prose, keyed by title -- see speaker_scripts.py.
+    script=SCRIPTS.get(slide['title'])
+    if script is None:
+        raise KeyError(f"No hand-written spoken script for slide {slide['title']!r} -- add one to speaker_scripts.py")
+    return esc(script)
 
 def main():
     slides=build_lecture()
