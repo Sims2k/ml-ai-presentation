@@ -6,6 +6,7 @@ Fig. 2 — not a reproduction of their artwork. All plotted bank examples are in
 from pathlib import Path
 from html import escape
 from build_lecture_samples import group
+from visual_marks import svg_icon
 
 ROOT=Path(__file__).resolve().parents[1]
 POINTS=[(1,1),(2,2),(2,5),(4,1),(4,4),(5,2),(5,5),(7,1),(7,3),(8,5),(9,2),(10,4),(11,1),(12,3),(13,5)]
@@ -47,6 +48,7 @@ def input_distribution():
     for j,(title,vals) in enumerate([('REFERENCE COHORT',[10,20,30,40]),('CURRENT COHORT',[40,30,20,10])]):
         off=j*896;layer=f'<rect x="{off+8}" y="8" width="872" height="540" rx="6" class="wide-panel"/>'
         layer+=tx(off+48,52,title,'wide-panel-title')+tx(off+48,98,'Customers per 100','wide-muted')
+        layer+=svg_icon('users-round',off+808,24,34,'#62645f')
         for v in range(0,41,10):
             y=442-v*7;layer+=f'<path d="M{off+96} {y} H{off+816}" class="wide-grid"/>'+tx(off+76,y+8,v,'wide-tick','end')
         layer+=f'<path d="M{off+96} 146 V442 H{off+816}" class="wide-axis"/>'
@@ -76,6 +78,7 @@ def scatter(off,current=False,errors=False):
     yy=lambda v:484-v*54
     body=f'<rect x="{off+8}" y="8" width="872" height="522" rx="6" class="wide-panel"/>'
     body+=tx(off+48,52,'AFTER: MATURE OUTCOMES' if current else 'BEFORE: MATURE OUTCOMES','wide-panel-title')
+    body+=svg_icon('users-round',off+808,24,34,'#62645f')
     body+=tx(off+48,96,'Products used','wide-muted')
     for v in [0,2,4,6]:
         y=yy(v);body+=f'<path d="M{xx(0)} {y} H{xx(14)}" class="wide-grid"/>'+tx(xx(0)-20,y+8,v,'wide-tick','end')

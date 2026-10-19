@@ -5,6 +5,7 @@ All complete static frames remain readable without the keyboard enhancement.
 """
 from html import escape
 from build_lecture_samples import text, node, arrow, svg, group, architecture
+from visual_marks import svg_icon
 
 PAPER='#faf9f7'
 
@@ -165,6 +166,8 @@ def serving_comparison(online=False):
         y=12+(step-1)*204;cy=y+128
         layer=f'<rect x="8" y="{y}" width="1104" height="188" rx="6" class="zone"/>'
         layer+=text(28,y+32,heading,'lane-title')+text(28,y+62,sub,'row-description')
+        mark=('network','bell','database')[step-1] if online else ('database','network','send')[step-1]
+        layer+=svg_icon(mark,1060,y+16,28)
         layer+=arrow(slug,312,cy,432,cy,step==2 if online else step==3)
         layer+=arrow(slug,712,cy,832,cy,step==2 if online else step==3)
         for x,value in [(372,left),(772,right)]:

@@ -7,6 +7,7 @@ The user explicitly requests keyboard-only presentation: playback UI is hidden.
 from pathlib import Path
 from html import escape as esc
 import re
+from visual_marks import component_mark
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'outputs'
@@ -24,6 +25,7 @@ def group(body, step, label):
 
 def node(x, y, w, h, title, lines, role='data', tag=''):
     body = f'<g data-node="{esc(title)}"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6" class="node {role}"/>'
+    body += component_mark(title,role,x,y,w,h)
     if tag:
         body += text(x + 16, y + 26, tag, 'node-tag')
     body += text(x + 16, y + (36 if h == 92 else 62), title)

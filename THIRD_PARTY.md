@@ -30,10 +30,15 @@ The original SVG files and their upstream URLs are stored in `assets/marks/`.
 - MLflow logo: official project asset,
   https://github.com/mlflow/mlflow/blob/master/assets/logo.svg . MLflow retains
   its applicable trademark rights. The mark is embedded without recoloring.
-- Concept icons: Lucide, https://lucide.dev/ , obtained from the upstream
+- Concept and component icons: Lucide, https://lucide.dev/ , obtained from the upstream
   `lucide-icons/lucide` repository. The SVGs are used in the lecture accent
   color; the ISC license and the included Feather-derived notices are preserved
   in `licenses/Lucide-LICENSE.txt`.
+
+Icons identify data stores, models, training, policy, checks, recovery, customer
+cohorts and other responsibilities throughout the lecture. Component pictograms
+use Lucide SVG primitives inside the authored diagrams; header marks remain
+embedded SVG images.
 
 Logos and icons are embedded in the HTML as local SVG data, so viewing the
 presentation does not depend on a third-party image CDN.

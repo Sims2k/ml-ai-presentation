@@ -76,6 +76,7 @@ npm test        # verifies the deck, exports PDFs, and captures the current slid
 python3 scripts/build_speaker_notes.py
 xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs src/speaker-notes.tex
 xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs src/speaker-notes.tex
+python3 scripts/verify_speaker_notes.py  # needs pdftotext (Poppler)
 npm run site
 ```
 

@@ -145,7 +145,8 @@ def main():
 \renewcommand{\headrulewidth}{0.3pt}
 \tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=6pt,after skip=6pt,fonttitle=\bfseries\small,before upper={\setlength{\parskip}{0.4em}\RaggedRight}}
 \newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY}}
-\newtcolorbox{examplebox}[1][]{colback=white,colframe=teal!50,title={SPOKEN SCRIPT --- short paragraphs for delivery},fontupper=\fontsize{10.5}{14}\selectfont\interlinepenalty=10000,#1}
+% Brace the fontupper value: its inner '=' must not be parsed as a key separator.
+\newtcolorbox{examplebox}[1][]{colback=white,colframe=teal!50,title={SPOKEN SCRIPT --- short paragraphs for delivery},fontupper={\fontsize{10.5}{14}\selectfont\interlinepenalty=10000\relax},#1}
 \newtcolorbox{cuebox}[1][]{colback=accent!5,colframe=accent!70!black,title={CUES},#1}
 \begin{document}
 \thispagestyle{empty}

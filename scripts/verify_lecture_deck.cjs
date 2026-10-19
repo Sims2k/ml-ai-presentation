@@ -25,6 +25,10 @@ const assert=(v,msg)=>{if(!v)throw new Error(msg)};
     const example=s.querySelector('.example');if(example){const eb=bounds(example);for(const e of example.children){const b=bounds(e);if(b.top<eb.top-1||b.bottom>eb.bottom+1)issues.push('Example text overflow');}}
     const table=s.querySelector('.lecture-table table'),column=s.querySelector('.diagram-column');if(table){const t=bounds(table),c=bounds(column);if(t.right>c.right+1||t.bottom>c.bottom+1)issues.push('Table overflow');}
     const nodes=[...s.querySelectorAll('[data-node]')];for(const n of nodes){const r=n.querySelector('rect').getBBox();for(const t of n.querySelectorAll('text')){const b=t.getBBox();if(b.x<r.x+5||b.x+b.width>r.x+r.width-5||b.y<r.y+4||b.y+b.height>r.y+r.height-4)issues.push('Node text overflow: '+t.textContent);}}
+    for(const icon of s.querySelectorAll('[data-component-icon]')){
+     const scope=icon.closest('[data-node]')||icon.closest('svg');
+     for(const t of scope.querySelectorAll('text'))if(overlap(bounds(icon),bounds(t)))issues.push('Icon overlaps label: '+t.textContent);
+    }
     const svg=s.querySelector('svg');if(svg){const v=svg.viewBox.baseVal,texts=[...svg.querySelectorAll('text')];for(const t of texts){const b=t.getBBox();if(b.x<0||b.y<0||b.x+b.width>v.width||b.y+b.height>v.height)issues.push('SVG bounds: '+t.textContent);}
      for(let j=0;j<texts.length;j++)for(let k=j+1;k<texts.length;k++)if(overlap(bounds(texts[j]),bounds(texts[k])))issues.push('SVG label overlap: '+texts[j].textContent+' / '+texts[k].textContent);
      for(const e of svg.querySelectorAll('path.edge')){const len=e.getTotalLength(),first=e.getPointAtLength(0),last=e.getPointAtLength(len);for(const n of nodes){const b=n.querySelector('rect').getBBox(),at=p=>p.x>=b.x-2&&p.x<=b.x+b.width+2&&p.y>=b.y-2&&p.y<=b.y+b.height+2;if(at(first)||at(last))continue;for(let d=4;d<len-4;d+=4){const pt=e.getPointAtLength(d);if(pt.x>b.x+2&&pt.x<b.x+b.width-2&&pt.y>b.y+2&&pt.y<b.y+b.height-2){issues.push('Connector crosses unrelated node: '+n.getAttribute('data-node'));break;}}}}
