@@ -30,6 +30,15 @@ The original SVG files and their upstream URLs are stored in `assets/marks/`.
 - MLflow logo: official project asset,
   https://github.com/mlflow/mlflow/blob/master/assets/logo.svg . MLflow retains
   its applicable trademark rights. The mark is embedded without recoloring.
+- NIST wordmark: official `usnistgov/nist-header-footer` repository,
+  https://github.com/usnistgov/nist-header-footer/blob/nist-pages/images/svg/nist_logo_reverse.svg .
+  The original white wordmark is placed on a charcoal backing for contrast,
+  without recoloring or altering its proportions. It identifies the cited
+  NIST publications; no NIST endorsement or certification is implied.
+- SHAP logo: official project artwork,
+  https://github.com/shap/shap/blob/main/docs/artwork/shap_logo.png .
+  Used without recoloring on the slide discussing SHAP/LIME explanations.
+  The upstream project license is preserved in `licenses/SHAP-LICENSE.txt`.
 - Concept and component icons: Lucide, https://lucide.dev/ , obtained from the upstream
   `lucide-icons/lucide` repository. The SVGs are used in the lecture accent
   color; the ISC license and the included Feather-derived notices are preserved
@@ -40,7 +49,7 @@ cohorts and other responsibilities throughout the lecture. Component pictograms
 use Lucide SVG primitives inside the authored diagrams; header marks remain
 embedded SVG images.
 
-Logos and icons are embedded in the HTML as local SVG data, so viewing the
+Logos and icons are embedded in the HTML as local image data, so viewing the
 presentation does not depend on a third-party image CDN.
 
 ## Fonts
