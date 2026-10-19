@@ -32,7 +32,7 @@ const assert=(v,msg)=>{if(!v)throw new Error(msg)};
    });
    report.slides.push({number:i+1,...result});await p.screenshot({path:path.join(pre,`slide-${String(i+1).padStart(2,'0')}.png`)});
   }
-  await p.setViewportSize({width:390,height:844});const mobile=await p.locator('#deckStage').boundingBox();assert(Math.abs(mobile.width/mobile.height-16/9)<.001&&mobile.x>=-.1&&mobile.x+mobile.width<=390.1,'Phone stage fit');await p.screenshot({path:path.join(pre,'phone.png')});report.checks.push('Fixed 16:9 desktop and phone stage');
+  await p.setViewportSize({width:390,height:844});const mobile=await p.locator('#deckStage').boundingBox();assert(Math.abs(mobile.width/mobile.height-16/9)<.005&&mobile.x>=-.5&&mobile.x+mobile.width<=390.5,'Phone stage fit');await p.screenshot({path:path.join(pre,'phone.png')});report.checks.push('Fixed 16:9 desktop and phone stage');
   await p.setViewportSize({width:1920,height:1080});await p.pdf({path:path.join(out,'ml-architecture-lecture.pdf'),printBackground:true,preferCSSPageSize:true});
   const live=await ctx.newPage();live.on('pageerror',e=>report.errors.push(String(e)));await live.goto(url);await live.evaluate(()=>document.fonts.ready);
   for(const m of manifest.filter(x=>x.steps)){

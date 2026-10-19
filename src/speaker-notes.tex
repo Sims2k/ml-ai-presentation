@@ -20,7 +20,8 @@
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=6pt,after skip=6pt,fonttitle=\bfseries\small,before upper={\setlength{\parskip}{0.4em}\RaggedRight}}
-\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY},fontupper=\fontsize{11}{14.5}\selectfont}
+\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY}}
+\newtcolorbox{examplebox}{colback=white,colframe=teal!50,title={SPOKEN EXAMPLE --- practice this out loud},fontupper=\itshape\fontsize{10.5}{14}\selectfont}
 \newtcolorbox{cuebox}[1][]{colback=accent!5,colframe=accent!70!black,title={CUES},#1}
 \begin{document}
 \thispagestyle{empty}
@@ -29,7 +30,7 @@
 {\Large Speaker Notes}\\[2mm]
 {\large A bank customer-churn case --- 20 October 2026}\\[8mm]
 \end{center}
-\noindent Each page shows one slide exactly as presenters will see it, the words to speak, and short delivery cues. The script is a speaking aid, not a transcript to read verbatim --- adapt it to your own voice. Animated builds are marked; press the arrow key the stated number of times before moving to the next slide.
+\noindent Each page shows one slide exactly as presenters will see it, the key points to cover, delivery cues, and a worked spoken-example paragraph to practice from. The example is a model to rehearse and adapt, not a transcript to read verbatim. Animated builds are marked; press the arrow key the stated number of times before moving to the next slide.
 \clearpage
 
 \section*{\normalsize 01 / 55 \quad ML Architecture}
@@ -49,8 +50,19 @@
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-From a trained model to a maintainable, observable, governed system. \textbf{Software engineering} for systems that depend on learned behavior. \textbf{One shared case}: bank customer-churn prediction. \textbf{Two blocks}: model-to-system foundations, then architecture and quality. \textbf{Five presenters}: Ricardo, Tomás, Simon, Luca, and Matheus. Bank churn supplies the shared case. Examples, records, schedules, and incidents are illustrative. \textit{A useful model needs an engineered system around it.}
+\begin{itemize}
+\item From a trained model to a maintainable, observable, governed system.
+\item \textbf{Software engineering} for systems that depend on learned behavior.
+\item \textbf{One shared case}: bank customer-churn prediction.
+\item \textbf{Two blocks}: model-to-system foundations, then architecture and quality.
+\item \textbf{Five presenters}: Ricardo, Tomás, Simon, Luca, and Matheus.
+\item Bank churn supplies the shared case. Examples, records, schedules, and incidents are illustrative.
+\item \textit{A useful model needs an engineered system around it.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+From a trained model to a maintainable, observable, governed system. Software engineering means for systems that depend on learned behavior. One shared case means bank customer-churn prediction. Two blocks means model-to-system foundations, then architecture and quality. Five presenters means ricardo, Tomás, Simon, Luca, and Matheus. Bank churn supplies the shared case. Examples, records, schedules, and incidents are illustrative. A useful model needs an engineered system around it.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, Ch. 13–14}}
 \clearpage
 \section*{\normalsize 02 / 55 \quad Two blocks, one shared bank case}
@@ -69,8 +81,19 @@ From a trained model to a maintainable, observable, governed system. \textbf{Sof
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Follow the group’s topic outline; use the case to connect each architectural decision. \textbf{Block 1}: lifecycle, serving, monitoring, and design decisions. \textbf{Block 2}: tactics, MLOps, security, privacy, and quality. \textbf{Concept first}: explain the mechanism, then apply it to churn. \textbf{Named handoffs}: each section identifies its presenter; unassigned topics remain TBD. \textit{At our bank,} the same source → feature → model → score → policy path returns throughout the lecture. \textit{Each architectural decision connects predictive behavior to a system responsibility.}
+\begin{itemize}
+\item Follow the group’s topic outline; use the case to connect each architectural decision.
+\item \textbf{Block 1}: lifecycle, serving, monitoring, and design decisions.
+\item \textbf{Block 2}: tactics, MLOps, security, privacy, and quality.
+\item \textbf{Concept first}: explain the mechanism, then apply it to churn.
+\item \textbf{Named handoffs}: each section identifies its presenter; unassigned topics remain TBD.
+\item \textit{At our bank,} the same source → feature → model → score → policy path returns throughout the lecture.
+\item \textit{Each architectural decision connects predictive behavior to a system responsibility.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Follow the group’s topic outline; use the case to connect each architectural decision. Block 1 means lifecycle, serving, monitoring, and design decisions. Block 2 means tactics, MLOps, security, privacy, and quality. Concept first means explain the mechanism, then apply it to churn. Named handoffs means each section identifies its presenter; unassigned topics remain TBD. At our bank, the same source → feature → model → score → policy path returns throughout the lecture. Each architectural decision connects predictive behavior to a system responsibility.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Group discussion document · Agreed lecture redesign}}
 \clearpage
 \section*{\normalsize 03 / 55 \quad The bank case: features, labels, and predictions}
@@ -90,8 +113,19 @@ Follow the group’s topic outline; use the case to connect each architectural d
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A few ML terms connect familiar application data to a learned risk estimate. \textbf{Feature}: a prepared input, such as logins during the previous seven days. \textbf{Label}: the observed churn outcome used for training and later evaluation. \textbf{Prediction}: an estimate produced before the customer’s future outcome is known. \textbf{Training vs. inference}: learn from earlier examples; apply the approved model to current inputs. \textit{At our bank,} ana / C042: logins fall from 7 to 1; the illustrative score is 0.70. Her next-30-day outcome is unknown. \textit{Lower activity is evidence for a model input, not proof that a customer will leave.}
+\begin{itemize}
+\item A few ML terms connect familiar application data to a learned risk estimate.
+\item \textbf{Feature}: a prepared input, such as logins during the previous seven days.
+\item \textbf{Label}: the observed churn outcome used for training and later evaluation.
+\item \textbf{Prediction}: an estimate produced before the customer’s future outcome is known.
+\item \textbf{Training vs. inference}: learn from earlier examples; apply the approved model to current inputs.
+\item \textit{At our bank,} ana / C042: logins fall from 7 to 1; the illustrative score is 0.70. Her next-30-day outcome is unknown.
+\item \textit{Lower activity is evidence for a model input, not proof that a customer will leave.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A few ML terms connect familiar application data to a learned risk estimate. Feature means a prepared input, such as logins during the previous seven days. Label means the observed churn outcome used for training and later evaluation. Prediction means an estimate produced before the customer’s future outcome is known. Training vs. inference means learn from earlier examples; apply the approved model to current inputs. At our bank, ana / C042: logins fall from 7 to 1; the illustrative score is 0.70. Her next-30-day outcome is unknown. Lower activity is evidence for a model input, not proof that a customer will leave.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Simon’s notes, §1}}
 \clearpage
 \section*{\normalsize 04 / 55 \quad From a trained model to an ML system}
@@ -111,8 +145,19 @@ A few ML terms connect familiar application data to a learned risk estimate. \te
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Architecture connects learning, production data, operational controls, and business decisions. \textbf{Training} uses historical features and labels to build and evaluate candidates. \textbf{Production} validates current data and applies an approved, compatible model. \textbf{Stored scores} link predictions to customer, time, input evidence, and versions. \textbf{Business policy} determines the permitted action; it remains separate from the score. \textit{At our bank,} the bank computes a monthly batch of churn scores, then applies campaign eligibility and contact rules. \textit{Keep the learning path and production path distinct, but traceable.}
+\begin{itemize}
+\item Architecture connects learning, production data, operational controls, and business decisions.
+\item \textbf{Training} uses historical features and labels to build and evaluate candidates.
+\item \textbf{Production} validates current data and applies an approved, compatible model.
+\item \textbf{Stored scores} link predictions to customer, time, input evidence, and versions.
+\item \textbf{Business policy} determines the permitted action; it remains separate from the score.
+\item \textit{At our bank,} the bank computes a monthly batch of churn scores, then applies campaign eligibility and contact rules.
+\item \textit{Keep the learning path and production path distinct, but traceable.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Architecture connects learning, production data, operational controls, and business decisions. Training means uses historical features and labels to build and evaluate candidates. Production means validates current data and applies an approved, compatible model. Stored scores means link predictions to customer, time, input evidence, and versions. Business policy means determines the permitted action; it remains separate from the score. At our bank, the bank computes a monthly batch of churn scores, then applies campaign eligibility and contact rules. Keep the learning path and production path distinct, but traceable.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, §13.2–13.3}}
 \clearpage
 \section*{\normalsize 05 / 55 \quad Two lifecycles, one compatible system}
@@ -132,8 +177,19 @@ Architecture connects learning, production data, operational controls, and busin
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Code correctness and predictive usefulness depend on different feedback and release cycles. \textbf{Software changes} can be checked through code, contract, and integration tests. \textbf{Model development} also needs representative data, suitable labels, and evaluation. \textbf{Feedback differs}: execution checks may be immediate; churn labels arrive later. \textbf{Co-versioning} links changes across code, feature meaning, model, and configuration. \textit{At our bank,} a CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions. \textit{A passing software test does not establish future predictive quality.}
+\begin{itemize}
+\item Code correctness and predictive usefulness depend on different feedback and release cycles.
+\item \textbf{Software changes} can be checked through code, contract, and integration tests.
+\item \textbf{Model development} also needs representative data, suitable labels, and evaluation.
+\item \textbf{Feedback differs}: execution checks may be immediate; churn labels arrive later.
+\item \textbf{Co-versioning} links changes across code, feature meaning, model, and configuration.
+\item \textit{At our bank,} a CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions.
+\item \textit{A passing software test does not establish future predictive quality.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Code correctness and predictive usefulness depend on different feedback and release cycles. Software changes means can be checked through code, contract, and integration tests. Model development means also needs representative data, suitable labels, and evaluation. Feedback differs means execution checks may be immediate; churn labels arrive later. Co-versioning means links changes across code, feature meaning, model, and configuration. At our bank, a CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions. A passing software test does not establish future predictive quality.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 13–14 · Bass, Ch. 11 · Simon’s notes, §1}}
 \clearpage
 \section*{\normalsize 06 / 55 \quad Prediction and business action are separate}
@@ -153,8 +209,19 @@ Code correctness and predictive usefulness depend on different feedback and rele
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A model estimates risk. Business rules decide whether and how the bank may act. \textbf{Score}: estimated churn risk, not a guaranteed outcome. \textbf{Policy}: preferences, eligibility, contact limits, and campaign budget. \textbf{Action}: an offer, another response, or no contact at all. \textbf{Separate evaluation}: predictive quality and the benefit of an offer are different questions. \textit{At our bank,} ana may have a high risk score and still receive no offer because contact preferences or policy prohibit it. \textit{A policy change should not require retraining the prediction model.}
+\begin{itemize}
+\item A model estimates risk. Business rules decide whether and how the bank may act.
+\item \textbf{Score}: estimated churn risk, not a guaranteed outcome.
+\item \textbf{Policy}: preferences, eligibility, contact limits, and campaign budget.
+\item \textbf{Action}: an offer, another response, or no contact at all.
+\item \textbf{Separate evaluation}: predictive quality and the benefit of an offer are different questions.
+\item \textit{At our bank,} ana may have a high risk score and still receive no offer because contact preferences or policy prohibit it.
+\item \textit{A policy change should not require retraining the prediction model.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A model estimates risk. Business rules decide whether and how the bank may act. Score means estimated churn risk, not a guaranteed outcome. Policy means preferences, eligibility, contact limits, and campaign budget. Action means an offer, another response, or no contact at all. Separate evaluation means predictive quality and the benefit of an offer are different questions. At our bank, ana may have a high risk score and still receive no offer because contact preferences or policy prohibit it. A policy change should not require retraining the prediction model.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Teaching policy decomposition}}
 \clearpage
 \section*{\normalsize 07 / 55 \quad Serving patterns: when is a prediction needed?}
@@ -175,8 +242,19 @@ A model estimates risk. Business rules decide whether and how the bank may act. 
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Select the interaction pattern from the decision’s timing and failure behavior. \textbf{Batch}: compute many predictions; consumers read stored results later. \textbf{Synchronous}: the caller waits for a result during its request. \textbf{Asynchronous}: an event producer and consumer are decoupled through messaging. \textbf{Edge}: a deployment location, independent of prediction timing. \textit{At our bank,} the churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need. \textit{Timing, location, and release strategy are separate choices.}
+\begin{itemize}
+\item Select the interaction pattern from the decision’s timing and failure behavior.
+\item \textbf{Batch}: compute many predictions; consumers read stored results later.
+\item \textbf{Synchronous}: the caller waits for a result during its request.
+\item \textbf{Asynchronous}: an event producer and consumer are decoupled through messaging.
+\item \textbf{Edge}: a deployment location, independent of prediction timing.
+\item \textit{At our bank,} the churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need.
+\item \textit{Timing, location, and release strategy are separate choices.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Select the interaction pattern from the decision’s timing and failure behavior. Batch means compute many predictions; consumers read stored results later. Synchronous means the caller waits for a result during its request. Asynchronous means an event producer and consumer are decoupled through messaging. Edge means a deployment location, independent of prediction timing. At our bank, the churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need. Timing, location, and release strategy are separate choices.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, §13.3–13.4; supporting Ch. 12}}
 \clearpage
 \section*{\normalsize 08 / 55 \quad Batch serving: validate, score, publish}
@@ -196,8 +274,19 @@ Select the interaction pattern from the decision’s timing and failure behavior
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A complete validated batch must be available before its business deadline. \textbf{Snapshot}: define population, cutoff, and required source freshness. \textbf{Validate}: reject incompatible inputs before scoring. \textbf{Reconcile}: account for written, rejected, and withheld records. \textbf{Publish}: expose a validated batch under a defined consumer contract. \textit{At our bank,} monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners. \textit{Optimize the whole batch deadline, not only per-record prediction speed.}
+\begin{itemize}
+\item A complete validated batch must be available before its business deadline.
+\item \textbf{Snapshot}: define population, cutoff, and required source freshness.
+\item \textbf{Validate}: reject incompatible inputs before scoring.
+\item \textbf{Reconcile}: account for written, rejected, and withheld records.
+\item \textbf{Publish}: expose a validated batch under a defined consumer contract.
+\item \textit{At our bank,} monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners.
+\item \textit{Optimize the whole batch deadline, not only per-record prediction speed.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A complete validated batch must be available before its business deadline. Snapshot means define population, cutoff, and required source freshness. Validate means reject incompatible inputs before scoring. Reconcile means account for written, rejected, and withheld records. Publish means expose a validated batch under a defined consumer contract. At our bank, monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners. Optimize the whole batch deadline, not only per-record prediction speed.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, §13.3}}
 \clearpage
 \section*{\normalsize 09 / 55 \quad Synchronous serving: the caller waits}
@@ -217,8 +306,19 @@ A complete validated batch must be available before its business deadline. \text
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Prediction becomes part of the application’s response path. \textbf{Response time} includes lookup, preparation, inference, and network work. \textbf{Availability} now affects the waiting application’s request. \textbf{Failure behavior} needs explicit timeout, error, and fallback policies. \textbf{Consistency} still requires compatible feature meanings and model versions. \textit{At our bank,} an immediate fraud check can justify this pattern. The monthly churn campaign does not require it. \textit{A fast model does not guarantee a fast end-to-end service.}
+\begin{itemize}
+\item Prediction becomes part of the application’s response path.
+\item \textbf{Response time} includes lookup, preparation, inference, and network work.
+\item \textbf{Availability} now affects the waiting application’s request.
+\item \textbf{Failure behavior} needs explicit timeout, error, and fallback policies.
+\item \textbf{Consistency} still requires compatible feature meanings and model versions.
+\item \textit{At our bank,} an immediate fraud check can justify this pattern. The monthly churn campaign does not require it.
+\item \textit{A fast model does not guarantee a fast end-to-end service.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Prediction becomes part of the application’s response path. Response time means includes lookup, preparation, inference, and network work. Availability means now affects the waiting application’s request. Failure behavior means needs explicit timeout, error, and fallback policies. Consistency means still requires compatible feature meanings and model versions. At our bank, an immediate fraud check can justify this pattern. The monthly churn campaign does not require it. A fast model does not guarantee a fast end-to-end service.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, §13.3–13.4 · Teaching comparison}}
 \clearpage
 \section*{\normalsize 10 / 55 \quad Asynchronous serving: decouple the work}
@@ -238,8 +338,19 @@ Prediction becomes part of the application’s response path. \textbf{Response t
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Messages separate production, processing, and consumption of a prediction. \textbf{Buffering} absorbs bursts and supports independent processing. \textbf{Lag} and queue health become operational concerns. \textbf{Retries} require failure handling and idempotent processing. \textbf{Contracts} define message identity, timing, schema, and result interpretation. \textit{At our bank,} if a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts. \textit{Decoupling adds messaging responsibilities; it does not remove timing requirements.}
+\begin{itemize}
+\item Messages separate production, processing, and consumption of a prediction.
+\item \textbf{Buffering} absorbs bursts and supports independent processing.
+\item \textbf{Lag} and queue health become operational concerns.
+\item \textbf{Retries} require failure handling and idempotent processing.
+\item \textbf{Contracts} define message identity, timing, schema, and result interpretation.
+\item \textit{At our bank,} if a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts.
+\item \textit{Decoupling adds messaging responsibilities; it does not remove timing requirements.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Messages separate production, processing, and consumption of a prediction. Buffering means absorbs bursts and supports independent processing. Lag means and queue health become operational concerns. Retries means require failure handling and idempotent processing. Contracts means define message identity, timing, schema, and result interpretation. At our bank, if a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts. Decoupling adds messaging responsibilities; it does not remove timing requirements.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, §13.3 · Bank application is hypothetical}}
 \clearpage
 \section*{\normalsize 11 / 55 \quad Deployment location is a separate decision}
@@ -258,8 +369,19 @@ Messages separate production, processing, and consumption of a prediction. \text
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Central, embedded, and edge deployments change operations and constraints. \textbf{Central}: simplify shared operation and governance. \textbf{Embedded}: deploy the model with its host application. \textbf{Edge}: account for constrained hardware and intermittent connectivity. \textbf{Choose independently}: location does not uniquely determine batch or request timing. \textit{At our bank,} keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here. \textit{Architecture follows the operational context.}
+\begin{itemize}
+\item Central, embedded, and edge deployments change operations and constraints.
+\item \textbf{Central}: simplify shared operation and governance.
+\item \textbf{Embedded}: deploy the model with its host application.
+\item \textbf{Edge}: account for constrained hardware and intermittent connectivity.
+\item \textbf{Choose independently}: location does not uniquely determine batch or request timing.
+\item \textit{At our bank,} keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here.
+\item \textit{Architecture follows the operational context.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Central, embedded, and edge deployments change operations and constraints. Central means simplify shared operation and governance. Embedded means deploy the model with its host application. Edge means account for constrained hardware and intermittent connectivity. Choose independently means location does not uniquely determine batch or request timing. At our bank, keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here. Architecture follows the operational context.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, supporting Ch. 12; §13.3–13.4}}
 \clearpage
 \section*{\normalsize 12 / 55 \quad Package the whole compatible set}
@@ -279,8 +401,19 @@ Central, embedded, and edge deployments change operations and constraints. \text
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A deployable release contains more than the learned model file. \textbf{Model artifact}: the learned parameters and required format. \textbf{Runtime}: dependencies, preparation code, and execution environment. \textbf{Contract}: feature meaning, types, missingness, and temporal cutoff. \textbf{Configuration}: scoring population and execution settings. \textit{At our bank,} the bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot. \textit{A package that loads successfully still needs release and quality evidence.}
+\begin{itemize}
+\item A deployable release contains more than the learned model file.
+\item \textbf{Model artifact}: the learned parameters and required format.
+\item \textbf{Runtime}: dependencies, preparation code, and execution environment.
+\item \textbf{Contract}: feature meaning, types, missingness, and temporal cutoff.
+\item \textbf{Configuration}: scoring population and execution settings.
+\item \textit{At our bank,} the bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot.
+\item \textit{A package that loads successfully still needs release and quality evidence.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A deployable release contains more than the learned model file. Model artifact means the learned parameters and required format. Runtime means dependencies, preparation code, and execution environment. Contract means feature meaning, types, missingness, and temporal cutoff. Configuration means scoring population and execution settings. At our bank, the bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot. A package that loads successfully still needs release and quality evidence.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Kalinowski, §13.3–13.4}}
 \clearpage
 \section*{\normalsize 13 / 55 \quad Shadow deployment: observe without acting}
@@ -300,8 +433,19 @@ A deployable release contains more than the learned model file. \textbf{Model ar
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A candidate scores real inputs while the approved model remains the action source. \textbf{Run in parallel} against comparable production inputs. \textbf{Record identity}: distinguish M1 and M2 outputs explicitly. \textbf{Compare} operational behavior and score differences first. \textbf{Wait for labels} to compare future churn quality. \textit{At our bank,} only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer. \textit{Shadow checks observation, not the business effect of acting on the candidate.}
+\begin{itemize}
+\item A candidate scores real inputs while the approved model remains the action source.
+\item \textbf{Run in parallel} against comparable production inputs.
+\item \textbf{Record identity}: distinguish M1 and M2 outputs explicitly.
+\item \textbf{Compare} operational behavior and score differences first.
+\item \textbf{Wait for labels} to compare future churn quality.
+\item \textit{At our bank,} only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer.
+\item \textit{Shadow checks observation, not the business effect of acting on the candidate.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A candidate scores real inputs while the approved model remains the action source. Run in parallel means against comparable production inputs. Record identity means distinguish M1 and M2 outputs explicitly. Compare means operational behavior and score differences first. Wait for labels means to compare future churn quality. At our bank, only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer. Shadow checks observation, not the business effect of acting on the candidate.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Group outline · Breck, infrastructure 6–7 · Teaching application}}
 \clearpage
 \section*{\normalsize 14 / 55 \quad Canary deployment: limit exposure}
@@ -321,8 +465,19 @@ A candidate scores real inputs while the approved model remains the action sourc
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-An approved limited cohort uses the candidate before broader rollout. \textbf{Restrict exposure} to a defined cohort and scope. \textbf{Observe} execution, compatibility, coverage, and policy behavior. \textbf{Define stop rules} and a rehearsed recovery path. \textbf{Separate evidence}: short operational success cannot prove 30-day predictive quality. \textit{At our bank,} the bank may authorize a small cohort to use M2 while retaining M1 for the remainder. \textit{A canary controls risk; it is not automatically a valid business experiment.}
+\begin{itemize}
+\item An approved limited cohort uses the candidate before broader rollout.
+\item \textbf{Restrict exposure} to a defined cohort and scope.
+\item \textbf{Observe} execution, compatibility, coverage, and policy behavior.
+\item \textbf{Define stop rules} and a rehearsed recovery path.
+\item \textbf{Separate evidence}: short operational success cannot prove 30-day predictive quality.
+\item \textit{At our bank,} the bank may authorize a small cohort to use M2 while retaining M1 for the remainder.
+\item \textit{A canary controls risk; it is not automatically a valid business experiment.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+An approved limited cohort uses the candidate before broader rollout. Restrict exposure means to a defined cohort and scope. Observe means execution, compatibility, coverage, and policy behavior. Define stop rules means and a rehearsed recovery path. Separate evidence means short operational success cannot prove 30-day predictive quality. At our bank, the bank may authorize a small cohort to use M2 while retaining M1 for the remainder. A canary controls risk; it is not automatically a valid business experiment.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Breck, infrastructure test 6 · Bank teaching application}}
 \clearpage
 \section*{\normalsize 15 / 55 \quad A/B testing: define the intervention}
@@ -342,8 +497,19 @@ An approved limited cohort uses the candidate before broader rollout. \textbf{Re
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Assigned groups and a stated outcome make the comparison interpretable. \textbf{State what changes}: model, decision policy, or retention treatment. \textbf{Assign comparable groups} under an appropriate experiment design. \textbf{Define outcomes} and the observation window before interpreting results. \textbf{Avoid confounding}: changing model and offer together obscures their separate effects. \textit{At our bank,} compare two offer policies separately from asking whether M2 ranks churn risk better than M1. \textit{Prediction accuracy and the effect of contacting a customer are different targets.}
+\begin{itemize}
+\item Assigned groups and a stated outcome make the comparison interpretable.
+\item \textbf{State what changes}: model, decision policy, or retention treatment.
+\item \textbf{Assign comparable groups} under an appropriate experiment design.
+\item \textbf{Define outcomes} and the observation window before interpreting results.
+\item \textbf{Avoid confounding}: changing model and offer together obscures their separate effects.
+\item \textit{At our bank,} compare two offer policies separately from asking whether M2 ranks churn risk better than M1.
+\item \textit{Prediction accuracy and the effect of contacting a customer are different targets.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Assigned groups and a stated outcome make the comparison interpretable. State what changes means model, decision policy, or retention treatment. Assign comparable groups means under an appropriate experiment design. Define outcomes means and the observation window before interpreting results. Avoid confounding means changing model and offer together obscures their separate effects. At our bank, compare two offer policies separately from asking whether M2 ranks churn risk better than M1. Prediction accuracy and the effect of contacting a customer are different targets.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Group outline · Simon’s notes, §3 · Teaching application}}
 \clearpage
 \section*{\normalsize 16 / 55 \quad How the world changes over time}
@@ -364,8 +530,19 @@ Assigned groups and a stated outcome make the comparison interpretable. \textbf{
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Sudden, gradual, incremental, and recurring changes are different time patterns—not different input features. \textbf{Sudden}: the old regime switches abruptly. \textbf{Gradual}: old and new regimes coexist during a transition. \textbf{Incremental / recurring}: intermediate change differs from a returning regime. \textbf{Blips}: isolated noise is not necessarily a lasting regime change. Bank illustrations: a pricing change can be sudden; staggered adoption gradual; evolving habits incremental; seasonal activity recurring. \textit{First ask how change unfolds over time. Then ask what changed: input data, outcome relationships, or data validity.}
+\begin{itemize}
+\item Sudden, gradual, incremental, and recurring changes are different time patterns—not different input features.
+\item \textbf{Sudden}: the old regime switches abruptly.
+\item \textbf{Gradual}: old and new regimes coexist during a transition.
+\item \textbf{Incremental / recurring}: intermediate change differs from a returning regime.
+\item \textbf{Blips}: isolated noise is not necessarily a lasting regime change.
+\item Bank illustrations: a pricing change can be sudden; staggered adoption gradual; evolving habits incremental; seasonal activity recurring.
+\item \textit{First ask how change unfolds over time. Then ask what changed: input data, outcome relationships, or data validity.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Sudden, gradual, incremental, and recurring changes are different time patterns—not different input features. Sudden means the old regime switches abruptly. Gradual means old and new regimes coexist during a transition. Incremental / recurring means intermediate change differs from a returning regime. Blips means isolated noise is not necessarily a lasting regime change. Bank illustrations: a pricing change can be sudden; staggered adoption gradual; evolving habits incremental; seasonal activity recurring. First ask how change unfolds over time. Then ask what changed: input data, outcome relationships, or data validity.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Krawczyk \& Cano (2018), Fig. 2 · Original figure; attribution and source link in guide}}
 \clearpage
 \section*{\normalsize 17 / 55 \quad Monitoring: observe more than model accuracy}
@@ -384,8 +561,19 @@ Sudden, gradual, incremental, and recurring changes are different time patterns�
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Inputs, system execution, predictions, and business actions need different evidence. \textbf{Inputs}: are the right records available and meaningful? \textbf{System}: did the pipeline complete correctly and on time? \textbf{Model}: are predictions useful on the current population? \textbf{Business}: are permitted actions and outcomes being tracked? \textit{At our bank,} a healthy churn job can still use a shifted population. A useful score can still lead to an inappropriate contact. \textit{Observability connects evidence to investigation; dashboards alone do not decide the remedy.}
+\begin{itemize}
+\item Inputs, system execution, predictions, and business actions need different evidence.
+\item \textbf{Inputs}: are the right records available and meaningful?
+\item \textbf{System}: did the pipeline complete correctly and on time?
+\item \textbf{Model}: are predictions useful on the current population?
+\item \textbf{Business}: are permitted actions and outcomes being tracked?
+\item \textit{At our bank,} a healthy churn job can still use a shifted population. A useful score can still lead to an inappropriate contact.
+\item \textit{Observability connects evidence to investigation; dashboards alone do not decide the remedy.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Inputs, system execution, predictions, and business actions need different evidence. Inputs means are the right records available and meaningful? System means did the pipeline complete correctly and on time? Model means are predictions useful on the current population? Business means are permitted actions and outcomes being tracked? At our bank, a healthy churn job can still use a shifted population. A useful score can still lead to an inappropriate contact. Observability connects evidence to investigation; dashboards alone do not decide the remedy.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5}}
 \clearpage
 \section*{\normalsize 18 / 55 \quad Monitoring architecture: from signal to response}
@@ -405,8 +593,19 @@ Inputs, system execution, predictions, and business actions need different evide
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Collect linked evidence and route it to an owner who can investigate and act. \textbf{Signals}: input, execution, and predictive evidence arrive at different times. \textbf{Context}: link observations to run, feature, model, and cohort identity. \textbf{Routing}: an alert has a defined recipient and response policy. \textbf{Authority}: investigation and release approval remain separate. \textit{At our bank,} a CRM missingness alert links to B017 and reaches source / operations owners; it does not promote M2. \textit{A useful monitoring design connects evidence, ownership, and a controlled response.}
+\begin{itemize}
+\item Collect linked evidence and route it to an owner who can investigate and act.
+\item \textbf{Signals}: input, execution, and predictive evidence arrive at different times.
+\item \textbf{Context}: link observations to run, feature, model, and cohort identity.
+\item \textbf{Routing}: an alert has a defined recipient and response policy.
+\item \textbf{Authority}: investigation and release approval remain separate.
+\item \textit{At our bank,} a CRM missingness alert links to B017 and reaches source / operations owners; it does not promote M2.
+\item \textit{A useful monitoring design connects evidence, ownership, and a controlled response.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Collect linked evidence and route it to an owner who can investigate and act. Signals means input, execution, and predictive evidence arrive at different times. Context means link observations to run, feature, model, and cohort identity. Routing means an alert has a defined recipient and response policy. Authority means investigation and release approval remain separate. At our bank, a CRM missingness alert links to B017 and reaches source / operations owners; it does not promote M2. A useful monitoring design connects evidence, ownership, and a controlled response.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching expansion of monitoring responsibilities}}
 \clearpage
 \section*{\normalsize 19 / 55 \quad Data drift: a different customer mix}
@@ -426,8 +625,19 @@ Collect linked evidence and route it to an owner who can investigate and act. \t
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Compare the same input definition across a reference cohort and the current cohort. \textbf{What changes}: the distribution of valid model inputs. \textbf{Bank example}: a campaign attracts more low-activity customers. \textbf{Available now}: compare inputs without waiting for churn labels. \textbf{Limit}: a changed distribution alone does not prove lost accuracy. \textit{At our bank,} both diagrams count 100 fictional customers using the same seven-day login bins. Only the customer mix changes. \textit{Choose a meaningful reference, comparable cohorts, and a defined response.}
+\begin{itemize}
+\item Compare the same input definition across a reference cohort and the current cohort.
+\item \textbf{What changes}: the distribution of valid model inputs.
+\item \textbf{Bank example}: a campaign attracts more low-activity customers.
+\item \textbf{Available now}: compare inputs without waiting for churn labels.
+\item \textbf{Limit}: a changed distribution alone does not prove lost accuracy.
+\item \textit{At our bank,} both diagrams count 100 fictional customers using the same seven-day login bins. Only the customer mix changes.
+\item \textit{Choose a meaningful reference, comparable cohorts, and a defined response.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Compare the same input definition across a reference cohort and the current cohort. What changes means the distribution of valid model inputs. Bank example means a campaign attracts more low-activity customers. Available now means compare inputs without waiting for churn labels. Limit means a changed distribution alone does not prove lost accuracy. At our bank, both diagrams count 100 fictional customers using the same seven-day login bins. Only the customer mix changes. Choose a meaningful reference, comparable cohorts, and a defined response.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented counts}}
 \clearpage
 \section*{\normalsize 20 / 55 \quad Concept drift: a different relationship}
@@ -447,8 +657,19 @@ Compare the same input definition across a reference cohort and the current coho
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-The same inputs can have different outcomes while the deployed model keeps its earlier boundary. \textbf{What changes}: churn risk given the same valid input information. \textbf{Bank example}: new fees make active customers leave more often. \textbf{Evidence}: link predictions to mature, reliable churn outcomes. \textbf{Model status}: M1 stays fixed until a separately evaluated release changes it. \textit{At our bank,} the two panels use the same 15 fictional feature positions. After the hypothetical change, some previously staying customers churn. \textit{A missing field is not concept drift; a statistical alarm is not a retraining approval.}
+\begin{itemize}
+\item The same inputs can have different outcomes while the deployed model keeps its earlier boundary.
+\item \textbf{What changes}: churn risk given the same valid input information.
+\item \textbf{Bank example}: new fees make active customers leave more often.
+\item \textbf{Evidence}: link predictions to mature, reliable churn outcomes.
+\item \textbf{Model status}: M1 stays fixed until a separately evaluated release changes it.
+\item \textit{At our bank,} the two panels use the same 15 fictional feature positions. After the hypothetical change, some previously staying customers churn.
+\item \textit{A missing field is not concept drift; a statistical alarm is not a retraining approval.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+The same inputs can have different outcomes while the deployed model keeps its earlier boundary. What changes means churn risk given the same valid input information. Bank example means new fees make active customers leave more often. Evidence means link predictions to mature, reliable churn outcomes. Model status means m1 stays fixed until a separately evaluated release changes it. At our bank, the two panels use the same 15 fictional feature positions. After the hypothetical change, some previously staying customers churn. A missing field is not concept drift; a statistical alarm is not a retraining approval.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Schematic relationships}}
 \clearpage
 \section*{\normalsize 21 / 55 \quad Concept drift: how M1 starts making errors}
@@ -469,8 +690,19 @@ The same inputs can have different outcomes while the deployed model keeps its e
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A fixed model can miss churners because the world changed—not because its software stopped running. \textbf{Inputs stay fixed}: the two cohorts use identical feature positions. \textbf{M1 stays fixed}: its earlier decision boundary is unchanged. \textbf{Outcomes change}: a different relationship creates missed churners. \textbf{Evidence}: the example uses mature labels, not outcomes already known on scoring day. \textit{At our bank,} c1 has 5 logins and 5 products; C2 has 11 logins and 1 product. The same inputs now accompany different observed churn outcomes. \textit{Changed labels reveal the mismatch. Investigate causes, evaluate candidates, and use controlled release rather than automatic promotion.}
+\begin{itemize}
+\item A fixed model can miss churners because the world changed—not because its software stopped running.
+\item \textbf{Inputs stay fixed}: the two cohorts use identical feature positions.
+\item \textbf{M1 stays fixed}: its earlier decision boundary is unchanged.
+\item \textbf{Outcomes change}: a different relationship creates missed churners.
+\item \textbf{Evidence}: the example uses mature labels, not outcomes already known on scoring day.
+\item \textit{At our bank,} c1 has 5 logins and 5 products; C2 has 11 logins and 1 product. The same inputs now accompany different observed churn outcomes.
+\item \textit{Changed labels reveal the mismatch. Investigate causes, evaluate candidates, and use controlled release rather than automatic promotion.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A fixed model can miss churners because the world changed—not because its software stopped running. Inputs stay fixed means the two cohorts use identical feature positions. M1 stays fixed means its earlier decision boundary is unchanged. Outcomes change means a different relationship creates missed churners. Evidence means the example uses mature labels, not outcomes already known on scoring day. At our bank, c1 has 5 logins and 5 products; C2 has 11 logins and 1 product. The same inputs now accompany different observed churn outcomes. Changed labels reveal the mismatch. Investigate causes, evaluate candidates, and use controlled release rather than automatic promotion.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented mature cohorts and deliberately simplified decision rule}}
 \clearpage
 \section*{\normalsize 22 / 55 \quad Input checks now; quality checks later}
@@ -490,8 +722,19 @@ A fixed model can miss churners because the world changed—not because its soft
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-The target window creates a delay between a prediction and complete outcome evidence. \textbf{At scoring time}: check freshness, missingness, execution, and coverage. \textbf{During the window}: the full churn outcome is still unknown. \textbf{After ingestion}: join labels to the original score and target window. \textbf{Evaluate by cohort}: precision, recall, and calibration answer different questions. \textit{At our bank,} ana’s D0 score is saved with its context. Complete next-30-day evaluation must wait for that window and ingestion. \textit{An absent label does not mean the customer stayed.}
+\begin{itemize}
+\item The target window creates a delay between a prediction and complete outcome evidence.
+\item \textbf{At scoring time}: check freshness, missingness, execution, and coverage.
+\item \textbf{During the window}: the full churn outcome is still unknown.
+\item \textbf{After ingestion}: join labels to the original score and target window.
+\item \textbf{Evaluate by cohort}: precision, recall, and calibration answer different questions.
+\item \textit{At our bank,} ana’s D0 score is saved with its context. Complete next-30-day evaluation must wait for that window and ingestion.
+\item \textit{An absent label does not mean the customer stayed.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+The target window creates a delay between a prediction and complete outcome evidence. At scoring time means check freshness, missingness, execution, and coverage. During the window means the full churn outcome is still unknown. After ingestion means join labels to the original score and target window. Evaluate by cohort means precision, recall, and calibration answer different questions. At our bank, ana’s D0 score is saved with its context. Complete next-30-day evaluation must wait for that window and ingestion. An absent label does not mean the customer stayed.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching 30-day window}}
 \clearpage
 \section*{\normalsize 23 / 55 \quad Drift detection: methods and their purpose}
@@ -510,8 +753,19 @@ The target window creates a delay between a prediction and complete outcome evid
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Methods compare inputs; they do not directly measure business value or model correctness. \textbf{Reference}: name the population, period, and feature definition. \textbf{Thresholds}: calibrate for the application rather than copying a universal rule. \textbf{Segments}: inspect affected cohorts instead of relying only on an aggregate. \textbf{Action}: investigate drift alongside quality, change, and business evidence. \textit{At our bank,} compare the same seven-day login feature before and after a campaign; investigate why the cohort mix changed. \textit{Interpret the signal alongside data validity, sample size, and downstream quality.}
+\begin{itemize}
+\item Methods compare inputs; they do not directly measure business value or model correctness.
+\item \textbf{Reference}: name the population, period, and feature definition.
+\item \textbf{Thresholds}: calibrate for the application rather than copying a universal rule.
+\item \textbf{Segments}: inspect affected cohorts instead of relying only on an aggregate.
+\item \textbf{Action}: investigate drift alongside quality, change, and business evidence.
+\item \textit{At our bank,} compare the same seven-day login feature before and after a campaign; investigate why the cohort mix changed.
+\item \textit{Interpret the signal alongside data validity, sample size, and downstream quality.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Methods compare inputs; they do not directly measure business value or model correctness. Reference means name the population, period, and feature definition. Thresholds means calibrate for the application rather than copying a universal rule. Segments means inspect affected cohorts instead of relying only on an aggregate. Action means investigate drift alongside quality, change, and business evidence. At our bank, compare the same seven-day login feature before and after a campaign; investigate why the cohort mix changed. Interpret the signal alongside data validity, sample size, and downstream quality.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Simon’s technical atlas}}
 \clearpage
 \section*{\normalsize 24 / 55 \quad Data-quality faults and training-serving skew}
@@ -531,8 +785,19 @@ Methods compare inputs; they do not directly measure business value or model cor
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Invalid data and inconsistent preparation differ from a shifted valid population. \textbf{Data-quality fault}: missing, stale, corrupt, or incompatible records. \textbf{Skew}: training and production prepare the feature differently. \textbf{Inspect}: definitions, cutoffs, joins, source changes, and code versions. \textbf{Repair the cause}: retraining on defective inputs can preserve the defect. \textit{At our bank,} a missing engagement field after CRM migration is invalid input. A 30-day production count replacing seven days is skew. \textit{Do not use the word “drift” as a diagnosis for every alarm.}
+\begin{itemize}
+\item Invalid data and inconsistent preparation differ from a shifted valid population.
+\item \textbf{Data-quality fault}: missing, stale, corrupt, or incompatible records.
+\item \textbf{Skew}: training and production prepare the feature differently.
+\item \textbf{Inspect}: definitions, cutoffs, joins, source changes, and code versions.
+\item \textbf{Repair the cause}: retraining on defective inputs can preserve the defect.
+\item \textit{At our bank,} a missing engagement field after CRM migration is invalid input. A 30-day production count replacing seven days is skew.
+\item \textit{Do not use the word “drift” as a diagnosis for every alarm.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Invalid data and inconsistent preparation differ from a shifted valid population. Data-quality fault means missing, stale, corrupt, or incompatible records. Skew means training and production prepare the feature differently. Inspect means definitions, cutoffs, joins, source changes, and code versions. Repair the cause means retraining on defective inputs can preserve the defect. At our bank, a missing engagement field after CRM migration is invalid input. A 30-day production count replacing seven days is skew. Do not use the word “drift” as a diagnosis for every alarm.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5}}
 \clearpage
 \section*{\normalsize 25 / 55 \quad A publication gate contains a bad batch}
@@ -552,8 +817,19 @@ Invalid data and inconsistent preparation differ from a shifted valid population
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-The CRM incident illustrates a concrete input fault and a controlled response. \textbf{Detect}: invalid records violate the agreed input contract. \textbf{Contain}: hold the entire B017 batch before publication. \textbf{Investigate}: relate cohort, source change, feature definition, and execution. \textbf{Keep M1}: a source fault does not itself justify a new learned model. \textit{At our bank,} ana’s engagement value is missing, not zero. No new score or completed customer contact is invented. \textit{A gate blocks unsafe use; an alert sends evidence to someone who can investigate.}
+\begin{itemize}
+\item The CRM incident illustrates a concrete input fault and a controlled response.
+\item \textbf{Detect}: invalid records violate the agreed input contract.
+\item \textbf{Contain}: hold the entire B017 batch before publication.
+\item \textbf{Investigate}: relate cohort, source change, feature definition, and execution.
+\item \textbf{Keep M1}: a source fault does not itself justify a new learned model.
+\item \textit{At our bank,} ana’s engagement value is missing, not zero. No new score or completed customer contact is invented.
+\item \textit{A gate blocks unsafe use; an alert sends evidence to someone who can investigate.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+The CRM incident illustrates a concrete input fault and a controlled response. Detect means invalid records violate the agreed input contract. Contain means hold the entire B017 batch before publication. Investigate means relate cohort, source change, feature definition, and execution. Keep M1 means a source fault does not itself justify a new learned model. At our bank, ana’s engagement value is missing, not zero. No new score or completed customer contact is invented. A gate blocks unsafe use; an alert sends evidence to someone who can investigate.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Fictional B017 incident}}
 \clearpage
 \section*{\normalsize 26 / 55 \quad Respond: investigate, contain, repair, verify}
@@ -573,8 +849,19 @@ The CRM incident illustrates a concrete input fault and a controlled response. \
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A monitoring signal opens a decision process; it does not select or approve a remedy. \textbf{Diagnose} before choosing repair, rollback, fallback, or training. \textbf{Preserve evidence} and the identity of failed attempts. \textbf{Validate the complete path} after the chosen repair. \textbf{Request a model change} only when evidence supports one. \textit{At our bank,} repair the CRM path, validate a new execution B017-R1, and retain M1 unless a separate model change is justified. \textit{Handoff to Luca: which dependencies made this failure possible?}
+\begin{itemize}
+\item A monitoring signal opens a decision process; it does not select or approve a remedy.
+\item \textbf{Diagnose} before choosing repair, rollback, fallback, or training.
+\item \textbf{Preserve evidence} and the identity of failed attempts.
+\item \textbf{Validate the complete path} after the chosen repair.
+\item \textbf{Request a model change} only when evidence supports one.
+\item \textit{At our bank,} repair the CRM path, validate a new execution B017-R1, and retain M1 unless a separate model change is justified.
+\item \textit{Handoff to Luca: which dependencies made this failure possible?}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A monitoring signal opens a decision process; it does not select or approve a remedy. Diagnose means before choosing repair, rollback, fallback, or training. Preserve evidence means and the identity of failed attempts. Validate the complete path means after the chosen repair. Request a model change means only when evidence supports one. At our bank, repair the CRM path, validate a new execution B017-R1, and retain M1 unless a separate model change is justified. Handoff to Luca: which dependencies made this failure possible?
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5}}
 \clearpage
 \section*{\normalsize 27 / 55 \quad Hidden dependencies create technical debt}
@@ -595,8 +882,19 @@ A monitoring signal opens a decision process; it does not select or approve a re
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-An innocent upstream change can alter ML behavior without changing the model. \textbf{Hidden coupling}: features depend on sources owned by other teams. \textbf{Pipeline complexity}: parallel preparation paths can diverge. \textbf{Versioning gaps}: a model artifact alone cannot reproduce a decision. \textbf{Context matters}: architecture decisions depend on requirements and constraints. \textit{At our bank,} cRM changes its engagement export for another purpose; both training and production can inherit the change. \textit{Make data dependencies as reviewable as code dependencies.}
+\begin{itemize}
+\item An innocent upstream change can alter ML behavior without changing the model.
+\item \textbf{Hidden coupling}: features depend on sources owned by other teams.
+\item \textbf{Pipeline complexity}: parallel preparation paths can diverge.
+\item \textbf{Versioning gaps}: a model artifact alone cannot reproduce a decision.
+\item \textbf{Context matters}: architecture decisions depend on requirements and constraints.
+\item \textit{At our bank,} cRM changes its engagement export for another purpose; both training and production can inherit the change.
+\item \textit{Make data dependencies as reviewable as code dependencies.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+An innocent upstream change can alter ML behavior without changing the model. Hidden coupling means features depend on sources owned by other teams. Pipeline complexity means parallel preparation paths can diverge. Versioning gaps means a model artifact alone cannot reproduce a decision. Context matters means architecture decisions depend on requirements and constraints. At our bank, cRM changes its engagement export for another purpose; both training and production can inherit the change. Make data dependencies as reviewable as code dependencies.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
 \clearpage
 \section*{\normalsize 28 / 55 \quad Make the feature contract explicit}
@@ -615,8 +913,19 @@ An innocent upstream change can alter ML behavior without changing the model. \t
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A contract records meaning and ownership as well as structural schema. \textbf{Semantics}: define what the feature actually measures. \textbf{Time}: specify window, cutoff, and joins consistently. \textbf{Validity}: define types, ranges, freshness, and missingness. \textbf{Ownership}: review upstream changes with affected consumers. \textit{At our bank,} engagement\_7d means app logins during seven days ending at the scoring cutoff; missing must not silently become zero. \textit{Schema checks alone cannot detect every change in meaning.}
+\begin{itemize}
+\item A contract records meaning and ownership as well as structural schema.
+\item \textbf{Semantics}: define what the feature actually measures.
+\item \textbf{Time}: specify window, cutoff, and joins consistently.
+\item \textbf{Validity}: define types, ranges, freshness, and missingness.
+\item \textbf{Ownership}: review upstream changes with affected consumers.
+\item \textit{At our bank,} engagement\_7d means app logins during seven days ending at the scoring cutoff; missing must not silently become zero.
+\item \textit{Schema checks alone cannot detect every change in meaning.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A contract records meaning and ownership as well as structural schema. Semantics means define what the feature actually measures. Time means specify window, cutoff, and joins consistently. Validity means define types, ranges, freshness, and missingness. Ownership means review upstream changes with affected consumers. At our bank, engagement\_7d means app logins during seven days ending at the scoring cutoff; missing must not silently become zero. Schema checks alone cannot detect every change in meaning.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Nazir, §§5–6 · Teaching contract}}
 \clearpage
 \section*{\normalsize 29 / 55 \quad Separate responsibilities where change happens}
@@ -636,8 +945,19 @@ A contract records meaning and ownership as well as structural schema. \textbf{S
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Clear interfaces let different concerns evolve without unnecessary relearning. \textbf{Single responsibility}: identify each module’s reason to change. \textbf{Interfaces}: specify data and behavior at each boundary. \textbf{Dependency injection}: provide implementations through explicit contracts. \textbf{Deployment}: logical modules do not automatically require separate services. \textit{At our bank,} a connector fix changes preparation; a contact-frequency rule changes campaign policy; a new M2 changes inference. \textit{Separate concerns first; choose deployment units from the actual trade-offs.}
+\begin{itemize}
+\item Clear interfaces let different concerns evolve without unnecessary relearning.
+\item \textbf{Single responsibility}: identify each module’s reason to change.
+\item \textbf{Interfaces}: specify data and behavior at each boundary.
+\item \textbf{Dependency injection}: provide implementations through explicit contracts.
+\item \textbf{Deployment}: logical modules do not automatically require separate services.
+\item \textit{At our bank,} a connector fix changes preparation; a contact-frequency rule changes campaign policy; a new M2 changes inference.
+\item \textit{Separate concerns first; choose deployment units from the actual trade-offs.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Clear interfaces let different concerns evolve without unnecessary relearning. Single responsibility means identify each module’s reason to change. Interfaces means specify data and behavior at each boundary. Dependency injection means provide implementations through explicit contracts. Deployment means logical modules do not automatically require separate services. At our bank, a connector fix changes preparation; a contact-frequency rule changes campaign policy; a new M2 changes inference. Separate concerns first; choose deployment units from the actual trade-offs.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
 \clearpage
 \section*{\normalsize 30 / 55 \quad Pipeline pattern: order the responsibilities}
@@ -657,8 +977,19 @@ Clear interfaces let different concerns evolve without unnecessary relearning. \
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Make preparation and validation steps explicit and testable. \textbf{Explicit stages} clarify transformations and dependencies. \textbf{Stage contracts} make intermediate data understandable. \textbf{Tests} cover local behavior and end-to-end compatibility. \textbf{Failure handling} prevents a partial result from masquerading as a complete batch. \textit{At our bank,} validate CRM records before computing engagement\_7d and invoking M1. \textit{Use structure to expose the dependency, not to hide it in orchestration code.}
+\begin{itemize}
+\item Make preparation and validation steps explicit and testable.
+\item \textbf{Explicit stages} clarify transformations and dependencies.
+\item \textbf{Stage contracts} make intermediate data understandable.
+\item \textbf{Tests} cover local behavior and end-to-end compatibility.
+\item \textbf{Failure handling} prevents a partial result from masquerading as a complete batch.
+\item \textit{At our bank,} validate CRM records before computing engagement\_7d and invoking M1.
+\item \textit{Use structure to expose the dependency, not to hide it in orchestration code.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Make preparation and validation steps explicit and testable. Explicit stages means clarify transformations and dependencies. Stage contracts means make intermediate data understandable. Tests means cover local behavior and end-to-end compatibility. Failure handling means prevents a partial result from masquerading as a complete batch. At our bank, validate CRM records before computing engagement\_7d and invoking M1. Use structure to expose the dependency, not to hide it in orchestration code.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
 \clearpage
 \section*{\normalsize 31 / 55 \quad Strategy pattern: replace one implementation}
@@ -678,8 +1009,19 @@ Make preparation and validation steps explicit and testable. \textbf{Explicit st
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A stable interface separates the client from a specific implementation choice. \textbf{Stable interface}: the client relies on a contract, not a specific class. \textbf{Alternative implementations} can be supplied through that interface. \textbf{Compatibility} still includes meaning, not only types. \textbf{Evaluation} and release approval still apply when behavior changes. \textit{At our bank,} replace a feature-preparation implementation behind a stable interface; verify equivalent semantics before scoring. \textit{Interchangeability in code is not equivalence in predictive behavior.}
+\begin{itemize}
+\item A stable interface separates the client from a specific implementation choice.
+\item \textbf{Stable interface}: the client relies on a contract, not a specific class.
+\item \textbf{Alternative implementations} can be supplied through that interface.
+\item \textbf{Compatibility} still includes meaning, not only types.
+\item \textbf{Evaluation} and release approval still apply when behavior changes.
+\item \textit{At our bank,} replace a feature-preparation implementation behind a stable interface; verify equivalent semantics before scoring.
+\item \textit{Interchangeability in code is not equivalence in predictive behavior.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A stable interface separates the client from a specific implementation choice. Stable interface means the client relies on a contract, not a specific class. Alternative implementations means can be supplied through that interface. Compatibility means still includes meaning, not only types. Evaluation means and release approval still apply when behavior changes. At our bank, replace a feature-preparation implementation behind a stable interface; verify equivalent semantics before scoring. Interchangeability in code is not equivalence in predictive behavior.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
 \clearpage
 \section*{\normalsize 32 / 55 \quad Observer pattern: notify, then investigate}
@@ -699,8 +1041,19 @@ A stable interface separates the client from a specific implementation choice. \
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A change notification decouples the signal producer from interested responders. \textbf{Subject}: emits a meaningful change event. \textbf{Subscribers}: receive notifications without tightly coupling the producer. \textbf{Context}: include cohort, reference, and evidence links. \textbf{Authority}: receiving a notification does not grant release privileges. \textit{At our bank,} a missingness event notifies data and operations owners; it does not instruct the registry to promote M2. \textit{A useful notification requests attention and preserves the decision boundary.}
+\begin{itemize}
+\item A change notification decouples the signal producer from interested responders.
+\item \textbf{Subject}: emits a meaningful change event.
+\item \textbf{Subscribers}: receive notifications without tightly coupling the producer.
+\item \textbf{Context}: include cohort, reference, and evidence links.
+\item \textbf{Authority}: receiving a notification does not grant release privileges.
+\item \textit{At our bank,} a missingness event notifies data and operations owners; it does not instruct the registry to promote M2.
+\item \textit{A useful notification requests attention and preserves the decision boundary.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A change notification decouples the signal producer from interested responders. Subject means emits a meaningful change event. Subscribers means receive notifications without tightly coupling the producer. Context means include cohort, reference, and evidence links. Authority means receiving a notification does not grant release privileges. At our bank, a missingness event notifies data and operations owners; it does not instruct the registry to promote M2. A useful notification requests attention and preserves the decision boundary.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
 \clearpage
 \section*{\normalsize 33 / 55 \quad Version the system, not only the model}
@@ -720,8 +1073,19 @@ A change notification decouples the signal producer from interested responders. 
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A prediction depends on a compatible set of data meaning, code, model, and configuration. \textbf{Data meaning}: record source and feature definitions. \textbf{Code}: identify preparation and scoring revisions. \textbf{Model}: identify artifact, runtime, and configuration. \textbf{Outputs}: connect the compatible set to score and decision records. \textit{At our bank,} m1 alone cannot explain Ana’s score if a CRM migration changed the meaning of its engagement input. \textit{Co-versioning connects system and model lifecycles.}
+\begin{itemize}
+\item A prediction depends on a compatible set of data meaning, code, model, and configuration.
+\item \textbf{Data meaning}: record source and feature definitions.
+\item \textbf{Code}: identify preparation and scoring revisions.
+\item \textbf{Model}: identify artifact, runtime, and configuration.
+\item \textbf{Outputs}: connect the compatible set to score and decision records.
+\item \textit{At our bank,} m1 alone cannot explain Ana’s score if a CRM migration changed the meaning of its engagement input.
+\item \textit{Co-versioning connects system and model lifecycles.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A prediction depends on a compatible set of data meaning, code, model, and configuration. Data meaning means record source and feature definitions. Code means identify preparation and scoring revisions. Model means identify artifact, runtime, and configuration. Outputs means connect the compatible set to score and decision records. At our bank, m1 alone cannot explain Ana’s score if a CRM migration changed the meaning of its engagement input. Co-versioning connects system and model lifecycles.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 13–14 · Bass, Ch. 11 / §14.1 · Simon’s notes}}
 \clearpage
 \section*{\normalsize 34 / 55 \quad Modules or services? Make the trade-off}
@@ -740,8 +1104,19 @@ A prediction depends on a compatible set of data meaning, code, model, and confi
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Independent deployment is useful only when it justifies its operating cost. \textbf{Modules} can provide strong logical boundaries with simpler operation. \textbf{Services} can support independent change and scaling. \textbf{Distribution} adds failure modes and version coordination. \textbf{Evidence} and requirements should drive the choice. \textit{At our bank,} separate preparation from policy logically; deploy them independently only when the bank’s needs justify it. \textit{There is no universal best ML architecture.}
+\begin{itemize}
+\item Independent deployment is useful only when it justifies its operating cost.
+\item \textbf{Modules} can provide strong logical boundaries with simpler operation.
+\item \textbf{Services} can support independent change and scaling.
+\item \textbf{Distribution} adds failure modes and version coordination.
+\item \textbf{Evidence} and requirements should drive the choice.
+\item \textit{At our bank,} separate preparation from policy logically; deploy them independently only when the bank’s needs justify it.
+\item \textit{There is no universal best ML architecture.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Independent deployment is useful only when it justifies its operating cost. Modules means can provide strong logical boundaries with simpler operation. Services means can support independent change and scaling. Distribution means adds failure modes and version coordination. Evidence means and requirements should drive the choice. At our bank, separate preparation from policy logically; deploy them independently only when the bank’s needs justify it. There is no universal best ML architecture.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Kalinowski, Ch. 14 · Nazir, §§5–6}}
 \clearpage
 \section*{\normalsize 35 / 55 \quad Architectural tactics connect concerns to controls}
@@ -761,8 +1136,19 @@ Independent deployment is useful only when it justifies its operating cost. \tex
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Use explicit mechanisms to address uncertainty, change, recovery, and auditability. \textbf{Separation} isolates data preparation, model execution, and business policy. \textbf{Observation} makes operational and predictive behavior reviewable. \textbf{Recovery} restores a compatible path rather than only one artifact. \textbf{Governance} links evidence, approval, access, and responsibility. \textit{At our bank,} a validation boundary contains a bad CRM batch; version links and approvals support controlled repair. \textit{A tactic is credible when its mechanism, owner, and evidence are clear.}
+\begin{itemize}
+\item Use explicit mechanisms to address uncertainty, change, recovery, and auditability.
+\item \textbf{Separation} isolates data preparation, model execution, and business policy.
+\item \textbf{Observation} makes operational and predictive behavior reviewable.
+\item \textbf{Recovery} restores a compatible path rather than only one artifact.
+\item \textbf{Governance} links evidence, approval, access, and responsibility.
+\item \textit{At our bank,} a validation boundary contains a bad CRM batch; version links and approvals support controlled repair.
+\item \textit{A tactic is credible when its mechanism, owner, and evidence are clear.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Use explicit mechanisms to address uncertainty, change, recovery, and auditability. Separation means isolates data preparation, model execution, and business policy. Observation means makes operational and predictive behavior reviewable. Recovery means restores a compatible path rather than only one artifact. Governance means links evidence, approval, access, and responsibility. At our bank, a validation boundary contains a bad CRM batch; version links and approvals support controlled repair. A tactic is credible when its mechanism, owner, and evidence are clear.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Bass, Ch. 9–11 · Group Block 2 outline}}
 \clearpage
 \section*{\normalsize 36 / 55 \quad CI, CD, and CT need different evidence}
@@ -783,8 +1169,19 @@ Use explicit mechanisms to address uncertainty, change, recovery, and auditabili
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Integration, delivery, deployment, and training automate different responsibilities. \textbf{CI}: integrate changes and run code, contract, and path checks. \textbf{Delivery}: keep a compatible change ready for an approval decision. \textbf{Deployment}: automatically release changes passing the defined policy. \textbf{CT}: train and evaluate candidates; completion is not production approval. \textit{At our bank,} a connector repair can use CI/CD while retaining M1. Retraining is not required for every pipeline change. \textit{Automation executes policy; it does not make acceptance criteria identical.}
+\begin{itemize}
+\item Integration, delivery, deployment, and training automate different responsibilities.
+\item \textbf{CI}: integrate changes and run code, contract, and path checks.
+\item \textbf{Delivery}: keep a compatible change ready for an approval decision.
+\item \textbf{Deployment}: automatically release changes passing the defined policy.
+\item \textbf{CT}: train and evaluate candidates; completion is not production approval.
+\item \textit{At our bank,} a connector repair can use CI/CD while retaining M1. Retraining is not required for every pipeline change.
+\item \textit{Automation executes policy; it does not make acceptance criteria identical.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Integration, delivery, deployment, and training automate different responsibilities. CI means integrate changes and run code, contract, and path checks. Delivery means keep a compatible change ready for an approval decision. Deployment means automatically release changes passing the defined policy. CT means train and evaluate candidates; completion is not production approval. At our bank, a connector repair can use CI/CD while retaining M1. Retraining is not required for every pipeline change. Automation executes policy; it does not make acceptance criteria identical.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)}}
 \clearpage
 \section*{\normalsize 37 / 55 \quad Candidate training ends before promotion}
@@ -804,8 +1201,19 @@ Integration, delivery, deployment, and training automate different responsibilit
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A registry stores candidate evidence; a separate release decision controls production use. \textbf{Reproducibility}: record data, code, configuration, and artifacts. \textbf{Evaluation}: compare candidate evidence against the baseline and relevant cohorts. \textbf{Registration}: preserve identity and lineage for review. \textbf{Promotion}: authorize a specific compatible set with recovery planned. \textit{At our bank,} m2 remains a candidate until reviewed. M1 remains the approved scoring artifact during the CRM repair. \textit{The registry is part of governance, not the whole approval process.}
+\begin{itemize}
+\item A registry stores candidate evidence; a separate release decision controls production use.
+\item \textbf{Reproducibility}: record data, code, configuration, and artifacts.
+\item \textbf{Evaluation}: compare candidate evidence against the baseline and relevant cohorts.
+\item \textbf{Registration}: preserve identity and lineage for review.
+\item \textbf{Promotion}: authorize a specific compatible set with recovery planned.
+\item \textit{At our bank,} m2 remains a candidate until reviewed. M1 remains the approved scoring artifact during the CRM repair.
+\item \textit{The registry is part of governance, not the whole approval process.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A registry stores candidate evidence; a separate release decision controls production use. Reproducibility means record data, code, configuration, and artifacts. Evaluation means compare candidate evidence against the baseline and relevant cohorts. Registration means preserve identity and lineage for review. Promotion means authorize a specific compatible set with recovery planned. At our bank, m2 remains a candidate until reviewed. M1 remains the approved scoring artifact during the CRM repair. The registry is part of governance, not the whole approval process.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)}}
 \clearpage
 \section*{\normalsize 38 / 55 \quad Repair the input path; retain M1 when appropriate}
@@ -825,8 +1233,19 @@ A registry stores candidate evidence; a separate release decision controls produ
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-The CRM incident requires a verified source repair, not an assumed new model. \textbf{Repair} the source or preparation defect. \textbf{Version} the reviewed fix and compatible configuration. \textbf{Re-run} under a new execution identity and validate the complete path. \textbf{Publish} only after the configured evidence and approval requirements pass. \textit{At our bank,} b017 is the held attempt. B017-R1 links the reviewed fix, compatible M1, validation evidence, and publication approval. \textit{A successful fix needs evidence at the consumer boundary, not only a passing connector test.}
+\begin{itemize}
+\item The CRM incident requires a verified source repair, not an assumed new model.
+\item \textbf{Repair} the source or preparation defect.
+\item \textbf{Version} the reviewed fix and compatible configuration.
+\item \textbf{Re-run} under a new execution identity and validate the complete path.
+\item \textbf{Publish} only after the configured evidence and approval requirements pass.
+\item \textit{At our bank,} b017 is the held attempt. B017-R1 links the reviewed fix, compatible M1, validation evidence, and publication approval.
+\item \textit{A successful fix needs evidence at the consumer boundary, not only a passing connector test.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+The CRM incident requires a verified source repair, not an assumed new model. Repair means the source or preparation defect. Version means the reviewed fix and compatible configuration. Re-run means under a new execution identity and validate the complete path. Publish means only after the configured evidence and approval requirements pass. At our bank, b017 is the held attempt. B017-R1 links the reviewed fix, compatible M1, validation evidence, and publication approval. A successful fix needs evidence at the consumer boundary, not only a passing connector test.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4}}
 \clearpage
 \section*{\normalsize 39 / 55 \quad Trace the prediction and the decision}
@@ -846,8 +1265,19 @@ The CRM incident requires a verified source repair, not an assumed new model. \t
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Lineage connects input evidence, execution, approval, and downstream action. \textbf{Prediction identity} links customer, time, and target window. \textbf{Execution evidence} identifies compatible code, features, model, and config. \textbf{Decision evidence} records policy version and action. \textbf{Access controls} protect sensitive reconstruction material. \textit{At our bank,} an investigator can trace Ana’s original score and the campaign’s separate no-contact or contact decision. \textit{A model version alone cannot reconstruct the full decision.}
+\begin{itemize}
+\item Lineage connects input evidence, execution, approval, and downstream action.
+\item \textbf{Prediction identity} links customer, time, and target window.
+\item \textbf{Execution evidence} identifies compatible code, features, model, and config.
+\item \textbf{Decision evidence} records policy version and action.
+\item \textbf{Access controls} protect sensitive reconstruction material.
+\item \textit{At our bank,} an investigator can trace Ana’s original score and the campaign’s separate no-contact or contact decision.
+\item \textit{A model version alone cannot reconstruct the full decision.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Lineage connects input evidence, execution, approval, and downstream action. Prediction identity means links customer, time, and target window. Execution evidence means identifies compatible code, features, model, and config. Decision evidence means records policy version and action. Access controls means protect sensitive reconstruction material. At our bank, an investigator can trace Ana’s original score and the campaign’s separate no-contact or contact decision. A model version alone cannot reconstruct the full decision.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4–6}}
 \clearpage
 \section*{\normalsize 40 / 55 \quad Recovery restores a compatible path}
@@ -867,8 +1297,19 @@ Lineage connects input evidence, execution, approval, and downstream action. \te
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Rehearse restoration before release, and verify it at the consumer boundary. \textbf{Know the target}: identify the last compatible release or validated fallback. \textbf{Rehearse}: test the recovery procedure before relying on it. \textbf{Restore the set}: include data meaning, runtime, and configuration. \textbf{Verify}: inspect stored scores and actual consumer behavior. \textit{At our bank,} rolling M1 back cannot repair a CRM field that is still missing; the input path must be restored. \textit{Handoff to security: who may read, change, approve, or operate these paths?}
+\begin{itemize}
+\item Rehearse restoration before release, and verify it at the consumer boundary.
+\item \textbf{Know the target}: identify the last compatible release or validated fallback.
+\item \textbf{Rehearse}: test the recovery procedure before relying on it.
+\item \textbf{Restore the set}: include data meaning, runtime, and configuration.
+\item \textbf{Verify}: inspect stored scores and actual consumer behavior.
+\item \textit{At our bank,} rolling M1 back cannot repair a CRM field that is still missing; the input path must be restored.
+\item \textit{Handoff to security: who may read, change, approve, or operate these paths?}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Rehearse restoration before release, and verify it at the consumer boundary. Know the target means identify the last compatible release or validated fallback. Rehearse means test the recovery procedure before relying on it. Restore the set means include data meaning, runtime, and configuration. Verify means inspect stored scores and actual consumer behavior. At our bank, rolling M1 back cannot repair a CRM field that is still missing; the input path must be restored. Handoff to security: who may read, change, approve, or operate these paths?
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Breck, infrastructure tests 6–7 · Simon’s notes, §4}}
 \clearpage
 \section*{\normalsize 41 / 55 \quad Security threats depend on attacker access}
@@ -888,8 +1329,19 @@ Rehearse restoration before release, and verify it at the consumer boundary. \te
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Locate the attacker’s control before naming the ML attack mechanism. \textbf{Poisoning}: altered learning inputs influence the trained model. \textbf{Inference manipulation}: altered production inputs affect an existing model’s output. \textbf{Privacy inference}: access can reveal sensitive membership or attributes. \textbf{Assumptions matter}: access, knowledge, and goals differ by threat. \textit{At our bank,} a compromised CRM writer could affect current inputs; those records create a poisoning path only if later used for training. \textit{The accidental CRM migration remains a different scenario.}
+\begin{itemize}
+\item Locate the attacker’s control before naming the ML attack mechanism.
+\item \textbf{Poisoning}: altered learning inputs influence the trained model.
+\item \textbf{Inference manipulation}: altered production inputs affect an existing model’s output.
+\item \textbf{Privacy inference}: access can reveal sensitive membership or attributes.
+\item \textbf{Assumptions matter}: access, knowledge, and goals differ by threat.
+\item \textit{At our bank,} a compromised CRM writer could affect current inputs; those records create a poisoning path only if later used for training.
+\item \textit{The accidental CRM migration remains a different scenario.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Locate the attacker’s control before naming the ML attack mechanism. Poisoning means altered learning inputs influence the trained model. Inference manipulation means altered production inputs affect an existing model’s output. Privacy inference means access can reveal sensitive membership or attributes. Assumptions matter means access, knowledge, and goals differ by threat. At our bank, a compromised CRM writer could affect current inputs; those records create a poisoning path only if later used for training. The accidental CRM migration remains a different scenario.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST AI 100-2e2025}}
 \clearpage
 \section*{\normalsize 42 / 55 \quad Enforce access at the resource boundary}
@@ -909,8 +1361,19 @@ Locate the attacker’s control before naming the ML attack mechanism. \textbf{P
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Authentication, authorization, validation, and audit solve different parts of the problem. \textbf{Authenticate}: establish caller identity. \textbf{Authorize}: check operation, resource, and scope. \textbf{Validate}: enforce the input contract independently. \textbf{Audit}: preserve useful access and change evidence. \textit{At our bank,} the scorer may read the approved M1 artifact; it must not gain permission to promote M2 merely by reaching the registry. \textit{A trust boundary needs an enforced policy, not only a box on a diagram.}
+\begin{itemize}
+\item Authentication, authorization, validation, and audit solve different parts of the problem.
+\item \textbf{Authenticate}: establish caller identity.
+\item \textbf{Authorize}: check operation, resource, and scope.
+\item \textbf{Validate}: enforce the input contract independently.
+\item \textbf{Audit}: preserve useful access and change evidence.
+\item \textit{At our bank,} the scorer may read the approved M1 artifact; it must not gain permission to promote M2 merely by reaching the registry.
+\item \textit{A trust boundary needs an enforced policy, not only a box on a diagram.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Authentication, authorization, validation, and audit solve different parts of the problem. Authenticate means establish caller identity. Authorize means check operation, resource, and scope. Validate means enforce the input contract independently. Audit means preserve useful access and change evidence. At our bank, the scorer may read the approved M1 artifact; it must not gain permission to promote M2 merely by reaching the registry. A trust boundary needs an enforced policy, not only a box on a diagram.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-207, §3}}
 \clearpage
 \section*{\normalsize 43 / 55 \quad Least privilege follows responsibilities}
@@ -929,8 +1392,19 @@ Authentication, authorization, validation, and audit solve different parts of th
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Separate source writes, candidate creation, release approval, and campaign use. \textbf{Scope identities} to the operations and resources they need. \textbf{Separate duties}: training does not imply release authority. \textbf{Protect credentials} and avoid secrets in code or broad logs. \textbf{Review changes}: connect access, source updates, and approvals. \textit{At our bank,} a campaign user reads an approved score view, not unrestricted training data or production deployment credentials. \textit{This abbreviated teaching matrix is a starting point, not a complete bank permission design.}
+\begin{itemize}
+\item Separate source writes, candidate creation, release approval, and campaign use.
+\item \textbf{Scope identities} to the operations and resources they need.
+\item \textbf{Separate duties}: training does not imply release authority.
+\item \textbf{Protect credentials} and avoid secrets in code or broad logs.
+\item \textbf{Review changes}: connect access, source updates, and approvals.
+\item \textit{At our bank,} a campaign user reads an approved score view, not unrestricted training data or production deployment credentials.
+\item \textit{This abbreviated teaching matrix is a starting point, not a complete bank permission design.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Separate source writes, candidate creation, release approval, and campaign use. Scope identities means to the operations and resources they need. Separate duties means training does not imply release authority. Protect credentials means and avoid secrets in code or broad logs. Review changes means connect access, source updates, and approvals. At our bank, a campaign user reads an approved score view, not unrestricted training data or production deployment credentials. This abbreviated teaching matrix is a starting point, not a complete bank permission design.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · Proposed permissions}}
 \clearpage
 \section*{\normalsize 44 / 55 \quad Privacy: expose what each role needs}
@@ -950,8 +1424,19 @@ Separate source writes, candidate creation, release approval, and campaign use. 
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Campaign use and incident investigation require different views of customer information. \textbf{Minimize collection} and the information exposed in outputs. \textbf{Separate views}: campaigns and investigators have different purposes. \textbf{Protect logs} and define retention and access rules. \textbf{Preserve accountability} without making raw evidence broadly available. \textit{At our bank,} campaign staff may need Ana’s approved score and eligibility context; investigators may need restricted versioned evidence. \textit{Privacy is an access-and-data-use design, not a label attached to a technique.}
+\begin{itemize}
+\item Campaign use and incident investigation require different views of customer information.
+\item \textbf{Minimize collection} and the information exposed in outputs.
+\item \textbf{Separate views}: campaigns and investigators have different purposes.
+\item \textbf{Protect logs} and define retention and access rules.
+\item \textbf{Preserve accountability} without making raw evidence broadly available.
+\item \textit{At our bank,} campaign staff may need Ana’s approved score and eligibility context; investigators may need restricted versioned evidence.
+\item \textit{Privacy is an access-and-data-use design, not a label attached to a technique.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Campaign use and incident investigation require different views of customer information. Minimize collection means and the information exposed in outputs. Separate views means campaigns and investigators have different purposes. Protect logs means and define retention and access rules. Preserve accountability means without making raw evidence broadly available. At our bank, campaign staff may need Ana’s approved score and eligibility context; investigators may need restricted versioned evidence. Privacy is an access-and-data-use design, not a label attached to a technique.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2}}
 \clearpage
 \section*{\normalsize 45 / 55 \quad Privacy techniques have specific limits}
@@ -970,8 +1455,19 @@ Campaign use and incident investigation require different views of customer info
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Choose a mechanism for a defined objective rather than claiming privacy by technique name. \textbf{Specify the objective}: what information should be protected from whom? \textbf{Tokens} and synthetic data do not automatically establish anonymity. \textbf{Federation} changes data location, not every leakage risk. \textbf{DP} needs a defined protected unit and accounting across releases; no derivation here. \textit{At our bank,} protecting one transaction differs from protecting all contributions of a bank customer. \textit{Do not announce a guarantee without its assumptions and evidence.}
+\begin{itemize}
+\item Choose a mechanism for a defined objective rather than claiming privacy by technique name.
+\item \textbf{Specify the objective}: what information should be protected from whom?
+\item \textbf{Tokens} and synthetic data do not automatically establish anonymity.
+\item \textbf{Federation} changes data location, not every leakage risk.
+\item \textbf{DP} needs a defined protected unit and accounting across releases; no derivation here.
+\item \textit{At our bank,} protecting one transaction differs from protecting all contributions of a bank customer.
+\item \textit{Do not announce a guarantee without its assumptions and evidence.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Choose a mechanism for a defined objective rather than claiming privacy by technique name. Specify the objective means what information should be protected from whom? Tokens means and synthetic data do not automatically establish anonymity. Federation means changes data location, not every leakage risk. DP means needs a defined protected unit and accounting across releases; no derivation here. At our bank, protecting one transaction differs from protecting all contributions of a bank customer. Do not announce a guarantee without its assumptions and evidence.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-226}}
 \clearpage
 \section*{\normalsize 46 / 55 \quad Use the quality checklist as a review tool}
@@ -991,8 +1487,19 @@ Choose a mechanism for a defined objective rather than claiming privacy by techn
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Connect concerns to architectural controls, ownership, and observable evidence. \textbf{System and process concerns} both matter in ML-intensive systems. \textbf{Select relevant checks} rather than treating a short list as the entire checklist. \textbf{Map each concern} to a control, owner, and evidence. \textbf{Keep limits visible}: the separate corrigendum remains unread. \textit{At our bank,} completeness validation addresses input quality; it is not by itself evidence of SS5 cyberattack defense. \textit{A checklist supports structured review; it is not a certification claim.}
+\begin{itemize}
+\item Connect concerns to architectural controls, ownership, and observable evidence.
+\item \textbf{System and process concerns} both matter in ML-intensive systems.
+\item \textbf{Select relevant checks} rather than treating a short list as the entire checklist.
+\item \textbf{Map each concern} to a control, owner, and evidence.
+\item \textbf{Keep limits visible}: the separate corrigendum remains unread.
+\item \textit{At our bank,} completeness validation addresses input quality; it is not by itself evidence of SS5 cyberattack defense.
+\item \textit{A checklist supports structured review; it is not a certification claim.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Connect concerns to architectural controls, ownership, and observable evidence. System and process concerns means both matter in ML-intensive systems. Select relevant checks means rather than treating a short list as the entire checklist. Map each concern means to a control, owner, and evidence. Keep limits visible means the separate corrigendum remains unread. At our bank, completeness validation addresses input quality; it is not by itself evidence of SS5 cyberattack defense. A checklist supports structured review; it is not a certification claim.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Corrigendum contents not reviewed}}
 \clearpage
 \section*{\normalsize 47 / 55 \quad Predictive quality and system performance}
@@ -1011,8 +1518,19 @@ Connect concerns to architectural controls, ownership, and observable evidence. 
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Choose an acceptable model and system from several quality objectives. \textbf{Accuracy} alone is an incomplete objective, especially with imbalanced outcomes. \textbf{Performance} includes the end-to-end deadline and resource use. \textbf{Complexity} must justify training and operating costs. \textbf{Acceptance} depends on the task and the consequences of errors. \textit{At our bank,} a heavier churn model is useful only if its quality benefit justifies cost and still meets the campaign’s deadline. \textit{Define acceptance criteria before selecting a more complex model.}
+\begin{itemize}
+\item Choose an acceptable model and system from several quality objectives.
+\item \textbf{Accuracy} alone is an incomplete objective, especially with imbalanced outcomes.
+\item \textbf{Performance} includes the end-to-end deadline and resource use.
+\item \textbf{Complexity} must justify training and operating costs.
+\item \textbf{Acceptance} depends on the task and the consequences of errors.
+\item \textit{At our bank,} a heavier churn model is useful only if its quality benefit justifies cost and still meets the campaign’s deadline.
+\item \textit{Define acceptance criteria before selecting a more complex model.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Choose an acceptable model and system from several quality objectives. Accuracy means alone is an incomplete objective, especially with imbalanced outcomes. Performance means includes the end-to-end deadline and resource use. Complexity means must justify training and operating costs. Acceptance means depends on the task and the consequences of errors. At our bank, a heavier churn model is useful only if its quality benefit justifies cost and still meets the campaign’s deadline. Define acceptance criteria before selecting a more complex model.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Kalinowski, §13.4}}
 \clearpage
 \section*{\normalsize 48 / 55 \quad Robustness: invalid, unfamiliar, or ordinary?}
@@ -1031,8 +1549,19 @@ Choose an acceptable model and system from several quality objectives. \textbf{A
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Different inputs need different responses; do not treat every unusual value as the same failure. \textbf{Contract validity} and model applicability are distinct. \textbf{OOD inputs} may be structurally valid but poorly represented in training. \textbf{Confidence} alone is not a guaranteed detector of unfamiliar inputs. \textbf{Fallbacks} must be validated for the intended situation. \textit{At our bank,} a missing activity value is invalid; a new customer population may be valid but outside the model’s reliable coverage. \textit{An architecture needs an explicit response when the model should not be trusted.}
+\begin{itemize}
+\item Different inputs need different responses; do not treat every unusual value as the same failure.
+\item \textbf{Contract validity} and model applicability are distinct.
+\item \textbf{OOD inputs} may be structurally valid but poorly represented in training.
+\item \textbf{Confidence} alone is not a guaranteed detector of unfamiliar inputs.
+\item \textbf{Fallbacks} must be validated for the intended situation.
+\item \textit{At our bank,} a missing activity value is invalid; a new customer population may be valid but outside the model’s reliable coverage.
+\item \textit{An architecture needs an explicit response when the model should not be trusted.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Different inputs need different responses; do not treat every unusual value as the same failure. Contract validity means and model applicability are distinct. OOD inputs means may be structurally valid but poorly represented in training. Confidence means alone is not a guaranteed detector of unfamiliar inputs. Fallbacks means must be validated for the intended situation. At our bank, a missing activity value is invalid; a new customer population may be valid but outside the model’s reliable coverage. An architecture needs an explicit response when the model should not be trusted.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Simon’s notes, §2–4}}
 \clearpage
 \section*{\normalsize 49 / 55 \quad Explainability and auditability differ}
@@ -1052,8 +1581,19 @@ Different inputs need different responses; do not treat every unusual value as t
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Explaining feature influence and reconstructing a historical decision are complementary tasks. \textbf{Explanation} helps interpret model behavior in context. \textbf{Auditability} needs historical evidence and traceable versions. \textbf{Decision review} includes business policy and action, not only the model. \textbf{Limits}: SHAP and LIME do not prove causality or fairness. \textit{At our bank,} an engagement contribution may help explain Ana’s score; it cannot prove why she would leave the bank. \textit{Protect evidence and test whether authorized reviewers can actually retrieve it.}
+\begin{itemize}
+\item Explaining feature influence and reconstructing a historical decision are complementary tasks.
+\item \textbf{Explanation} helps interpret model behavior in context.
+\item \textbf{Auditability} needs historical evidence and traceable versions.
+\item \textbf{Decision review} includes business policy and action, not only the model.
+\item \textbf{Limits}: SHAP and LIME do not prove causality or fairness.
+\item \textit{At our bank,} an engagement contribution may help explain Ana’s score; it cannot prove why she would leave the bank.
+\item \textit{Protect evidence and test whether authorized reviewers can actually retrieve it.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Explaining feature influence and reconstructing a historical decision are complementary tasks. Explanation means helps interpret model behavior in context. Auditability means needs historical evidence and traceable versions. Decision review means includes business policy and action, not only the model. Limits means sHAP and LIME do not prove causality or fairness. At our bank, an engagement contribution may help explain Ana’s score; it cannot prove why she would leave the bank. Protect evidence and test whether authorized reviewers can actually retrieve it.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Simon’s notes, §6–7}}
 \clearpage
 \section*{\normalsize 50 / 55 \quad Fairness: prediction versus treatment}
@@ -1073,8 +1613,19 @@ Explaining feature influence and reconstructing a historical decision are comple
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Name what is being compared before selecting a metric or declaring an improvement. \textbf{Prediction fairness}: compare errors or calibration across relevant groups. \textbf{Treatment fairness}: inspect access to offers and policy effects. \textbf{Context}: select targets based on harms and requirements. \textbf{Trade-offs}: one metric does not settle every fairness concern. \textit{At our bank,} equal churn prediction errors do not imply equal access to retention offers under campaign allocation rules. \textit{Keep predictive quality and the consequences of intervention distinct.}
+\begin{itemize}
+\item Name what is being compared before selecting a metric or declaring an improvement.
+\item \textbf{Prediction fairness}: compare errors or calibration across relevant groups.
+\item \textbf{Treatment fairness}: inspect access to offers and policy effects.
+\item \textbf{Context}: select targets based on harms and requirements.
+\item \textbf{Trade-offs}: one metric does not settle every fairness concern.
+\item \textit{At our bank,} equal churn prediction errors do not imply equal access to retention offers under campaign allocation rules.
+\item \textit{Keep predictive quality and the consequences of intervention distinct.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Name what is being compared before selecting a metric or declaring an improvement. Prediction fairness means compare errors or calibration across relevant groups. Treatment fairness means inspect access to offers and policy effects. Context means select targets based on harms and requirements. Trade-offs means one metric does not settle every fairness concern. At our bank, equal churn prediction errors do not imply equal access to retention offers under campaign allocation rules. Keep predictive quality and the consequences of intervention distinct.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Bass, Ch. 10 / §14.2}}
 \clearpage
 \section*{\normalsize 51 / 55 \quad Airflow: make workflow dependencies visible}
@@ -1095,8 +1646,19 @@ Name what is being compared before selecting a metric or declaring an improvemen
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Orchestration supports task order, failure handling, and execution evidence. \textbf{Architecture role}: order dependent pipeline work. \textbf{Evidence}: task state, timing, and run context. \textbf{Action}: operators and source owners inspect failed dependencies. \textbf{Limit}: orchestration does not supply predictive or release approval evidence by itself. \textit{At our bank,} the required CRM validation must sit upstream of scoring and export so its failure blocks dependent work. \textit{Connect each tool to a responsibility, evidence, and a response owner.}
+\begin{itemize}
+\item Orchestration supports task order, failure handling, and execution evidence.
+\item \textbf{Architecture role}: order dependent pipeline work.
+\item \textbf{Evidence}: task state, timing, and run context.
+\item \textbf{Action}: operators and source owners inspect failed dependencies.
+\item \textbf{Limit}: orchestration does not supply predictive or release approval evidence by itself.
+\item \textit{At our bank,} the required CRM validation must sit upstream of scoring and export so its failure blocks dependent work.
+\item \textit{Connect each tool to a responsibility, evidence, and a response owner.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Orchestration supports task order, failure handling, and execution evidence. Architecture role means order dependent pipeline work. Evidence means task state, timing, and run context. Action means operators and source owners inspect failed dependencies. Limit means orchestration does not supply predictive or release approval evidence by itself. At our bank, the required CRM validation must sit upstream of scoring and export so its failure blocks dependent work. Connect each tool to a responsibility, evidence, and a response owner.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Illustrative Airflow role}}
 \clearpage
 \section*{\normalsize 52 / 55 \quad MLflow: connect experiments and artifacts}
@@ -1116,8 +1678,19 @@ Orchestration supports task order, failure handling, and execution evidence. \te
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Model tracking supports reproducibility and review when evidence links are designed explicitly. \textbf{Architecture role}: connect training evidence and model artifacts. \textbf{Evidence}: runs, configuration, metrics, and artifact identity. \textbf{Action}: reviewers compare candidates and verify compatible releases. \textbf{Limit}: no single tracking tool provides every governance control. \textit{At our bank,} link the approved M1 to its evidence while recording B017-R1’s separate input and execution context. \textit{Tool records support the release decision; they do not replace its policy.}
+\begin{itemize}
+\item Model tracking supports reproducibility and review when evidence links are designed explicitly.
+\item \textbf{Architecture role}: connect training evidence and model artifacts.
+\item \textbf{Evidence}: runs, configuration, metrics, and artifact identity.
+\item \textbf{Action}: reviewers compare candidates and verify compatible releases.
+\item \textbf{Limit}: no single tracking tool provides every governance control.
+\item \textit{At our bank,} link the approved M1 to its evidence while recording B017-R1’s separate input and execution context.
+\item \textit{Tool records support the release decision; they do not replace its policy.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Model tracking supports reproducibility and review when evidence links are designed explicitly. Architecture role means connect training evidence and model artifacts. Evidence means runs, configuration, metrics, and artifact identity. Action means reviewers compare candidates and verify compatible releases. Limit means no single tracking tool provides every governance control. At our bank, link the approved M1 to its evidence while recording B017-R1’s separate input and execution context. Tool records support the release decision; they do not replace its policy.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Illustrative MLflow role}}
 \clearpage
 \section*{\normalsize 53 / 55 \quad Validation and drift reports support diagnosis}
@@ -1137,8 +1710,19 @@ Model tracking supports reproducibility and review when evidence links are desig
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-A report is useful when its reference, feature meaning, cohort, and response are clear. \textbf{Validation}: test declared expectations before use. \textbf{Drift comparison}: inspect change against a named reference. \textbf{Tool choice}: reports can support these roles; keep policy outside the screenshot. \textbf{Action}: preserve evidence and assign a response owner. \textit{At our bank,} a missing CRM feature needs a contract-failure response; a changed valid population needs a different investigation. \textit{Tools make evidence easier to collect; architecture defines what that evidence means.}
+\begin{itemize}
+\item A report is useful when its reference, feature meaning, cohort, and response are clear.
+\item \textbf{Validation}: test declared expectations before use.
+\item \textbf{Drift comparison}: inspect change against a named reference.
+\item \textbf{Tool choice}: reports can support these roles; keep policy outside the screenshot.
+\item \textbf{Action}: preserve evidence and assign a response owner.
+\item \textit{At our bank,} a missing CRM feature needs a contract-failure response; a changed valid population needs a different investigation.
+\item \textit{Tools make evidence easier to collect; architecture defines what that evidence means.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+A report is useful when its reference, feature meaning, cohort, and response are clear. Validation means test declared expectations before use. Drift comparison means inspect change against a named reference. Tool choice means reports can support these roles; keep policy outside the screenshot. Action means preserve evidence and assign a response owner. At our bank, a missing CRM feature needs a contract-failure response; a changed valid population needs a different investigation. Tools make evidence easier to collect; architecture defines what that evidence means.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Group tool-showcase topic}}
 \clearpage
 \section*{\normalsize 54 / 55 \quad ML architecture connects five responsibilities}
@@ -1158,8 +1742,19 @@ A report is useful when its reference, feature meaning, cohort, and response are
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-Return to the full system and the choices that make a prediction usable. \textbf{Data}: preserve meaning, validity, and temporal consistency. \textbf{Models}: evaluate uncertainty and manage compatible approved artifacts. \textbf{Operations}: observe, diagnose, release, and recover. \textbf{Decisions}: protect access and govern appropriate business action. \textit{At our bank,} ana’s score becomes usable through validated inputs, traceable execution, an approved release, and a separate campaign policy. \textit{Day 2: foundation models and agents retain these control needs, while components and failure modes change.}
+\begin{itemize}
+\item Return to the full system and the choices that make a prediction usable.
+\item \textbf{Data}: preserve meaning, validity, and temporal consistency.
+\item \textbf{Models}: evaluate uncertainty and manage compatible approved artifacts.
+\item \textbf{Operations}: observe, diagnose, release, and recover.
+\item \textbf{Decisions}: protect access and govern appropriate business action.
+\item \textit{At our bank,} ana’s score becomes usable through validated inputs, traceable execution, an approved release, and a separate campaign policy.
+\item \textit{Day 2: foundation models and agents retain these control needs, while components and failure modes change.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+Return to the full system and the choices that make a prediction usable. Data means preserve meaning, validity, and temporal consistency. Models means evaluate uncertainty and manage compatible approved artifacts. Operations means observe, diagnose, release, and recover. Decisions means protect access and govern appropriate business action. At our bank, ana’s score becomes usable through validated inputs, traceable execution, an approved release, and a separate campaign policy. Day 2: foundation models and agents retain these control needs, while components and failure modes change.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: Bass, Ch. 14 · Group synthesis}}
 \clearpage
 \section*{\normalsize 55 / 55 \quad Sources and adaptation boundaries}
@@ -1178,8 +1773,19 @@ Return to the full system and the choices that make a prediction usable. \textbf
 \end{minipage}
 \vspace{2mm}
 \begin{saybox}
-The bibliography supplies concepts; the bank diagrams and incidents are explicit teaching applications. \textbf{Core readings}: architectural decisions, serving, maintenance, and quality concerns. \textbf{Supporting readings} extend monitoring, governance, and security. \textbf{Illustrations}: Ana, scores, dates, batches, and incidents are invented. \textbf{Source limit}: the separately catalogued checklist corrigendum remains unread. \textit{At our bank,} no new churn outcome, repaired score, retention benefit, or real bank tool execution is claimed. \textit{The separate guide records reading anchors and adaptation limits.}
+\begin{itemize}
+\item The bibliography supplies concepts; the bank diagrams and incidents are explicit teaching applications.
+\item \textbf{Core readings}: architectural decisions, serving, maintenance, and quality concerns.
+\item \textbf{Supporting readings} extend monitoring, governance, and security.
+\item \textbf{Illustrations}: Ana, scores, dates, batches, and incidents are invented.
+\item \textbf{Source limit}: the separately catalogued checklist corrigendum remains unread.
+\item \textit{At our bank,} no new churn outcome, repaired score, retention benefit, or real bank tool execution is claimed.
+\item \textit{The separate guide records reading anchors and adaptation limits.}
+\end{itemize}
 \end{saybox}
+\begin{examplebox}
+The bibliography supplies concepts; the bank diagrams and incidents are explicit teaching applications. Core readings means architectural decisions, serving, maintenance, and quality concerns. Supporting readings means extend monitoring, governance, and security. Illustrations means ana, scores, dates, batches, and incidents are invented. Source limit means the separately catalogued checklist corrigendum remains unread. At our bank, no new churn outcome, repaired score, retention benefit, or real bank tool execution is claimed. The separate guide records reading anchors and adaptation limits.
+\end{examplebox}
 \par\noindent{\scriptsize\textcolor{teal!60!black}{Reading anchor: See source-review.md and presenter guide}}
 \clearpage
 \end{document}

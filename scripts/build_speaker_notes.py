@@ -71,22 +71,52 @@ def clause(b):
     sep=': ' if colon else ' '
     return '\\textbf{'+esc(label)+'}'+sep+esc(rest)
 
-def speech_for(slide):
-    sentences=[]
+def bullets_for(slide):
+    items=[]
     if slide['lead']:
-        sentences.append(escape_keep_bold(slide['lead']))
+        items.append(escape_keep_bold(slide['lead']))
     for b in slide['bullets']:
-        sentences.append(clause(b))
+        items.append(clause(b))
     if slide['example']:
         ex=slide['example']
         if ex.lower().startswith('bank'):
-            sentences.append(escape_keep_bold(ex))
+            items.append(escape_keep_bold(ex))
         else:
             ex=ex[0:1].lower()+ex[1:]
-            sentences.append('\\textit{At our bank,} '+esc(ex))
+            items.append('\\textit{At our bank,} '+esc(ex))
     if slide['takeaway']:
-        sentences.append('\\textit{'+escape_keep_bold(slide['takeaway'])+'}')
-    return ' '.join(sentences)
+        items.append('\\textit{'+escape_keep_bold(slide['takeaway'])+'}')
+    return items
+
+def plain(s):
+    # Strip the <b>/</b> markers entirely, keeping the words, for flowing prose.
+    return re.sub(r'</?b>','',s)
+
+def paragraph_for(slide):
+    sentences=[]
+    if slide['lead']:
+        sentences.append(slide['lead'])
+    for b in slide['bullets']:
+        m=re.match(r'^<b>([^<]*?):?</b>\s*(.*)$',b)
+        if m:
+            label,rest=m.groups()
+            rest=rest[0:1].lower()+rest[1:] if rest else rest
+            sentences.append(f'{label} means {rest}' if not rest.startswith(label.lower()) else rest)
+        else:
+            sentences.append(plain(b))
+    if slide['example']:
+        ex=slide['example']
+        if ex.lower().startswith('bank'):
+            sentences.append(ex)
+        else:
+            sentences.append('At our bank, '+ex[0:1].lower()+ex[1:])
+    if slide['takeaway']:
+        sentences.append(slide['takeaway'])
+    para=' '.join(sentences)
+    para=re.sub(r'\s+',' ',para).strip()
+    if para and para[-1] not in '.!?':
+        para+='.'
+    return esc(para)
 
 def main():
     slides=build_lecture()
@@ -113,7 +143,8 @@ def main():
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=6pt,after skip=6pt,fonttitle=\bfseries\small,before upper={\setlength{\parskip}{0.4em}\RaggedRight}}
-\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY},fontupper=\fontsize{11}{14.5}\selectfont}
+\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY}}
+\newtcolorbox{examplebox}{colback=white,colframe=teal!50,title={SPOKEN EXAMPLE --- practice this out loud},fontupper=\itshape\fontsize{10.5}{14}\selectfont}
 \newtcolorbox{cuebox}[1][]{colback=accent!5,colframe=accent!70!black,title={CUES},#1}
 \begin{document}
 \thispagestyle{empty}
@@ -122,7 +153,7 @@ def main():
 {\Large Speaker Notes}\\[2mm]
 {\large A bank customer-churn case --- 20 October 2026}\\[8mm]
 \end{center}
-\noindent Each page shows one slide exactly as presenters will see it, the words to speak, and short delivery cues. The script is a speaking aid, not a transcript to read verbatim --- adapt it to your own voice. Animated builds are marked; press the arrow key the stated number of times before moving to the next slide.
+\noindent Each page shows one slide exactly as presenters will see it, the key points to cover, delivery cues, and a worked spoken-example paragraph to practice from. The example is a model to rehearse and adapt, not a transcript to read verbatim. Animated builds are marked; press the arrow key the stated number of times before moving to the next slide.
 \clearpage
 ''')
     prev_section=None
@@ -137,7 +168,8 @@ def main():
         title=esc(slide['title'])
         section=esc(slide['section'])
         owner=esc(slide['owner'])
-        speech=speech_for(slide)
+        bullets=bullets_for(slide)
+        paragraph=paragraph_for(slide)
         cue_lines=cues_for(slide,n,steps,prev_section)
         prev_section=slide['section']
         tex.append(f'\\section*{{\\normalsize {n:02d} / {len(slides):02d} \\quad {title}}}')
@@ -155,8 +187,14 @@ def main():
         tex.append('\\end{minipage}')
         tex.append('\\vspace{2mm}')
         tex.append('\\begin{saybox}')
-        tex.append(speech)
+        tex.append('\\begin{itemize}')
+        for b in bullets:
+            tex.append(f'\\item {b}')
+        tex.append('\\end{itemize}')
         tex.append('\\end{saybox}')
+        tex.append('\\begin{examplebox}')
+        tex.append(paragraph)
+        tex.append('\\end{examplebox}')
         if slide['source']:
             tex.append(f'\\par\\noindent{{\\scriptsize\\textcolor{{teal!60!black}}{{Reading anchor: {esc(slide["source"])}}}}}')
         tex.append('\\clearpage')
