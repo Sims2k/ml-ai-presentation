@@ -135,7 +135,7 @@ try{const edits=JSON.parse(localStorage.getItem(editStorageKey)||'{}');document.
 document.addEventListener('input',e=>{if(!e.target.matches('[data-edit]'))return;try{const edits=JSON.parse(localStorage.getItem(editStorageKey)||'{}');edits[e.target.id]=e.target.textContent;localStorage.setItem(editStorageKey,JSON.stringify(edits));}catch{}});
 function toggleContents(){const open=contents.hidden;contents.hidden=!open;if(open){contentsOrigin=document.activeElement;contents.querySelector('button').focus();}else if(contentsOrigin&&contentsOrigin!==document.body){contentsOrigin.focus();}else{document.activeElement.blur();}}
 document.addEventListener('keydown',e=>{if(e.target.isContentEditable)return;if(e.key.toLowerCase()==='g'){e.preventDefault();toggleContents();}if(e.key==='Escape'&&!contents.hidden){e.preventDefault();toggleContents();}});
-contents.addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(b){deck.show(Number(b.dataset.jump));toggleContents();}});
+contents.addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(b){deck.show(Number(b.dataset.jump));contentsOrigin=null;toggleContents();}});
 '''
 # Exported HTML must initialize from complete source and preserve all deck behavior.
 deckjs=JS.replace('lecture-redesign-edited.html','ml-architecture-lecture-edited.html')
