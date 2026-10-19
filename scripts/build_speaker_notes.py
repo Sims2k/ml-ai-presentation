@@ -61,17 +61,32 @@ def cues_for(slide,n,steps,prev_section):
         lines.append("Adaptation note on file for this slide; do not read aloud unless asked.")
     return lines
 
+def clause(b):
+    # '<b>Label:</b> rest.' or '<b>Label</b> rest.' -> a spoken clause, label kept bold.
+    m=re.match(r'^<b>([^<]*?)(:?)</b>\s*(.*)$',b)
+    if not m:
+        return escape_keep_bold(b)
+    label,colon,rest=m.groups()
+    rest=rest[0:1].lower()+rest[1:] if rest and not colon else rest
+    sep=': ' if colon else ' '
+    return '\\textbf{'+esc(label)+'}'+sep+esc(rest)
+
 def speech_for(slide):
-    parts=[]
+    sentences=[]
     if slide['lead']:
-        parts.append(escape_keep_bold(slide['lead']))
+        sentences.append(escape_keep_bold(slide['lead']))
     for b in slide['bullets']:
-        parts.append(escape_keep_bold(b))
+        sentences.append(clause(b))
     if slide['example']:
-        parts.append('\\textit{At our bank:} '+escape_keep_bold(slide['example']))
+        ex=slide['example']
+        if ex.lower().startswith('bank'):
+            sentences.append(escape_keep_bold(ex))
+        else:
+            ex=ex[0:1].lower()+ex[1:]
+            sentences.append('\\textit{At our bank,} '+esc(ex))
     if slide['takeaway']:
-        parts.append('\\textit{'+escape_keep_bold(slide['takeaway'])+'}')
-    return parts
+        sentences.append('\\textit{'+escape_keep_bold(slide['takeaway'])+'}')
+    return ' '.join(sentences)
 
 def main():
     slides=build_lecture()
@@ -98,8 +113,8 @@ def main():
 \cfoot{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=6pt,after skip=6pt,fonttitle=\bfseries\small,before upper={\setlength{\parskip}{0.4em}\RaggedRight}}
-\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY}}
-\newtcolorbox{cuebox}{colback=accent!5,colframe=accent!70!black,title={CUES}}
+\newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY},fontupper=\fontsize{11}{14.5}\selectfont}
+\newtcolorbox{cuebox}[1][]{colback=accent!5,colframe=accent!70!black,title={CUES},#1}
 \begin{document}
 \thispagestyle{empty}
 \begin{center}
@@ -127,20 +142,21 @@ def main():
         prev_section=slide['section']
         tex.append(f'\\section*{{\\normalsize {n:02d} / {len(slides):02d} \\quad {title}}}')
         tex.append(f'\\noindent\\textcolor{{teal!70!black}}{{\\small {section} \\textbullet\\ {owner}}}\\par\\vspace{{2mm}}')
-        tex.append('\\begin{center}\\includegraphics[width=0.92\\textwidth]{'+str(img.relative_to(ROOT))+'}\\end{center}')
-        tex.append('\\vspace{2mm}')
-        tex.append('\\begin{saybox}')
-        tex.append('\\begin{itemize}')
-        for s in speech:
-            tex.append(f'\\item {s}')
-        tex.append('\\end{itemize}')
-        tex.append('\\end{saybox}')
+        tex.append('\\noindent\\begin{minipage}[t]{0.40\\textwidth}\\vspace{0pt}')
+        tex.append('\\fcolorbox{teal!30}{white}{\\includegraphics[width=\\dimexpr\\linewidth-2\\fboxsep-2\\fboxrule\\relax]{'+str(img.relative_to(ROOT))+'}}')
+        tex.append('\\end{minipage}\\hfill')
+        tex.append('\\begin{minipage}[t]{0.57\\textwidth}\\vspace{0pt}')
         tex.append('\\begin{cuebox}')
         tex.append('\\begin{itemize}')
         for c in cue_lines:
             tex.append(f'\\item {c}')
         tex.append('\\end{itemize}')
         tex.append('\\end{cuebox}')
+        tex.append('\\end{minipage}')
+        tex.append('\\vspace{2mm}')
+        tex.append('\\begin{saybox}')
+        tex.append(speech)
+        tex.append('\\end{saybox}')
         if slide['source']:
             tex.append(f'\\par\\noindent{{\\scriptsize\\textcolor{{teal!60!black}}{{Reading anchor: {esc(slide["source"])}}}}}')
         tex.append('\\clearpage')

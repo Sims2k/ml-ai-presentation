@@ -20,50 +20,27 @@ def frame(slug,title,desc,body):
     from html import escape
     return f'<svg viewBox="0 0 1776 640" role="img" aria-labelledby="{slug}-title {slug}-desc"><title id="{slug}-title">{escape(title)}</title><desc id="{slug}-desc">{escape(desc)}</desc>{body}</svg>'
 
-TEMPORAL_ROWS=[
-    ('SUDDEN','The old regime switches abruptly.','aaaaaaaabbbbbbbb'),
-    ('GRADUAL','Old and new regimes overlap briefly.','aaaabaaaabbabbbb'),
-    ('INCREMENTAL','The regime shifts through in-between states.','aaaaammmmmbbbbbb'),
-    ('RECURRING','An earlier regime returns, then yields again.','aaaaaabbbaaabbbb'),
-    ('BLIPS','Brief noise, not a lasting change.','aaaaaxaaaaaaxaaa'),
+TEMPORAL_EXAMPLES=[
+    'A fee change takes effect overnight.',
+    'Customers adopt a new app over several weeks.',
+    'Average balances drift up slowly over months.',
+    'Holiday shopping spikes return every December.',
+    'A single unusual day, like Christmas Eve.',
 ]
 
 def temporal_reference():
-    row_h,gap,top=84,12,28
-    lx,tx0,tx1,dx0,dx1=32,200,1080,1116,1744
-    step=(tx1-tx0)/16
-    body=''
-    for i,(label,desc,seq) in enumerate(TEMPORAL_ROWS):
-        ry=top+i*(row_h+gap);base=ry+50
-        body+=tx(lx,base,label,'wide-panel-title')
-        runs=[];start=0
-        for k in range(1,len(seq)+1):
-            if k==len(seq) or seq[k]!=seq[start]:
-                runs.append((seq[start],start,k));start=k
-        for sym,s,e in runs:
-            if sym=='x':continue
-            bx0=tx0+s*step-step*0.3;bw=(e-s)*step-step*0.4
-            cls={'a':'regime-band-a','b':'regime-band-b','m':'regime-band-m'}[sym]
-            body+=f'<rect x="{bx0:.1f}" y="{base-24}" width="{bw:.1f}" height="48" rx="10" class="{cls}"/>'
-        for k,sym in enumerate(seq):
-            cx=tx0+(k+0.5)*step
-            if sym=='a':
-                body+=f'<circle cx="{cx:.1f}" cy="{base}" r="9" class="regime-a"/>'
-            elif sym=='b':
-                body+=f'<path d="M{cx:.1f} {base-11:.1f} L{cx+10:.1f} {base+8:.1f} L{cx-10:.1f} {base+8:.1f} Z" class="regime-b"/>'
-            elif sym=='m':
-                body+=f'<rect x="{cx-8:.1f}" y="{base-8:.1f}" width="16" height="16" class="regime-m"/>'
-            else:
-                body+=f'<path d="M{cx:.1f} {base-13:.1f} L{cx+13:.1f} {base:.1f} L{cx:.1f} {base+13:.1f} L{cx-13:.1f} {base:.1f} Z" class="regime-blip"/>'
-        body+=tx(dx0,base,desc,'row-desc')
-    legend_y=526
-    body+=f'<circle cx="{lx+10}" cy="{legend_y}" r="9" class="regime-a"/>'+tx(lx+32,legend_y+6,'Earlier regime','wide-legend')
-    body+=f'<path d="M{lx+270} {legend_y-11} L{lx+280} {legend_y+8} L{lx+260} {legend_y+8} Z" class="regime-b"/>'+tx(lx+296,legend_y+6,'Current regime','wide-legend')
-    body+=f'<rect x="{lx+550}" y="{legend_y-8}" width="16" height="16" class="regime-m"/>'+tx(lx+578,legend_y+6,'Intermediate state','wide-legend')
-    body+=f'<path d="M{lx+820} {legend_y-13} L{lx+833} {legend_y} L{lx+820} {legend_y+13} L{lx+807} {legend_y} Z" class="regime-blip"/>'+tx(lx+846,legend_y+6,'Isolated blip','wide-legend')
-    body+=tx(32,566,'Bank illustrations: a pricing change can be sudden; staggered adoption gradual; evolving habits incremental; seasonal activity recurring.','wide-note')
-    body+=tx(32,604,'Schematic redraw after Krawczyk and Cano (2018), Fig. 2. Shapes mark a pattern in time, not a specific feature or dataset.','wide-note')
-    return frame('temporal-patterns','How the world changes over time','Five schematic time patterns of change: sudden, gradual, incremental, recurring, and isolated blips.',body),0
+    import base64
+    img=base64.b64encode((ROOT/'assets/references/drift-types-krawczyk-cano.jpg').read_bytes()).decode()
+    iw,ih=850,443
+    h=420;w=round(h*iw/ih);x=48;y=52
+    body=f'<rect x="{x-24:.0f}" y="{y-24:.0f}" width="{w+48:.0f}" height="{h+48:.0f}" rx="8" class="wide-panel"/>'
+    body+=f'<image href="data:image/jpeg;base64,{img}" x="{x:.0f}" y="{y:.0f}" width="{w}" height="{h}"/>'
+    body+=tx(888,540,'Krawczyk and Cano (2018), Figure 2.','wide-note','middle')
+    col=x+w+24+40
+    for i,ex in enumerate(TEMPORAL_EXAMPLES):
+        ry=y+42+i*(h/5)
+        body+=tx(col,ry,ex,'wide-label')
+    return frame('temporal-patterns','How the world changes over time','Sudden, gradual, incremental, recurring changes and noisy blips, after Krawczyk and Cano (2018), Figure 2.',body),0
 
 def input_distribution():
     body=''
@@ -149,7 +126,4 @@ DRIFT_CSS=r'''
 .wide .body-grid{top:282px;height:640px;display:block}.wide .diagram-column{width:1776px;height:640px}.wide figure{width:1776px;height:640px;transform:none}.wide svg{width:1776px;height:640px}
 .wide-panel{fill:#f2f1ec;stroke:#d4d4cc;stroke-width:1.3}.wide-panel-title{font:600 29px 'Source Sans 3';fill:#303a38}.wide-label{font:400 28px 'Source Sans 3';fill:#303a38}.wide-muted{font:400 25px 'Source Sans 3';fill:#5e6967}.wide-tick{font:400 23px 'Source Sans 3';fill:#505c59}.wide-accent{font:600 28px 'Source Sans 3';fill:#a62c40}.wide-note{font:400 20px 'Source Sans 3';fill:#5a635f}.wide-legend{font:400 24px 'Source Sans 3';fill:#303a38}
 .wide-grid{fill:none;stroke:#dedfd8;stroke-width:1}.wide-axis{fill:none;stroke:#7c8983;stroke-width:1.5}.stay-point{fill:#56899a;stroke:#2e5360;stroke-width:2}.churn-point{fill:#c16c79;stroke:#8f263c;stroke-width:2}.fixed-boundary{fill:none;stroke:#606e71;stroke-width:3;stroke-dasharray:10 7}.new-boundary{fill:none;stroke:#a62c40;stroke-width:3}.changed-point{fill:none;stroke:#a62c40;stroke-width:2.5}.error-region{fill:#d9a6b0;fill-opacity:.27;stroke:none}
-.row-desc{font:400 22px 'Source Sans 3';fill:#3b4540}
-.regime-a{fill:#eef2f1;stroke:#56899a;stroke-width:2}.regime-b{fill:#f6e9ea;stroke:#a62c40;stroke-width:2}.regime-m{fill:#f2efe6;stroke:#8a7a3a;stroke-width:2}.regime-blip{fill:#e9e6df;stroke:#6b6258;stroke-width:2}
-.regime-band-a{fill:#56899a;fill-opacity:.1;stroke:none}.regime-band-b{fill:#a62c40;fill-opacity:.1;stroke:none}.regime-band-m{fill:#8a7a3a;fill-opacity:.12;stroke:none}
 '''

@@ -533,7 +533,7 @@ Sudden, gradual, incremental, and recurring changes are different time patterns�
 - **Blips:** isolated noise is not necessarily a lasting regime change.
 
 
-**Figure explanation:** Figure requested by the presenter: https://www.researchgate.net/figure/Four-types-of-concept-drift-according-to-severity-and-speed-of-changes-and-noisy-blips_fig2_321627304 . This slide redraws that figure as a native diagram, in the deck's own visual language, rather than embedding the bitmap; row labels therefore appear once, not once in the image and once beside it. Source publication: B. Krawczyk and A. Cano, Online Ensemble Learning with Abstaining Classifiers for Drifting and Noisy Data Streams, Applied Soft Computing 68, 677–692, 2018. These temporal patterns do not replace the distinction between input drift, concept drift and invalid data. Blips are shown separately from lasting drift.
+**Figure explanation:** Figure requested by the presenter: https://www.researchgate.net/figure/Four-types-of-concept-drift-according-to-severity-and-speed-of-changes-and-noisy-blips_fig2_321627304 . The identical figure was retrieved intact from the publicly posted PyConf 2019 deck at https://pyconf.hydpy.org/PyConf19Slides/talks/The-Past-and-the-dubious-Concept-Drift.pdf , page 6, because direct ResearchGate image download returned HTTP 403. Source publication: B. Krawczyk and A. Cano, Online Ensemble Learning with Abstaining Classifiers for Drifting and Noisy Data Streams, Applied Soft Computing 68, 677–692, 2018. These temporal patterns do not replace the distinction between input drift, concept drift and invalid data. Blips are shown separately from lasting drift.
 
 
 
@@ -543,7 +543,7 @@ Sudden, gradual, incremental, and recurring changes are different time patterns�
 
 
 
-**Reading anchor:** Schematic redraw after Krawczyk & Cano (2018), Fig. 2 · attribution and source link in guide.
+**Reading anchor:** Krawczyk & Cano (2018), Fig. 2 · Original figure; attribution and source link in guide.
 
 
 **Next:** Monitoring: observe more than model accuracy — Simon.
