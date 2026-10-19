@@ -1,128 +1,109 @@
 [
   {
-    "id": "serving-patterns-when-is-a-prediction-needed",
-    "title": "Serving patterns: when is a prediction needed?",
-    "lead": "Select the interaction pattern from the decision’s timing and failure behavior.",
+    "title": "How do predictions reach the business?",
+    "lead": "It depends on when the decision needs them: offline (batch) or real-time, synchronously or asynchronously.",
     "owner": "Tomás",
     "bullets": [
-      "<b>Batch:</b> compute many predictions; consumers read stored results later.",
-      "<b>Synchronous:</b> the caller waits for a result during its request.",
-      "<b>Asynchronous:</b> an event producer and consumer are decoupled through messaging.",
-      "<b>Edge:</b> a deployment location, independent of prediction timing."
+      "<b>Offline:</b> historical data in bulk; results are read later.",
+      "<b>Real-time:</b> current context plus history, per request.",
+      "<b>Location:</b> central, embedded or edge is a separate axis.",
+      "<b>Ask first:</b> does the decision need real-time? (Nazir, I12)"
     ],
-    "example": "The churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need.",
-    "takeaway": "Timing, location, and release strategy are separate choices."
+    "example": "Ana's risk is needed only before the monthly campaign: a central batch suffices. Edge adds rollout cost, no benefit.",
+    "takeaway": "Churn needs none of the online paths: monthly, central, batch.",
+    "source": "Kalinowski, §13.3, Fig. 13.2–13.4; supporting Ch. 12 · Nazir et al., §4.3 (I12)",
+    "id": "how-do-predictions-reach-the-business"
   },
   {
-    "id": "batch-serving-validate-score-publish",
-    "title": "Batch serving: validate, score, publish",
-    "lead": "A complete validated batch must be available before its business deadline.",
+    "title": "Batch path: Ana's score on day D0",
+    "lead": "A complete, validated batch must be published before the campaign deadline.",
     "owner": "Tomás",
     "bullets": [
-      "<b>Snapshot:</b> define population, cutoff, and required source freshness.",
+      "<b>Snapshot:</b> define population, cutoff, and source freshness.",
       "<b>Validate:</b> reject incompatible inputs before scoring.",
-      "<b>Reconcile:</b> account for written, rejected, and withheld records.",
-      "<b>Publish:</b> expose a validated batch under a defined consumer contract."
+      "<b>Reconcile:</b> account for written, rejected, withheld records.",
+      "<b>Publish:</b> expose the validated batch under a consumer contract."
     ],
-    "example": "Monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners.",
-    "takeaway": "Optimize the whole batch deadline, not only per-record prediction speed."
+    "example": "Ana's 0.70 is stored with M1, D0 and the feature version; her 30-day outcome is still unknown on D0.",
+    "takeaway": "Saving batch scores at scale is a reported challenge (Nazir, I6).",
+    "source": "Bass, §14.1.4 · Kalinowski, §13.3, Fig. 13.2 · Nazir et al., §3.2 (I6)",
+    "id": "batch-path-ana-s-score-on-day-d0"
   },
   {
-    "id": "synchronous-serving-the-caller-waits",
-    "title": "Synchronous serving: the caller waits",
-    "lead": "Prediction becomes part of the application’s response path.",
+    "title": "Online serving: the fraud contrast",
+    "lead": "Same domain, different timing needs. A comparison, not a new part of the churn system.",
     "owner": "Tomás",
     "bullets": [
-      "<b>Response time</b> includes lookup, preparation, inference, and network work.",
-      "<b>Availability</b> now affects the waiting application’s request.",
-      "<b>Failure behavior</b> needs explicit timeout, error, and fallback policies.",
-      "<b>Consistency</b> still requires compatible feature meanings and model versions."
+      "<b>Model time:</b> smaller models, leaner code, GPU/TPU at a cost.",
+      "<b>System time:</b> fast input lookup; precomputed, cached scores.",
+      "<b>Inputs:</b> the back-end usually fetches features the caller lacks.",
+      "<b>Async:</b> idempotent consumers, lag and failed-message handling."
     ],
-    "example": "An immediate fraud check can justify this pattern. The monthly churn campaign does not require it.",
-    "takeaway": "A fast model does not guarantee a fast end-to-end service."
+    "example": "Fraud blocking is synchronous, fraud alerts asynchronous. Churn stays batch; CRM can read Ana's cached score.",
+    "takeaway": "A fast model does not guarantee a fast end-to-end service.",
+    "source": "Kalinowski, §13.3–13.4, Fig. 13.3–13.4 · Fraud and CRM cases are teaching comparisons",
+    "id": "online-serving-the-fraud-contrast"
   },
   {
-    "id": "asynchronous-serving-decouple-the-work",
-    "title": "Asynchronous serving: decouple the work",
-    "lead": "Messages separate production, processing, and consumption of a prediction.",
-    "owner": "Tomás",
-    "bullets": [
-      "<b>Buffering</b> absorbs bursts and supports independent processing.",
-      "<b>Lag</b> and queue health become operational concerns.",
-      "<b>Retries</b> require failure handling and idempotent processing.",
-      "<b>Contracts</b> define message identity, timing, schema, and result interpretation."
-    ],
-    "example": "If a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts.",
-    "takeaway": "Decoupling adds messaging responsibilities; it does not remove timing requirements."
-  },
-  {
-    "id": "deployment-location-is-a-separate-decision",
-    "title": "Deployment location is a separate decision",
-    "lead": "Central, embedded, and edge deployments change operations and constraints.",
-    "owner": "Tomás",
-    "bullets": [
-      "<b>Central:</b> simplify shared operation and governance.",
-      "<b>Embedded:</b> deploy the model with its host application.",
-      "<b>Edge:</b> account for constrained hardware and intermittent connectivity.",
-      "<b>Choose independently:</b> location does not uniquely determine batch or request timing."
-    ],
-    "example": "Keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here.",
-    "takeaway": "Architecture follows the operational context."
-  },
-  {
-    "id": "package-the-whole-compatible-set",
     "title": "Package the whole compatible set",
     "lead": "A deployable release contains more than the learned model file.",
     "owner": "Tomás",
     "bullets": [
       "<b>Model artifact:</b> the learned parameters and required format.",
-      "<b>Runtime:</b> dependencies, preparation code, and execution environment.",
-      "<b>Contract:</b> feature meaning, types, missingness, and temporal cutoff.",
+      "<b>Runtime:</b> dependencies, preparation code, environment.",
+      "<b>Contract:</b> feature meaning, types, missingness, cutoff.",
       "<b>Configuration:</b> scoring population and execution settings."
     ],
-    "example": "The bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot.",
-    "takeaway": "A package that loads successfully still needs release and quality evidence."
+    "example": "M1 ships with the exact feature meaning it was trained on, such as the 7-day login count used to score C042.",
+    "takeaway": "Smoke-test in the serving environment before exposure (Breck, infra. 6).",
+    "source": "Bass, §14.1.4 · Kalinowski, §13.3 · Nazir et al., §4.1, Table 12 · Breck et al., infra. test 6",
+    "id": "package-the-whole-compatible-set"
   },
   {
-    "id": "shadow-deployment-observe-without-acting",
     "title": "Shadow deployment: observe without acting",
     "lead": "A candidate scores real inputs while the approved model remains the action source.",
     "owner": "Tomás",
     "bullets": [
-      "<b>Run in parallel</b> against comparable production inputs.",
-      "<b>Record identity:</b> distinguish M1 and M2 outputs explicitly.",
-      "<b>Compare</b> operational behavior and score differences first.",
-      "<b>Wait for labels</b> to compare future churn quality."
+      "Run in parallel against the same production snapshot.",
+      "<b>Record identity:</b> label M1 and M2 outputs explicitly.",
+      "Compare operational behavior and score differences first.",
+      "Wait for labels to compare 30-day churn quality."
     ],
-    "example": "Only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer.",
-    "takeaway": "Shadow checks observation, not the business effect of acting on the candidate."
+    "example": "Only M1's 0.70 for Ana is eligible for campaign use; M2's shadow score is logged and cannot create a second offer.",
+    "takeaway": "Shadow checks observation, not the business effect of acting on the candidate.",
+    "source": "Bass, §14.1.4 · Bank teaching application of the group release plan",
+    "id": "shadow-deployment-observe-without-acting"
   },
   {
-    "id": "canary-deployment-limit-exposure",
-    "title": "Canary deployment: limit exposure",
-    "lead": "An approved limited cohort uses the candidate before broader rollout.",
+    "title": "Release strategies: what each proves",
+    "lead": "Shadow, canary and A/B tests answer different questions on different clocks.",
     "owner": "Tomás",
     "bullets": [
-      "<b>Restrict exposure</b> to a defined cohort and scope.",
-      "<b>Observe</b> execution, compatibility, coverage, and policy behavior.",
-      "<b>Define stop rules</b> and a rehearsed recovery path.",
-      "<b>Separate evidence:</b> short operational success cannot prove 30-day predictive quality."
+      "<b>Canary:</b> limit exposure; set stop rules and a rollback.",
+      "<b>A/B test:</b> state what changes: model, policy or offer.",
+      "<b>Confounding:</b> changing model and offer together hides both.",
+      "<b>Labels:</b> D0 success cannot prove 30-day quality."
     ],
-    "example": "The bank may authorize a small cohort to use M2 while retaining M1 for the remainder.",
-    "takeaway": "A canary controls risk; it is not automatically a valid business experiment."
+    "example": "Ask 'does M2 rank churn risk better than M1?' separately from 'does offer B retain more customers than offer A?'",
+    "takeaway": "A canary controls risk; it is not automatically an experiment.",
+    "source": "Breck et al., infra. tests 6–7 · Bank teaching application",
+    "id": "release-strategies-what-each-proves"
   },
   {
-    "id": "a-b-testing-define-the-intervention",
-    "title": "A/B testing: define the intervention",
-    "lead": "Assigned groups and a stated outcome make the comparison interpretable.",
+    "title": "Release plan: shadow, canary, rollback",
+    "lead": "Proposed decision: evidence arrives on two clocks, so exposure grows in steps.",
     "owner": "Tomás",
     "bullets": [
-      "<b>State what changes:</b> model, decision policy, or retention treatment.",
-      "<b>Assign comparable groups</b> under an appropriate experiment design.",
-      "<b>Define outcomes</b> and the observation window before interpreting results.",
-      "<b>Avoid confounding:</b> changing model and offer together obscures their separate effects."
+      "<b>Decision:</b> central monthly batch; shadow M2, then canary.",
+      "<b>Trade-off:</b> one or two extra cycles before M2 is fully used.",
+      "<b>Rollback:</b> reuse the last validated M1 batch only while it remains eligible and fresh.",
+      "<b>Record:</b> link model, features, config and approval (Matheus)."
     ],
-    "example": "Compare two offer policies separately from asking whether M2 ranks churn risk better than M1.",
-    "takeaway": "Prediction accuracy and the effect of contacting a customer are different targets."
+    "example": "The first scoring run worked. What evidence tells us the system stays reliable as data and customers change?",
+    "takeaway": "Exposure grows only as evidence arrives.",
+    "source": "Breck et al., infra. tests 6–7 · Nazir et al., §4.1 · Proposed bank release design",
+    "extra": "The staged rollout is a proposed teaching design. Reusing an older batch requires valid population, feature meaning, freshness and campaign eligibility. Otherwise pause use or produce a new validated batch with the compatible approved model. Model rollback does not repair the later CRM input fault.",
+    "id": "release-plan-shadow-canary-rollback",
+    "example_label": "Next · Simon"
   }
 ]

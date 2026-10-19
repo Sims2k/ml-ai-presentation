@@ -1,0 +1,413 @@
+{
+  "source_url": "https://docs.google.com/presentation/d/1NgN659orEULtbaXV7GuBsRuFfu6SYn1wQi96DUKb-TA/edit",
+  "reviewed": "2026-10-19",
+  "stored_slides": 58,
+  "visible_slides": 54,
+  "skipped_google_ids": [
+    "p12",
+    "p13",
+    "p14",
+    "p15"
+  ],
+  "decisions": [
+    "Keep HTML design and keyboard builds",
+    "Use visible Google content and order",
+    "Matheus owns architectural tactics, quality and tools",
+    "Clarify citations and model identities; preserve existing speaker prose"
+  ],
+  "new_or_replaced_slides": [
+    {
+      "title": "What a test can’t tell us today",
+      "lead": "A software test checks the run today; only mature labels can check the prediction.",
+      "owner": "Ricardo",
+      "bullets": [
+        "<b>Today:</b> tests show the job runs, inputs are valid, and scores are saved.",
+        "<b>Not today:</b> whether Ana’s 0.70 is right. Her 30-day outcome is unknown.",
+        "<b>Later:</b> link labels to the scores, then measure precision and recall.",
+        "<b>Fixed model:</b> same inputs, same score. The uncertainty is predictive."
+      ],
+      "example": "Ana / C042: scored 0.70 today. Only churn labels, available after the 30-day window, show whether she left.",
+      "takeaway": "The bank need not wait 30 days to catch an incompatible input.",
+      "source": "Kalinowski, §13.2 · Bass, §14.1–14.1.4",
+      "google_object_id": "h30c2ac6e0e560e5c_0_124"
+    },
+    {
+      "title": "How do predictions reach the business?",
+      "lead": "It depends on when the decision needs them: offline (batch) or real-time, synchronously or asynchronously.",
+      "owner": "Tomás",
+      "bullets": [
+        "<b>Offline:</b> historical data in bulk; results are read later.",
+        "<b>Real-time:</b> current context plus history, per request.",
+        "<b>Location:</b> central, embedded or edge is a separate axis.",
+        "<b>Ask first:</b> does the decision need real-time? (Nazir, I12)"
+      ],
+      "example": "Ana's risk is needed only before the monthly campaign: a central batch suffices. Edge adds rollout cost, no benefit.",
+      "takeaway": "Churn needs none of the online paths: monthly, central, batch.",
+      "source": "Kalinowski, §13.3, Fig. 13.2–13.4; supporting Ch. 12 · Nazir et al., §4.3 (I12)",
+      "google_object_id": "h3ee7fd963849d19f_0_2"
+    },
+    {
+      "title": "Batch path: Ana's score on day D0",
+      "lead": "A complete, validated batch must be published before the campaign deadline.",
+      "owner": "Tomás",
+      "bullets": [
+        "<b>Snapshot:</b> define population, cutoff, and source freshness.",
+        "<b>Validate:</b> reject incompatible inputs before scoring.",
+        "<b>Reconcile:</b> account for written, rejected, withheld records.",
+        "<b>Publish:</b> expose the validated batch under a consumer contract."
+      ],
+      "example": "Ana's 0.70 is stored with M1, D0 and the feature version; her 30-day outcome is still unknown on D0.",
+      "takeaway": "Saving batch scores at scale is a reported challenge (Nazir, I6).",
+      "source": "Bass, §14.1.4 · Kalinowski, §13.3, Fig. 13.2 · Nazir et al., §3.2 (I6)",
+      "google_object_id": "h3ee7fd963849d19f_0_119"
+    },
+    {
+      "title": "Online serving: the fraud contrast",
+      "lead": "Same domain, different timing needs. A comparison, not a new part of the churn system.",
+      "owner": "Tomás",
+      "bullets": [
+        "<b>Model time:</b> smaller models, leaner code, GPU/TPU at a cost.",
+        "<b>System time:</b> fast input lookup; precomputed, cached scores.",
+        "<b>Inputs:</b> the back-end usually fetches features the caller lacks.",
+        "<b>Async:</b> idempotent consumers, lag and failed-message handling."
+      ],
+      "example": "Fraud blocking is synchronous, fraud alerts asynchronous. Churn stays batch; CRM can read Ana's cached score.",
+      "takeaway": "A fast model does not guarantee a fast end-to-end service.",
+      "source": "Kalinowski, §13.3–13.4, Fig. 13.3–13.4 · Fraud and CRM cases are teaching comparisons",
+      "google_object_id": "h3ee7fd963849d19f_0_206"
+    },
+    {
+      "title": "Package the whole compatible set",
+      "lead": "A deployable release contains more than the learned model file.",
+      "owner": "Tomás",
+      "bullets": [
+        "<b>Model artifact:</b> the learned parameters and required format.",
+        "<b>Runtime:</b> dependencies, preparation code, environment.",
+        "<b>Contract:</b> feature meaning, types, missingness, cutoff.",
+        "<b>Configuration:</b> scoring population and execution settings."
+      ],
+      "example": "M1 ships with the exact feature meaning it was trained on, such as the 7-day login count used to score C042.",
+      "takeaway": "Smoke-test in the serving environment before exposure (Breck, infra. 6).",
+      "source": "Bass, §14.1.4 · Kalinowski, §13.3 · Nazir et al., §4.1, Table 12 · Breck et al., infra. test 6",
+      "google_object_id": "h3ee7fd963849d19f_0_323"
+    },
+    {
+      "title": "Shadow deployment: observe without acting",
+      "lead": "A candidate scores real inputs while the approved model remains the action source.",
+      "owner": "Tomás",
+      "bullets": [
+        "Run in parallel against the same production snapshot.",
+        "<b>Record identity:</b> label M1 and M2 outputs explicitly.",
+        "Compare operational behavior and score differences first.",
+        "Wait for labels to compare 30-day churn quality."
+      ],
+      "example": "Only M1's 0.70 for Ana is eligible for campaign use; M2's shadow score is logged and cannot create a second offer.",
+      "takeaway": "Shadow checks observation, not the business effect of acting on the candidate.",
+      "source": "Bass, §14.1.4 · Bank teaching application of the group release plan",
+      "google_object_id": "h3ee7fd963849d19f_0_400"
+    },
+    {
+      "title": "Release strategies: what each proves",
+      "lead": "Shadow, canary and A/B tests answer different questions on different clocks.",
+      "owner": "Tomás",
+      "bullets": [
+        "<b>Canary:</b> limit exposure; set stop rules and a rollback.",
+        "<b>A/B test:</b> state what changes: model, policy or offer.",
+        "<b>Confounding:</b> changing model and offer together hides both.",
+        "<b>Labels:</b> D0 success cannot prove 30-day quality."
+      ],
+      "example": "Ask 'does M2 rank churn risk better than M1?' separately from 'does offer B retain more customers than offer A?'",
+      "takeaway": "A canary controls risk; it is not automatically an experiment.",
+      "source": "Breck et al., infra. tests 6–7 · Bank teaching application",
+      "google_object_id": "h3ee7fd963849d19f_0_461"
+    },
+    {
+      "title": "Release plan: shadow, canary, rollback",
+      "lead": "Proposed decision: evidence arrives on two clocks, so exposure grows in steps.",
+      "owner": "Tomás",
+      "bullets": [
+        "<b>Decision:</b> central monthly batch; shadow M2, then canary.",
+        "<b>Trade-off:</b> one or two extra cycles before M2 is fully used.",
+        "<b>Rollback:</b> reuse the last validated M1 batch only while it remains eligible and fresh.",
+        "<b>Record:</b> link model, features, config and approval (Matheus)."
+      ],
+      "example": "The first scoring run worked. What evidence tells us the system stays reliable as data and customers change?",
+      "takeaway": "Exposure grows only as evidence arrives.",
+      "source": "Breck et al., infra. tests 6–7 · Nazir et al., §4.1 · Proposed bank release design",
+      "google_object_id": "h3ee7fd963849d19f_0_513",
+      "extra": "The staged rollout is a proposed teaching design. Reusing an older batch requires valid population, feature meaning, freshness and campaign eligibility. Otherwise pause use or produce a new validated batch with the compatible approved model. Model rollback does not repair the later CRM input fault."
+    }
+  ],
+  "visible_order": [
+    {
+      "number": 1,
+      "google_object_id": "p1",
+      "title": "ML Architecture"
+    },
+    {
+      "number": 2,
+      "google_object_id": "p2",
+      "title": "Two blocks, one shared bank case"
+    },
+    {
+      "number": 3,
+      "google_object_id": "p5",
+      "title": "Two lifecycles, one compatible system"
+    },
+    {
+      "number": 4,
+      "google_object_id": "p3",
+      "title": "The bank case: features, labels, and predictions"
+    },
+    {
+      "number": 5,
+      "google_object_id": "h30c2ac6e0e560e5c_0_124",
+      "title": "What a test can’t tell us today"
+    },
+    {
+      "number": 6,
+      "google_object_id": "p4",
+      "title": "From a trained model to an ML system"
+    },
+    {
+      "number": 7,
+      "google_object_id": "p6",
+      "title": "Prediction and business action are separate"
+    },
+    {
+      "number": 8,
+      "google_object_id": "h3ee7fd963849d19f_0_2",
+      "title": "How do predictions reach the business?"
+    },
+    {
+      "number": 9,
+      "google_object_id": "h3ee7fd963849d19f_0_119",
+      "title": "Batch path: Ana's score on day D0"
+    },
+    {
+      "number": 10,
+      "google_object_id": "h3ee7fd963849d19f_0_206",
+      "title": "Online serving: the fraud contrast"
+    },
+    {
+      "number": 11,
+      "google_object_id": "h3ee7fd963849d19f_0_323",
+      "title": "Package the whole compatible set"
+    },
+    {
+      "number": 12,
+      "google_object_id": "h3ee7fd963849d19f_0_400",
+      "title": "Shadow deployment: observe without acting"
+    },
+    {
+      "number": 13,
+      "google_object_id": "h3ee7fd963849d19f_0_461",
+      "title": "Release strategies: what each proves"
+    },
+    {
+      "number": 14,
+      "google_object_id": "h3ee7fd963849d19f_0_513",
+      "title": "Release plan: shadow, canary, rollback"
+    },
+    {
+      "number": 15,
+      "google_object_id": "p16",
+      "title": "How the world changes over time"
+    },
+    {
+      "number": 16,
+      "google_object_id": "p17",
+      "title": "Monitoring: observe more than model accuracy"
+    },
+    {
+      "number": 17,
+      "google_object_id": "p18",
+      "title": "Monitoring architecture: from signal to response"
+    },
+    {
+      "number": 18,
+      "google_object_id": "p19",
+      "title": "Data drift: a different customer mix"
+    },
+    {
+      "number": 19,
+      "google_object_id": "p20",
+      "title": "Concept drift: a different relationship"
+    },
+    {
+      "number": 20,
+      "google_object_id": "p21",
+      "title": "Concept drift: how M1 starts making errors"
+    },
+    {
+      "number": 21,
+      "google_object_id": "p22",
+      "title": "Input checks now; quality checks later"
+    },
+    {
+      "number": 22,
+      "google_object_id": "p23",
+      "title": "Drift detection: methods and their purpose"
+    },
+    {
+      "number": 23,
+      "google_object_id": "p24",
+      "title": "Data-quality faults and training-serving skew"
+    },
+    {
+      "number": 24,
+      "google_object_id": "p25",
+      "title": "A publication gate contains a bad batch"
+    },
+    {
+      "number": 25,
+      "google_object_id": "p26",
+      "title": "Respond: investigate, contain, repair, verify"
+    },
+    {
+      "number": 26,
+      "google_object_id": "p27",
+      "title": "Hidden dependencies create technical debt"
+    },
+    {
+      "number": 27,
+      "google_object_id": "p28",
+      "title": "Make the feature contract explicit"
+    },
+    {
+      "number": 28,
+      "google_object_id": "p29",
+      "title": "Separate responsibilities where change happens"
+    },
+    {
+      "number": 29,
+      "google_object_id": "p30",
+      "title": "Pipeline pattern: order the responsibilities"
+    },
+    {
+      "number": 30,
+      "google_object_id": "p31",
+      "title": "Strategy pattern: replace one implementation"
+    },
+    {
+      "number": 31,
+      "google_object_id": "p32",
+      "title": "Observer pattern: notify, then investigate"
+    },
+    {
+      "number": 32,
+      "google_object_id": "p33",
+      "title": "Version the system, not only the model"
+    },
+    {
+      "number": 33,
+      "google_object_id": "p34",
+      "title": "Modules or services? Make the trade-off"
+    },
+    {
+      "number": 34,
+      "google_object_id": "p35",
+      "title": "Architectural tactics connect concerns to controls"
+    },
+    {
+      "number": 35,
+      "google_object_id": "p36",
+      "title": "CI, CD, and CT need different evidence"
+    },
+    {
+      "number": 36,
+      "google_object_id": "p37",
+      "title": "Candidate training ends before promotion"
+    },
+    {
+      "number": 37,
+      "google_object_id": "p38",
+      "title": "Repair the input path; retain M1 when appropriate"
+    },
+    {
+      "number": 38,
+      "google_object_id": "p39",
+      "title": "Trace the prediction and the decision"
+    },
+    {
+      "number": 39,
+      "google_object_id": "p40",
+      "title": "Recovery restores a compatible path"
+    },
+    {
+      "number": 40,
+      "google_object_id": "p41",
+      "title": "Security threats depend on attacker access"
+    },
+    {
+      "number": 41,
+      "google_object_id": "p42",
+      "title": "Enforce access at the resource boundary"
+    },
+    {
+      "number": 42,
+      "google_object_id": "p43",
+      "title": "Least privilege follows responsibilities"
+    },
+    {
+      "number": 43,
+      "google_object_id": "p44",
+      "title": "Privacy: expose what each role needs"
+    },
+    {
+      "number": 44,
+      "google_object_id": "p45",
+      "title": "Privacy techniques have specific limits"
+    },
+    {
+      "number": 45,
+      "google_object_id": "p46",
+      "title": "Use the quality checklist as a review tool"
+    },
+    {
+      "number": 46,
+      "google_object_id": "p47",
+      "title": "Predictive quality and system performance"
+    },
+    {
+      "number": 47,
+      "google_object_id": "p48",
+      "title": "Robustness: invalid, unfamiliar, or ordinary?"
+    },
+    {
+      "number": 48,
+      "google_object_id": "p49",
+      "title": "Explainability and auditability differ"
+    },
+    {
+      "number": 49,
+      "google_object_id": "p50",
+      "title": "Fairness: prediction versus treatment"
+    },
+    {
+      "number": 50,
+      "google_object_id": "p51",
+      "title": "Airflow: make workflow dependencies visible"
+    },
+    {
+      "number": 51,
+      "google_object_id": "p52",
+      "title": "MLflow: connect experiments and artifacts"
+    },
+    {
+      "number": 52,
+      "google_object_id": "p53",
+      "title": "Validation and drift reports support diagnosis"
+    },
+    {
+      "number": 53,
+      "google_object_id": "p54",
+      "title": "ML architecture connects five responsibilities"
+    },
+    {
+      "number": 54,
+      "google_object_id": "p55",
+      "title": "Sources and adaptation boundaries"
+    }
+  ]
+}

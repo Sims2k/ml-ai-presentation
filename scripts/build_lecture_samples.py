@@ -16,6 +16,7 @@ BASE = (ROOT / 'theme/viewport-base.css').read_text()
 MOTION = (ROOT / 'theme/diagram-motion.js').read_text()
 
 def text(x, y, value, cls='node-title', anchor='start'):
+    value={'Approved M1':'Approved model (M1)', 'Candidate M2':'Candidate model (M2)'}.get(value,value)
     return f'<text x="{x}" y="{y}" class="{cls}" text-anchor="{anchor}">{esc(value)}</text>'
 
 def group(body, step, label):

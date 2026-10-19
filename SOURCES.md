@@ -15,6 +15,12 @@
   SP 800-226 (differential privacy assumptions).
 - Krawczyk & Cano (2018), Figure 2: original temporal drift illustration;
   see THIRD_PARTY.md for the supplied link and retrieval provenance.
+- SciPy, `ks_2samp` reference: two-sample KS interpretation and continuous-input
+  assumptions, https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ks_2samp.html .
+  This supports the short speaker-note caveat about discrete counts and ties.
+
+Slide footers cite the underlying readings and identify teaching adaptations.
+Personal study notes are preparation material, not cited as primary sources.
 
 These anchors were established during the original preparation; the visual
 revision does not claim new complete reads of all books or papers.

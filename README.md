@@ -1,13 +1,13 @@
 # ML / AI architecture presentation
 
 English lecture for a software engineering master's class. The Day 1 deck uses
-one bank customer-churn case. It includes 55 slides, separate full-width drift
+one bank customer-churn case. It includes 54 slides, separate full-width drift
 figures, named presenters, a slide-aligned presenter guide, and keyboard builds.
 
 - [Public review](https://agentbox.tail289ef2.ts.net:8443/ml-ai-presentation/)
 - [Slides](docs/presentation.html) · [PDF](docs/presentation.pdf)
 - [Presenter guide](docs/presenter-guide.pdf)
-- [Speaker notes](docs/speaker-notes.pdf) — one page per slide: script, slide image, delivery cues
+- [Speaker notes](docs/speaker-notes.pdf) — slide-aligned scripts, slide images, and delivery cues
 
 The public review does **not** require a Tailnet connection. The HTML download is
 self-contained and works offline.
@@ -20,13 +20,13 @@ self-contained and works offline.
 | Tomás | `slides/02-tomas-serving.json` |
 | Simon | `slides/03-simon-monitoring.json` |
 | Luca | `slides/04-luca-design.json` |
-| Architecture owner TBD | `slides/05-tbd-architecture.json` |
+| Matheus · architecture | `slides/05-tbd-architecture.json` |
 | Matheus | `slides/06-matheus-mlops.json` |
 | Simon + Matheus | `slides/07-simon-matheus-security.json` |
-| Quality owner TBD | `slides/08-tbd-quality.json` |
-| Tools owner TBD | `slides/09-tbd-tools.json` |
+| Matheus · quality | `slides/08-tbd-quality.json` |
+| Matheus · tools | `slides/09-tbd-tools.json` |
 
-Change `title`, `lead`, `bullets`, `example`, `takeaway`, or `owner` in your file.
+Change `title`, `lead`, `bullets`, `example`, `takeaway`, `source`, or `owner` in your file.
 Keep each `id` unchanged. `<b>...</b>` marks a short emphasized phrase.
 Diagram-led slides keep their bullets in the presenter guide instead of repeating
 them beside the figure.
@@ -71,19 +71,27 @@ LaTeX toolchain CI does not install). To regenerate it after editing slide
 content, install XeLaTeX (`texlive-xetex` or similar) and run:
 
 ```sh
-npm run build   # refreshes outputs/ml-architecture-lecture.html
-# screenshot each slide to previews/speaker-notes/slide-NN.png, 1920x1080, using
-# Playwright against outputs/ml-architecture-lecture.html?motion=static
-# (see scripts/verify_lecture_deck.cjs for the same page.goto/deck.show pattern)
+npm run build
+npm test        # verifies the deck, exports PDFs, and captures the current slide images
 python3 scripts/build_speaker_notes.py
-xelatex -interaction=nonstopmode -output-directory=outputs src/speaker-notes.tex
-xelatex -interaction=nonstopmode -output-directory=outputs src/speaker-notes.tex
-npm run site    # copies outputs/speaker-notes.pdf into docs/
+xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs src/speaker-notes.tex
+xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs src/speaker-notes.tex
+npm run site
 ```
 
-`scripts/build_speaker_notes.py` reads its script text directly from
-`lecture_content.build_lecture()`, so the notes always match the current slide
-content once you regenerate both the screenshots and the deck.
+Slide content comes from `lecture_content.build_lecture()` and the presenter JSON
+files. Spoken prose is authored separately in `scripts/speaker_scripts.py` and
+must be updated when a slide changes. The notes generator groups that prose into
+short bulleted paragraphs and adds visual/build/handoff cues. It uses the fresh
+screenshots produced by `npm test` in `previews/lecture-full/`.
+
+The 19 October content merge follows the 54 visible slides in the colleagues’
+Google review deck. `src/colleague-review.json` records the changed content and
+skipped originals; it is provenance, not a second editable content source.
+Ricardo’s opening order and Tomás’s seven-slide serving section follow that
+review. Matheus owns architecture tactics, quality and tools. Names containing
+`tbd` in JSON filenames are retained for stable colleague links; assignments
+inside those files and on slides are current.
 
 ## Publishing
 
@@ -99,8 +107,7 @@ pull, build, test, and refresh the public server checkout.
 ## Content and attribution
 
 See [SOURCES.md](SOURCES.md) and [THIRD_PARTY.md](THIRD_PARTY.md). The monitoring
-section opens with a native diagram redrawn after the Krawczyk/Cano figure
-requested by Simon (`scripts/drift_visuals.py`), not an embedded copy of the
-original bitmap. No library PDFs, Zotero credentials, server configuration, or
+section opens with the attributed original Krawczyk/Cano temporal-drift figure
+and presenter-approved bank illustrations (`scripts/drift_visuals.py`). No library PDFs, Zotero credentials, server configuration, or
 local session files are included. Banking records, outcomes, incidents and tool
 records are teaching illustrations, not reported experiments.

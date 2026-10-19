@@ -12,7 +12,7 @@ def apply_overrides(slides):
             if key not in by_id: raise ValueError(f"Unknown slide {key} in {path.name}")
             if key in seen: raise ValueError(f"Duplicate slide {key}")
             seen.add(key)
-            for field in ('title','lead','owner','bullets','example','takeaway','extra'):
+            for field in ('title','lead','owner','bullets','example','takeaway','extra','source','example_label'):
                 if field in entry:by_id[key][field]=entry[field]
             if not 1<=len(by_id[key]['bullets'])<=5:raise ValueError(f"Use 1–5 bullets for {key}")
     return slides

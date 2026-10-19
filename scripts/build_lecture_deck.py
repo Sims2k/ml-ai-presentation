@@ -5,6 +5,7 @@ import re,json,subprocess
 from build_lecture_samples import FONTS,BASE,MOTION,CSS,JS,controls
 from lecture_content import build_lecture
 from drift_visuals import DRIFT_CSS
+from visual_marks import tool_mark,concept_mark,MARK_CSS
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'outputs'
 DIAGRAMS=ROOT/'assets/diagrams/lecture-full';DIAGRAMS.mkdir(parents=True,exist_ok=True)
@@ -31,6 +32,7 @@ button:focus-visible{outline:3px solid #a62c40;outline-offset:2px}
 @media print{#contents{display:none!important}}
 '''
 EXTRA+=DRIFT_CSS
+EXTRA+=MARK_CSS
 pages=[];manifest=[];guide=[]
 old=(ROOT/'src/presenter-guide-source.md').read_text();pieces=re.split(r'^### (\d+)\. (.+)$',old,flags=re.M)
 notes={int(pieces[i]):pieces[i+2].strip().split('\n## ')[0] for i in range(1,len(pieces),3)}
@@ -53,6 +55,8 @@ The missing CRM feature is a data-quality fault, not automatically concept drift
 The complete failed B017 batch is held before publication. A separately validated
 repaired execution B017-R1 can retain M1. Training and production promotion are
 separate decisions. Prediction and business action remain separate responsibilities.
+M1 identifies the current approved model; M2 identifies a candidate replacement.
+The identifiers stay attached to those artifacts even if their approval status changes.
 
 ## Presenting and editing
 
@@ -71,23 +75,23 @@ uses complete diagrams. No visible animation-playback controls are shown.
 | Deployment and serving | Tomás |
 | Monitoring and degradation | Simon |
 | Design decisions | Luca |
-| Architectural tactics | TBD |
+| Architectural tactics | Matheus |
 | DevOps/MLOps | Matheus |
 | Security and privacy | Simon + Matheus |
-| Quality checklist | TBD |
-| Practical tools | TBD |
+| Quality checklist | Matheus |
+| Practical tools | Matheus |
 
-Unassigned responsibilities remain explicit; this document does not invent new
-speaker assignments. Detailed statistical derivations remain in Simon's personal
-study notes, rather than the main lecture.
+Assignments follow the colleagues’ reviewed Google deck. Statistical derivations
+are outside the scope of this lecture.
 ''')
 
 for n,s in enumerate(slides,1):
     visual=s['visual'];count=0
     if callable(visual):visual,count=visual()
     title=escape(s['title']);owner=escape(s['owner']);section=escape(s['section'])
+    mark=tool_mark(s);icon=concept_mark(s)
     if n==1:
-        inner=f'''<header class="masthead"><span class="course">SOFTWARE ENGINEERING MASTERCLASS</span><span>20 October 2026</span></header><div class="heading"><p class="eyebrow">Architecture of ML-enabled systems</p><h1>ML<br>Architecture.</h1><p class="subtitle">From prediction to production.<br>A bank customer-churn case.</p></div><aside class="cover-side">A model becomes useful<br>inside a system.<p>Data and feature pipelines.<br>Serving and monitoring.<br>Controlled change and quality.</p></aside><div class="cover-speakers"><small>PRESENTERS</small>Ricardo · Tomás · Simon · Luca · Matheus</div><footer><span>Based on the group outline, assigned readings, and shared study notes.</span><span class="folio">01 / {len(slides):02d}</span></footer>'''
+        inner=f'''<header class="masthead"><span class="course">SOFTWARE ENGINEERING MASTERCLASS</span><span>20 October 2026</span></header><div class="heading"><p class="eyebrow">Architecture of ML-enabled systems</p><h1>ML<br>Architecture.</h1><p class="subtitle">From prediction to production.<br>A bank customer-churn case.</p></div><aside class="cover-side">A model becomes useful<br>inside a system.<p>Data and feature pipelines.<br>Serving and monitoring.<br>Controlled change and quality.</p></aside><div class="cover-speakers"><small>PRESENTERS</small>Ricardo · Tomás · Simon · Luca · Matheus</div><footer><span>Based on the assigned readings and the bank customer-churn case.</span><span class="folio">01 / {len(slides):02d}</span></footer>'''
     else:
         is_svg=visual.startswith('<svg')
         if is_svg:
@@ -96,7 +100,7 @@ for n,s in enumerate(slides,1):
             standalone=f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{title}</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600&amp;family=Source+Sans+3:wght@400;600&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap"><style>{CSS}{DRIFT_CSS} body{{background:#faf9f7;margin:24px;overflow:auto}}main{{max-width:1776px;margin:auto}}h1{{font-size:48px}}figure{{transform:none;height:auto}}.diagram-container{{overflow-x:auto}}svg{{min-width:{1776 if s.get('layout')=='wide' else 1120}px;width:{1776 if s.get('layout')=='wide' else 1120}px}}figure{{width:{1776 if s.get('layout')=='wide' else 1120}px}}</style></head><body><main><h1>{title}</h1><div class="diagram-container">{visual}</div><noscript><p>The complete static diagram is shown without JavaScript.</p></noscript><p>{escape(s["source"])}</p></main><script data-diagram-controls>{MOTION}</script></body></html>'
             (DIAGRAMS/f'{slug}.html').write_text(standalone)
         bullets=''.join(f'<li data-edit>{v}</li>' for v in s['bullets'])
-        inner=f'''<header class="masthead"><span class="course">ML ARCHITECTURE</span><span class="speaker">Presenter: <b>{owner}</b></span></header><div class="heading"><p class="eyebrow">{section}</p><h1 data-edit>{title}</h1><p class="subtitle" data-edit>{escape(s['lead'])}</p></div><div class="body-grid"><div class="diagram-column">{visual}</div><aside class="explanation"><h2>Key concepts</h2><ul>{bullets}</ul><p class="takeaway" data-edit>{escape(s['takeaway'])}</p></aside></div><div class="example"><span class="example-label">Bank example</span><p data-edit>{escape(s['example'])}</p></div><footer><span>{escape(s['source'])}</span><span class="folio">{n:02d} / {len(slides):02d}</span></footer>'''
+        inner=f'''<header class="masthead"><span class="course">ML ARCHITECTURE{mark}</span><span class="speaker">Presenter: <b>{owner}</b></span></header><div class="heading"><p class="eyebrow">{section}</p><h1 data-edit>{title}</h1><p class="subtitle" data-edit>{escape(s['lead'])}</p></div><div class="body-grid"><div class="diagram-column">{visual}</div><aside class="explanation"><h2>{icon}Key concepts</h2><ul>{bullets}</ul><p class="takeaway" data-edit>{escape(s['takeaway'])}</p></aside></div><div class="example"><span class="example-label">{escape(s.get("example_label","Bank example"))}</span><p data-edit>{escape(s['example'])}</p></div><footer><span>{escape(s['source'])}</span><span class="folio">{n:02d} / {len(slides):02d}</span></footer>'''
     if s.get('layout')=='wide':
         inner=re.sub(r'<aside class="explanation">.*?</aside>', '', inner, flags=re.S)
     classes=('wide ' if s.get('layout')=='wide' else '')+('cover ' if n==1 else '')+('agenda ' if n==2 else '')+('long-title ' if len(s['title'])>48 else '')+('active visible' if n==1 else '')
@@ -130,7 +134,7 @@ NAV=r'''
 /* === KEYBOARD CONTENTS: HIDDEN OUTSIDE REVIEW === */
 const contents=document.getElementById('contents');let contentsOrigin=null;
 // Text edits persist only in this browser; the download contains the edited text.
-const editStorageKey='ml-architecture-lecture-v2';
+const editStorageKey='ml-architecture-lecture-v3';
 try{const edits=JSON.parse(localStorage.getItem(editStorageKey)||'{}');document.querySelectorAll('[data-edit]').forEach(e=>{if(typeof edits[e.id]==='string')e.textContent=edits[e.id];});}catch{}
 document.addEventListener('input',e=>{if(!e.target.matches('[data-edit]'))return;try{const edits=JSON.parse(localStorage.getItem(editStorageKey)||'{}');edits[e.target.id]=e.target.textContent;localStorage.setItem(editStorageKey,JSON.stringify(edits));}catch{}});
 function toggleContents(){const open=contents.hidden;contents.hidden=!open;if(open){contentsOrigin=document.activeElement;contents.querySelector('button').focus();}else if(contentsOrigin&&contentsOrigin!==document.body){contentsOrigin.focus();}else{document.activeElement.blur();}}

@@ -26,3 +26,16 @@ Public review updates: GitHub Pages deploys after main changes only if Pages has
 been enabled by the repository owner. The existing Funnel review is a separate
 server checkout and needs a pull/build/test refresh. Actions artifacts are an
 alternative way to review a branch's generated site.
+
+## Speaker notes and citations
+
+Preserve the authored prose in `scripts/speaker_scripts.py`; keep explanations
+aligned when editing a slide. Paragraph breaks are respected by the notes
+builder. Use short `<b>...</b>` cues where they aid reading. Cite the original
+book, paper or official technical documentation in `source`; personal study
+notes are preparation material and must not appear as slide reading anchors.
+M1 identifies the current approved artifact and M2 the candidate artifact; use
+plain model roles alongside these identifiers when introducing them.
+
+Official tool logos and Lucide icons live in `assets/marks/`. Preserve the
+sources manifest and license notices. The HTML embeds assets for offline use.

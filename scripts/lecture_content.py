@@ -1,7 +1,7 @@
 """Concept-first English lecture, grounded in the group outline and study notes.
 
 Bank records, scores, release labels, incidents and diagrams are teaching designs.
-No real bank result or executed tool run is claimed. Speaker TBDs stay explicit.
+No real bank result or executed tool run is claimed. Ownership follows the colleague review.
 """
 from lecture_full_visuals import *
 from drift_visuals import temporal_reference, input_distribution, concept_relationship, concept_errors
@@ -16,15 +16,15 @@ def build_lecture():
         slides.append(dict(title=title,section=section,owner=owner,lead=lead,visual=visual,bullets=bullets,example=example,takeaway=takeaway,source=source,ref=ref,extra=extra))
     F='Block 1 / Foundations';S='Block 1 / Deployment & serving';M='Block 1 / Monitoring & degradation';D='Block 1 / Design decisions'
     A='Block 2 / Architectural tactics';O='Block 2 / DevOps & MLOps';SEC='Block 2 / Security & privacy';Q='Block 2 / Quality concerns';T='Block 2 / Practical tools'
-    BASS='Bass, Ch. 14';K='Kalinowski, Ch. 13–14';MON='Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5';DES='Kalinowski, Ch. 14 · Nazir, §§5–6';OPS='Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)'
-    SECREF='Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2';QUALITY='Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14'
+    BASS='Bass, Ch. 14';K='Kalinowski, Ch. 13–14';MON='Bass, Ch. 11 / §14.1.5';DES='Kalinowski, Ch. 14 · Nazir et al. (2024)';OPS='Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)'
+    SECREF='Bass, Ch. 9–10 / §14.2';QUALITY='Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14'
 
     add('ML Architecture',F,'All presenters','From a trained model to a maintainable, observable, governed system.',None,
         ['<b>Software engineering</b> for systems that depend on learned behavior.', '<b>One shared case:</b> bank customer-churn prediction.', '<b>Two blocks:</b> model-to-system foundations, then architecture and quality.', '<b>Five presenters:</b> Ricardo, Tomás, Simon, Luca, and Matheus.'],
         'Bank churn supplies the shared case. Examples, records, schedules, and incidents are illustrative.',
         'A useful model needs an engineered system around it.',BASS+' · '+K,1)
     add('Two blocks, one shared bank case',F,'All presenters','Follow the group’s topic outline; use the case to connect each architectural decision.',cover_map,
-        ['<b>Block 1:</b> lifecycle, serving, monitoring, and design decisions.', '<b>Block 2:</b> tactics, MLOps, security, privacy, and quality.', '<b>Concept first:</b> explain the mechanism, then apply it to churn.', '<b>Named handoffs:</b> each section identifies its presenter; unassigned topics remain TBD.'],
+        ['<b>Block 1:</b> lifecycle, serving, monitoring, and design decisions.', '<b>Block 2:</b> tactics, MLOps, security, privacy, and quality.', '<b>Concept first:</b> explain the mechanism, then apply it to churn.', '<b>Named handoffs:</b> each section identifies its presenter; the agenda matches the agreed presenters.'],
         'The same source → feature → model → score → policy path returns throughout the lecture.',
         'Each architectural decision connects predictive behavior to a system responsibility.','Group discussion document · Agreed lecture redesign',6)
     add('The bank case: features, labels, and predictions',F,'Ricardo','A few ML terms connect familiar application data to a learned risk estimate.',
@@ -33,7 +33,7 @@ def build_lecture():
             [('DATA','Events and transactions','are source records.'),('FEATURE','A prepared input has','a precise meaning.'),('LABEL','Observed churn comes','after the target window.')],footer='Ana / C042 and all values are illustrative. A feature value does not prove intent.'),
         ['<b>Feature:</b> a prepared input, such as logins during the previous seven days.', '<b>Label:</b> the observed churn outcome used for training and later evaluation.', '<b>Prediction:</b> an estimate produced before the customer’s future outcome is known.', '<b>Training vs. inference:</b> learn from earlier examples; apply the approved model to current inputs.'],
         'Ana / C042: logins fall from 7 to 1; the illustrative score is 0.70. Her next-30-day outcome is unknown.',
-        'Lower activity is evidence for a model input, not proof that a customer will leave.',BASS+' · Simon’s notes, §1',2)
+        'Lower activity is evidence for a model input, not proof that a customer will leave.',BASS,2)
     add('From a trained model to an ML system',F,'Ricardo','Architecture connects learning, production data, operational controls, and business decisions.',architecture,
         ['<b>Training</b> uses historical features and labels to build and evaluate candidates.', '<b>Production</b> validates current data and applies an approved, compatible model.', '<b>Stored scores</b> link predictions to customer, time, input evidence, and versions.', '<b>Business policy</b> determines the permitted action; it remains separate from the score.'],
         'The bank computes a monthly batch of churn scores, then applies campaign eligibility and contact rules.',
@@ -43,70 +43,74 @@ def build_lecture():
             ('SOFTWARE LIFECYCLE',[item('Change code','Connector or policy'),item('Integrate + test','Behavior + contracts'),item('Deliver release','Compatible runtime',role='business')]),
             ('DATA / MODEL LIFECYCLE',[item('Curate examples','Features + labels'),item('Train + evaluate','Candidate evidence',role='model'),item('Approve candidate','Versioned artifact',role='model')])],footer='Coordinate code, data meaning, model, and configuration; neither path is sufficient alone.'),
         ['<b>Software changes</b> can be checked through code, contract, and integration tests.', '<b>Model development</b> also needs representative data, suitable labels, and evaluation.', '<b>Feedback differs:</b> execution checks may be immediate; churn labels arrive later.', '<b>Co-versioning</b> links changes across code, feature meaning, model, and configuration.'],
-        'A CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions.',
-        'A passing software test does not establish future predictive quality.',K+' · Bass, Ch. 11 · Simon’s notes, §1',5)
+        'A CRM connector can change while the current approved model (M1) stays fixed; changed inputs can still alter scores.',
+        'A passing software test does not establish future predictive quality.',K+' · Bass, Ch. 11',5)
+
+    add('What a test can’t tell us today',F,'Ricardo','A software test checks the run today; only mature labels can check the prediction.',
+        lambda:lanes('tests-and-labels','Execution tests and future outcome evidence',[
+            ('SCORING DAY (D0)',[item('Job runs','Batch finishes on time'),item('Inputs valid','Features match contract'),item('Scores saved','Coverage reconciled',role='business')]),
+            ('AFTER THE 30-DAY WINDOW',[item('Label arrives','Observed churn'),item('Link to score','Original scoring date'),item('Evaluate','Precision, recall',role='model')])],footer='Ana’s score is operationally checked today; predictive quality needs mature outcomes across a cohort.'),
+        ['<b>Today:</b> tests show the job runs, inputs are valid, and scores are saved.', '<b>Not today:</b> whether Ana’s 0.70 is right. Her 30-day outcome is unknown.', '<b>Later:</b> link labels to the scores, then measure precision and recall.', '<b>Fixed model:</b> same inputs, same score. The uncertainty is predictive.'],
+        'Ana / C042: scored 0.70 today. Only churn labels, available after the 30-day window, show whether she left.',
+        'The bank need not wait 30 days to catch an incompatible input.','Kalinowski, §13.2 · Bass, §14.1–14.1.4',extra='')
+
     add('Prediction and business action are separate',F,'Ricardo','A model estimates risk. Business rules decide whether and how the bank may act.',
         policy_decision,
         ['<b>Score:</b> estimated churn risk, not a guaranteed outcome.', '<b>Policy:</b> preferences, eligibility, contact limits, and campaign budget.', '<b>Action:</b> an offer, another response, or no contact at all.', '<b>Separate evaluation:</b> predictive quality and the benefit of an offer are different questions.'],
         'Ana may have a high risk score and still receive no offer because contact preferences or policy prohibit it.',
         'A policy change should not require retraining the prediction model.',BASS+' · Teaching policy decomposition',3)
 
-    add('Serving patterns: when is a prediction needed?',S,'Tomás','Select the interaction pattern from the decision’s timing and failure behavior.',
-        lambda:__import__('build_lecture_samples').serving(),
-        ['<b>Batch:</b> compute many predictions; consumers read stored results later.', '<b>Synchronous:</b> the caller waits for a result during its request.', '<b>Asynchronous:</b> an event producer and consumer are decoupled through messaging.', '<b>Edge:</b> a deployment location, independent of prediction timing.'],
-        'The churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need.',
-        'Timing, location, and release strategy are separate choices.','Kalinowski, §13.3–13.4; supporting Ch. 12',8)
-    add('Batch serving: validate, score, publish',S,'Tomás','A complete validated batch must be available before its business deadline.',
+
+    add('How do predictions reach the business?',S,'Tomás','It depends on when the decision needs them: offline (batch) or real-time, synchronously or asynchronously.',
+        lambda:serving_comparison(),
+        ['<b>Offline:</b> historical data in bulk; results are read later.', '<b>Real-time:</b> current context plus history, per request.', '<b>Location:</b> central, embedded or edge is a separate axis.', '<b>Ask first:</b> does the decision need real-time? (Nazir, I12)'],
+        "Ana's risk is needed only before the monthly campaign: a central batch suffices. Edge adds rollout cost, no benefit.",
+        'Churn needs none of the online paths: monthly, central, batch.','Kalinowski, §13.3, Fig. 13.2–13.4; supporting Ch. 12 · Nazir et al., §4.3 (I12)',extra='')
+
+    add("Batch path: Ana's score on day D0",S,'Tomás','A complete, validated batch must be published before the campaign deadline.',
         lambda:sequence('batch-detail','Batch scoring with a publication gate',[
-            item('Snapshot + check','Fresh source snapshot','Population accounted'),item('Prepare + score','Compatible features','Approved M1','model'),item('Publish batch','Reconcile coverage','Campaign reads scores','business')],
-            [('INPUT GATE','Schema, freshness,','completeness, cutoff.'),('EXECUTION','Runtime, dependencies,','feature compatibility.'),('OUTPUT GATE','Version links, valid scores,','publication approval.')],footer='Account for the expected population; a successful final task alone is not a complete batch.'),
-        ['<b>Snapshot:</b> define population, cutoff, and required source freshness.', '<b>Validate:</b> reject incompatible inputs before scoring.', '<b>Reconcile:</b> account for written, rejected, and withheld records.', '<b>Publish:</b> expose a validated batch under a defined consumer contract.'],
-        'Monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners.',
-        'Optimize the whole batch deadline, not only per-record prediction speed.',BASS+' · Kalinowski, §13.3',7)
-    add('Synchronous serving: the caller waits',S,'Tomás','Prediction becomes part of the application’s response path.',
-        lambda:sequence('sync-detail','Synchronous request and prediction',[
-            item('Application','Request + identity','Input validation'),item('Prediction API','Fetch / compute inputs','Run compatible model','model'),item('Response','Score or explicit error','Caller handles failure','business')],
-            [('REQUEST','Enforce input contract','and access permissions.'),('LATENCY BUDGET','Include feature lookup,','model, and network.'),('FAILURE POLICY','Timeouts and fallbacks','must suit the action.')],footer='This is a pattern comparison, not a new online component in the monthly churn architecture.'),
-        ['<b>Response time</b> includes lookup, preparation, inference, and network work.', '<b>Availability</b> now affects the waiting application’s request.', '<b>Failure behavior</b> needs explicit timeout, error, and fallback policies.', '<b>Consistency</b> still requires compatible feature meanings and model versions.'],
-        'An immediate fraud check can justify this pattern. The monthly churn campaign does not require it.',
-        'A fast model does not guarantee a fast end-to-end service.','Kalinowski, §13.3–13.4 · Teaching comparison',8)
-    add('Asynchronous serving: decouple the work',S,'Tomás','Messages separate production, processing, and consumption of a prediction.',
-        lambda:sequence('async-detail','Asynchronous event-driven prediction',[
-            item('Producer','Publish customer event','Include event identity'),item('Queue + worker','Buffer and process','Compute prediction','model'),item('Consumer','Read result event','Deduplicate action','business')],
-            [('MESSAGE CONTRACT','Schema, ordering needs,','event and cutoff IDs.'),('RECOVERY','Retries, lag monitoring,','failed-message handling.'),('IDEMPOTENCY','Repeated delivery must','not duplicate an offer.')],footer='Asynchronous interaction can still have a strict deadline. Delivery guarantees require an explicit design.'),
-        ['<b>Buffering</b> absorbs bursts and supports independent processing.', '<b>Lag</b> and queue health become operational concerns.', '<b>Retries</b> require failure handling and idempotent processing.', '<b>Contracts</b> define message identity, timing, schema, and result interpretation.'],
-        'If a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts.',
-        'Decoupling adds messaging responsibilities; it does not remove timing requirements.','Kalinowski, §13.3 · Bank application is hypothetical',8)
-    add('Deployment location is a separate decision',S,'Tomás','Central, embedded, and edge deployments change operations and constraints.',
-        lambda:table_figure('locations','Timing and deployment location',['Location','Typical benefit','Architecture cost'],[
-            ('Central service / job','Shared governance and compute','Connectivity and centralized availability'),
-            ('Embedded application','Local integration and low call overhead','Coupled application/model releases'),
-            ('Edge device','Local response and offline operation','Resource limits, rollout and stale versions')],[26,35,39]),
-        ['<b>Central:</b> simplify shared operation and governance.', '<b>Embedded:</b> deploy the model with its host application.', '<b>Edge:</b> account for constrained hardware and intermittent connectivity.', '<b>Choose independently:</b> location does not uniquely determine batch or request timing.'],
-        'Keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here.',
-        'Architecture follows the operational context.','Kalinowski, supporting Ch. 12; §13.3–13.4',9)
+            item('Snapshot + check','Cutoff D0, all customers','C042 (Ana) included'),item('Prepare + score','7-day logins: 7 → 1','M1 scores C042: 0.70','model'),item('Score store','C042 · 0.70 · M1 · D0','Campaign reads batch','business')],
+            [('INPUT GATE','Schema, freshness,','completeness, cutoff.'),('EXECUTION','Runtime, dependencies,','feature compatibility.'),('OUTPUT GATE','Version links, valid scores,','publication approval.')],footer='Shared path (slide 6): Sources → Features → Score → Score store → Policy. Reconcile the whole batch.'),
+        ['<b>Snapshot:</b> define population, cutoff, and source freshness.', '<b>Validate:</b> reject incompatible inputs before scoring.', '<b>Reconcile:</b> account for written, rejected, withheld records.', '<b>Publish:</b> expose the validated batch under a consumer contract.'],
+        "Ana's 0.70 is stored with M1, D0 and the feature version; her 30-day outcome is still unknown on D0.",
+        'Saving batch scores at scale is a reported challenge (Nazir, I6).','Bass, §14.1.4 · Kalinowski, §13.3, Fig. 13.2 · Nazir et al., §3.2 (I6)',extra='')
+
+    add('Online serving: the fraud contrast',S,'Tomás','Same domain, different timing needs. A comparison, not a new part of the churn system.',
+        lambda:serving_comparison(online=True),
+        ['<b>Model time:</b> smaller models, leaner code, GPU/TPU at a cost.', '<b>System time:</b> fast input lookup; precomputed, cached scores.', '<b>Inputs:</b> the back-end usually fetches features the caller lacks.', '<b>Async:</b> idempotent consumers, lag and failed-message handling.'],
+        "Fraud blocking is synchronous, fraud alerts asynchronous. Churn stays batch; CRM can read Ana's cached score.",
+        'A fast model does not guarantee a fast end-to-end service.','Kalinowski, §13.3–13.4, Fig. 13.3–13.4 · Fraud and CRM cases are teaching comparisons',extra='')
+
     add('Package the whole compatible set',S,'Tomás','A deployable release contains more than the learned model file.',
         lambda:sequence('package-detail','A compatible inference package',[
-            item('Feature contract','Schema + semantics','Time window + units'),item('Runtime package','M1 + dependencies','Preparation code','model'),item('Execution config','Cutoff + population','Resource settings','business')],
-            [('DATA MEANING','Column names alone','are insufficient.'),('REPRODUCIBILITY','Pin and track the','compatible versions.'),('RUNTIME CHECK','Load, score, and write','in the target environment.')],footer='Containerization packages execution; it does not itself establish predictive quality or release approval.'),
-        ['<b>Model artifact:</b> the learned parameters and required format.', '<b>Runtime:</b> dependencies, preparation code, and execution environment.', '<b>Contract:</b> feature meaning, types, missingness, and temporal cutoff.', '<b>Configuration:</b> scoring population and execution settings.'],
-        'The bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot.',
-        'A package that loads successfully still needs release and quality evidence.',BASS+' · Kalinowski, §13.3–13.4',10)
+            item('Feature contract','Schema + semantics','Time window + units'),item('Runtime package','Approved model (M1)','Dependencies + preparation','model'),item('Execution config','Cutoff + population','Resource settings','business')],
+            [('DATA MEANING','Column names alone','are insufficient.'),('REPRODUCIBILITY','Pin and track the','compatible versions.'),('RUNTIME CHECK','Load, score, and write','in the target environment.')],footer='Containers package execution; predictive quality and release approval still need separate evidence.'),
+        ['<b>Model artifact:</b> the learned parameters and required format.', '<b>Runtime:</b> dependencies, preparation code, environment.', '<b>Contract:</b> feature meaning, types, missingness, cutoff.', '<b>Configuration:</b> scoring population and execution settings.'],
+        'M1 ships with the exact feature meaning it was trained on, such as the 7-day login count used to score C042.',
+        'Smoke-test in the serving environment before exposure (Breck, infra. 6).','Bass, §14.1.4 · Kalinowski, §13.3 · Nazir et al., §4.1, Table 12 · Breck et al., infra. test 6',extra='')
+
     add('Shadow deployment: observe without acting',S,'Tomás','A candidate scores real inputs while the approved model remains the action source.',
         shadow_paths,
-        ['<b>Run in parallel</b> against comparable production inputs.', '<b>Record identity:</b> distinguish M1 and M2 outputs explicitly.', '<b>Compare</b> operational behavior and score differences first.', '<b>Wait for labels</b> to compare future churn quality.'],
-        'Only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer.',
-        'Shadow checks observation, not the business effect of acting on the candidate.','Group outline · Breck, infrastructure 6–7 · Teaching application',11)
-    add('Canary deployment: limit exposure',S,'Tomás','An approved limited cohort uses the candidate before broader rollout.',
-        lambda:fork('canary-detail','Canary routes controlled cohorts',item('Assigned cohorts','Stable customer split','No double assignment'),item('Majority on M1','Current production','Baseline evidence','model'),item('Canary on M2','Limited approved group','Observe + recover','model'),item('Campaign policy','One eligible result','Controlled action','business'),toplabel='INCUMBENT COHORT',bottomlabel='CANARY COHORT',foot='The exact cohort size and acceptance gates are design choices; no rollout percentage is prescribed here.'),
-        ['<b>Restrict exposure</b> to a defined cohort and scope.', '<b>Observe</b> execution, compatibility, coverage, and policy behavior.', '<b>Define stop rules</b> and a rehearsed recovery path.', '<b>Separate evidence:</b> short operational success cannot prove 30-day predictive quality.'],
-        'The bank may authorize a small cohort to use M2 while retaining M1 for the remainder.',
-        'A canary controls risk; it is not automatically a valid business experiment.','Breck, infrastructure test 6 · Bank teaching application',11)
-    add('A/B testing: define the intervention',S,'Tomás','Assigned groups and a stated outcome make the comparison interpretable.',
-        lambda:fork('ab-detail','A/B comparison with a defined outcome',item('Eligible customers','Assignment procedure','Comparable groups'),item('Group A','Defined model / policy','Record action','business'),item('Group B','One stated difference','Record action','business'),item('Outcome analysis','Mature observation','Account for treatment','data'),toplabel='BASELINE',bottomlabel='STATED INTERVENTION',foot='A model comparison and a retention-treatment experiment answer different questions.'),
-        ['<b>State what changes:</b> model, decision policy, or retention treatment.', '<b>Assign comparable groups</b> under an appropriate experiment design.', '<b>Define outcomes</b> and the observation window before interpreting results.', '<b>Avoid confounding:</b> changing model and offer together obscures their separate effects.'],
-        'Compare two offer policies separately from asking whether M2 ranks churn risk better than M1.',
-        'Prediction accuracy and the effect of contacting a customer are different targets.','Group outline · Simon’s notes, §3 · Teaching application',12)
+        ['Run in parallel against the same production snapshot.', '<b>Record identity:</b> label M1 and M2 outputs explicitly.', 'Compare operational behavior and score differences first.', 'Wait for labels to compare 30-day churn quality.'],
+        "Only M1's 0.70 for Ana is eligible for campaign use; M2's shadow score is logged and cannot create a second offer.",
+        'Shadow checks observation, not the business effect of acting on the candidate.','Bass, §14.1.4 · Bank teaching application of the group release plan',extra='')
+
+    add('Release strategies: what each proves',S,'Tomás','Shadow, canary and A/B tests answer different questions on different clocks.',
+        lambda:table_figure('release-strategies','What release strategies establish',['Strategy','Who is exposed','What it shows, and when'],[
+            ('Shadow','M1 acts; M2 is only logged','Score gaps now; quality after labels'),
+            ('Canary','Small approved cohort on M2','Limited exposure; quality after labels'),
+            ('A/B test','Comparable assigned groups','Effect of one stated change, after the window')],[20,36,44]),
+        ['<b>Canary:</b> limit exposure; set stop rules and a rollback.', '<b>A/B test:</b> state what changes: model, policy or offer.', '<b>Confounding:</b> changing model and offer together hides both.', '<b>Labels:</b> D0 success cannot prove 30-day quality.'],
+        "Ask 'does M2 rank churn risk better than M1?' separately from 'does offer B retain more customers than offer A?'",
+        'A canary controls risk; it is not automatically an experiment.','Breck et al., infra. tests 6–7 · Bank teaching application',extra='')
+
+    add('Release plan: shadow, canary, rollback',S,'Tomás','Proposed decision: evidence arrives on two clocks, so exposure grows in steps.',
+        lambda:sequence('release-plan','Proposed staged release for a candidate',[
+            item('Shadow M2','Same batch as M1','Logged, no offers','model'),item('Canary cohort','Small approved group','Stop rules defined','model'),item('Gate decision','Promote M2, or','roll back to M1','business')],
+            [('TRADE-OFF','Slower rollout, lower','customer exposure.'),('EVIDENCE','Score gaps now; quality','after the target window.'),('ROLLBACK','Reuse M1 batch only if','still fresh and eligible.')],heading='PROPOSED RELEASE PATH · CYCLE 1 → CYCLE 2 → EVIDENCE GATE',footer='Separate inference and campaign policy. Model rollback alone cannot repair invalid source data.'),
+        ['<b>Decision:</b> central monthly batch; shadow M2, then canary.', '<b>Trade-off:</b> one or two extra cycles before M2 is fully used.', '<b>Rollback:</b> reuse the last validated M1 batch only while it remains eligible and fresh.', '<b>Record:</b> link model, features, config and approval (Matheus).'],
+        'The first scoring run worked. What evidence tells us the system stays reliable as data and customers change?',
+        'Exposure grows only as evidence arrives.','Breck et al., infra. tests 6–7 · Nazir et al., §4.1 · Proposed bank release design',extra='The staged rollout is a proposed teaching design. Reusing an older batch requires valid population, feature meaning, freshness and campaign eligibility. Otherwise pause use or produce a new validated batch with the compatible approved model. Model rollback does not repair the later CRM input fault.')
 
     add('How the world changes over time',M,'Simon','Sudden, gradual, incremental, and recurring changes are different time patterns—not different input features.',temporal_reference,
         ['<b>Sudden:</b> the old regime switches abruptly.', '<b>Gradual:</b> old and new regimes coexist during a transition.', '<b>Incremental / recurring:</b> intermediate change differs from a returning regime.', '<b>Blips:</b> isolated noise is not necessarily a lasting regime change.'],
@@ -144,7 +148,7 @@ def build_lecture():
             ('PSI','Compare proportions in fixed bins','Depends on binning and reference'),('KS','Compare continuous distributions','Sample size affects sensitivity'),('KL divergence','Directional distribution difference','Needs careful support handling'),('JS divergence','Symmetric distribution comparison','Still does not measure accuracy')],[24,40,36]),
         ['<b>Reference:</b> name the population, period, and feature definition.', '<b>Thresholds:</b> calibrate for the application rather than copying a universal rule.', '<b>Segments:</b> inspect affected cohorts instead of relying only on an aggregate.', '<b>Action:</b> investigate drift alongside quality, change, and business evidence.'],
         'Compare the same seven-day login feature before and after a campaign; investigate why the cohort mix changed.',
-        'Interpret the signal alongside data validity, sample size, and downstream quality.',MON+' · Simon’s technical atlas',16)
+        'Interpret the signal alongside data validity, sample size, and downstream quality.',MON,16)
     add('Data-quality faults and training-serving skew',M,'Simon','Invalid data and inconsistent preparation differ from a shifted valid population.',
         lambda:lanes('fault-skew','Separate invalid inputs from preparation mismatch',[
             ('DATA-QUALITY FAULT',[item('CRM migration','Field becomes missing'),item('Contract check','Missing is invalid'),item('Publication hold','Do not use bad scores',role='business')]),
@@ -177,7 +181,7 @@ def build_lecture():
             ('Meaning','Count of app logins in the seven days ending at the scoring cutoff'),('Structure','Non-negative count; declared type and units'),('Missingness','Missing is incompatible with this normal scoring path'),('Ownership','Source and feature owners review semantic changes'),('Compatibility','Train and score with tested, linked definitions')],[29,71]),
         ['<b>Semantics:</b> define what the feature actually measures.', '<b>Time:</b> specify window, cutoff, and joins consistently.', '<b>Validity:</b> define types, ranges, freshness, and missingness.', '<b>Ownership:</b> review upstream changes with affected consumers.'],
         'engagement_7d means app logins during seven days ending at the scoring cutoff; missing must not silently become zero.',
-        'Schema checks alone cannot detect every change in meaning.',BASS+' · Nazir, §§5–6 · Teaching contract',19)
+        'Schema checks alone cannot detect every change in meaning.',BASS+' · Nazir et al. (2024) · Teaching contract',19)
     add('Separate responsibilities where change happens',D,'Luca','Clear interfaces let different concerns evolve without unnecessary relearning.',
         lambda:sequence('responsibility-detail','Data, inference and policy boundaries',[
             item('Prepare inputs','Source adapters','Feature semantics'),item('Run inference','Compatible input API','Approved model','model'),item('Apply policy','Eligibility + budget','Record decision','business')],
@@ -210,7 +214,7 @@ def build_lecture():
             [('MEANING','Identify the exact','feature interpretation.'),('REPLAY','Keep enough protected','context to reconstruct.'),('TRACEABILITY','Link approval and action','to the produced scores.')],footer='Protect sensitive evidence; a traceability link need not expose raw customer history to everyone.'),
         ['<b>Data meaning:</b> record source and feature definitions.', '<b>Code:</b> identify preparation and scoring revisions.', '<b>Model:</b> identify artifact, runtime, and configuration.', '<b>Outputs:</b> connect the compatible set to score and decision records.'],
         'M1 alone cannot explain Ana’s score if a CRM migration changed the meaning of its engagement input.',
-        'Co-versioning connects system and model lifecycles.',K+' · Bass, Ch. 11 / §14.1 · Simon’s notes',22)
+        'Co-versioning connects system and model lifecycles.',K+' · Bass, Ch. 11 / §14.1',22)
     add('Modules or services? Make the trade-off',D,'Luca','Independent deployment is useful only when it justifies its operating cost.',
         lambda:table_figure('module-service','Modules versus services',['Concern','Modules in one application','Separate services'],[
             ('Release','Coordinated release','Independent release where justified'),('Failure','Fewer remote dependencies','Network, protocol and partial failures'),('Operation','Simpler local observability','Distributed tracing and recovery'),('Scaling','Scale shared runtime','Scale selected capabilities'),('Choice','Useful simple starting point','Autonomy must justify complexity')],[22,39,39]),
@@ -218,7 +222,7 @@ def build_lecture():
         'Separate preparation from policy logically; deploy them independently only when the bank’s needs justify it.',
         'There is no universal best ML architecture.',DES,23)
 
-    add('Architectural tactics connect concerns to controls',A,'TBD','Use explicit mechanisms to address uncertainty, change, recovery, and auditability.',
+    add('Architectural tactics connect concerns to controls',A,'Matheus','Use explicit mechanisms to address uncertainty, change, recovery, and auditability.',
         lambda:table_figure('tactics','Concern, tactic and bank effect',['Concern','Architectural tactic','Bank effect'],[
             ('Data change','Contracts + validation boundary','Detect incompatible CRM inputs'),('Predictive uncertainty','Evaluation + reviewed release','Use evidence for model changes'),('Recovery','Compatible rollback / fallback','Restore the usable path'),('Auditability','Co-versioning + protected lineage','Reconstruct a score and action'),('Privacy / security','Scoped access + minimization','Limit exposure and authority')],[25,38,37]),
         ['<b>Separation</b> isolates data preparation, model execution, and business policy.', '<b>Observation</b> makes operational and predictive behavior reviewable.', '<b>Recovery</b> restores a compatible path rather than only one artifact.', '<b>Governance</b> links evidence, approval, access, and responsibility.'],
@@ -244,21 +248,21 @@ def build_lecture():
             [('FAILED ATTEMPT','B017 remains recorded','as held / failed.'),('NEW EXECUTION','The repaired run gets','a separate identity.'),('AUDIT HISTORY','Keep failed attempt and','recovery evidence linked.')],footer='Do not overwrite failed evidence. Retain M1 unless separate evidence justifies changing it.'),
         ['<b>Repair</b> the source or preparation defect.', '<b>Version</b> the reviewed fix and compatible configuration.', '<b>Re-run</b> under a new execution identity and validate the complete path.', '<b>Publish</b> only after the configured evidence and approval requirements pass.'],
         'B017 is the held attempt. B017-R1 links the reviewed fix, compatible M1, validation evidence, and publication approval.',
-        'A successful fix needs evidence at the consumer boundary, not only a passing connector test.',OPS+' · Simon’s notes, §4',24)
+        'A successful fix needs evidence at the consumer boundary, not only a passing connector test.',OPS,24)
     add('Trace the prediction and the decision',O,'Matheus','Lineage connects input evidence, execution, approval, and downstream action.',
         lambda:sequence('decision-lineage','Reconstruct a score and its use',[
             item('Protected evidence','Feature / source links','M1 + config + cutoff'),item('Prediction ID','Customer + target window','Batch + stored score','model'),item('Decision record','Policy version','Contact / no contact','business')],
             [('RECONSTRUCT','What inputs and model','produced this score?'),('LINK','Which approved run','and output record?'),('EXPLAIN USE','Which rule permitted','or blocked the action?')],footer='Protected references can support audit without exposing all customer history in campaign tools.'),
         ['<b>Prediction identity</b> links customer, time, and target window.', '<b>Execution evidence</b> identifies compatible code, features, model, and config.', '<b>Decision evidence</b> records policy version and action.', '<b>Access controls</b> protect sensitive reconstruction material.'],
         'An investigator can trace Ana’s original score and the campaign’s separate no-contact or contact decision.',
-        'A model version alone cannot reconstruct the full decision.',OPS+' · Simon’s notes, §4–6',27)
+        'A model version alone cannot reconstruct the full decision.',OPS,27)
     add('Recovery restores a compatible path',O,'Matheus','Rehearse restoration before release, and verify it at the consumer boundary.',
         lambda:sequence('recovery-detail','Prepare, execute and verify recovery',[
             item('Before release','Choose rollback target','Rehearse restoration'),item('During incident','Contain affected use','Restore compatible set','model'),item('After recovery','Verify inputs + outputs','Observe the consumer','business')],
             [('PREPARE','Version compatibility','and authority are known.'),('RESTORE','Model-only rollback may','leave bad features intact.'),('EVALUATE','Operation can recover now;','quality needs mature labels.')],footer='Historical customer contacts cannot be undone. Recovery of the system does not erase prior effects.'),
         ['<b>Know the target:</b> identify the last compatible release or validated fallback.', '<b>Rehearse:</b> test the recovery procedure before relying on it.', '<b>Restore the set:</b> include data meaning, runtime, and configuration.', '<b>Verify:</b> inspect stored scores and actual consumer behavior.'],
         'Rolling M1 back cannot repair a CRM field that is still missing; the input path must be restored.',
-        'Handoff to security: who may read, change, approve, or operate these paths?','Breck, infrastructure tests 6–7 · Simon’s notes, §4',28)
+        'Handoff to security: who may read, change, approve, or operate these paths?','Breck, infrastructure tests 6–7',28)
 
     add('Security threats depend on attacker access',SEC,'Simon + Matheus','Locate the attacker’s control before naming the ML attack mechanism.',
         lambda:table_figure('attack-mechanisms','Attacks at different stages',['Access surface','Mechanism','What changes'],[
@@ -291,32 +295,32 @@ def build_lecture():
         'Protecting one transaction differs from protecting all contributions of a bank customer.',
         'Do not announce a guarantee without its assumptions and evidence.',SECREF+' · NIST SP 800-226',32)
 
-    add('Use the quality checklist as a review tool',Q,'TBD','Connect concerns to architectural controls, ownership, and observable evidence.',
+    add('Use the quality checklist as a review tool',Q,'Matheus','Connect concerns to architectural controls, ownership, and observable evidence.',
         lambda:table_figure('quality-checklist','Selected quality concern checks',['Selected concern','Architecture review','Evidence example'],[
             ('SMN3 · Input monitoring','Compare appropriate input distributions','Cohort report + investigated change'),('SA1 · Recovery','Restore a compatible path','Recovery rehearsal + verified outputs'),('SS5 · Cyberattack defense','Enforce authorized operations','Rejected prohibited access / change'),('SS6 · Safety / fairness','Define harm and fairness targets','Group-specific review evidence'),('SP1 · Privacy consideration','Assess data use and privacy mechanisms','Access / retention / technique review')],[32,35,33]),
         ['<b>System and process concerns</b> both matter in ML-intensive systems.', '<b>Select relevant checks</b> rather than treating a short list as the entire checklist.', '<b>Map each concern</b> to a control, owner, and evidence.', '<b>Keep limits visible:</b> the separate corrigendum remains unread.'],
         'Completeness validation addresses input quality; it is not by itself evidence of SS5 cyberattack defense.',
         'A checklist supports structured review; it is not a certification claim.',QUALITY+' · Corrigendum contents not reviewed',33)
-    add('Predictive quality and system performance',Q,'TBD','Choose an acceptable model and system from several quality objectives.',
+    add('Predictive quality and system performance',Q,'Matheus','Choose an acceptable model and system from several quality objectives.',
         lambda:table_figure('quality-tradeoffs','Evaluate distinct objectives',['Objective','Evidence','Architecture consequence'],[
             ('Predictive quality','Mature-label precision / recall / calibration','Candidate and cohort evaluation'),('Timeliness','Complete scores before campaign deadline','Batch capacity and dependencies'),('Cost','Training, inference and operations effort','Model complexity and infrastructure'),('Maintainability','Reproducibility, tests, recovery work','Versioned modular design')],[28,39,33]),
         ['<b>Accuracy</b> alone is an incomplete objective, especially with imbalanced outcomes.', '<b>Performance</b> includes the end-to-end deadline and resource use.', '<b>Complexity</b> must justify training and operating costs.', '<b>Acceptance</b> depends on the task and the consequences of errors.'],
         'A heavier churn model is useful only if its quality benefit justifies cost and still meets the campaign’s deadline.',
         'Define acceptance criteria before selecting a more complex model.',QUALITY+' · Kalinowski, §13.4',34)
-    add('Robustness: invalid, unfamiliar, or ordinary?',Q,'TBD','Different inputs need different responses; do not treat every unusual value as the same failure.',
+    add('Robustness: invalid, unfamiliar, or ordinary?',Q,'Matheus','Different inputs need different responses; do not treat every unusual value as the same failure.',
         lambda:table_figure('robustness','Input categories and response choices',['Input condition','Evidence to inspect','Possible response'],[
             ('Invalid / incompatible','Contract, freshness, missingness','Reject / hold and investigate'),('Valid but unfamiliar','Population shift, coverage, OOD evidence','Review applicability; validated fallback'),('Valid and familiar','Normal input and execution checks','Score and monitor normally')],[31,39,30]),
         ['<b>Contract validity</b> and model applicability are distinct.', '<b>OOD inputs</b> may be structurally valid but poorly represented in training.', '<b>Confidence</b> alone is not a guaranteed detector of unfamiliar inputs.', '<b>Fallbacks</b> must be validated for the intended situation.'],
         'A missing activity value is invalid; a new customer population may be valid but outside the model’s reliable coverage.',
-        'An architecture needs an explicit response when the model should not be trusted.',QUALITY+' · Simon’s notes, §2–4',34)
-    add('Explainability and auditability differ',Q,'TBD','Explaining feature influence and reconstructing a historical decision are complementary tasks.',
+        'An architecture needs an explicit response when the model should not be trusted.',QUALITY,34)
+    add('Explainability and auditability differ',Q,'Matheus','Explaining feature influence and reconstructing a historical decision are complementary tasks.',
         lambda:sequence('explanation-audit','From explanation to accountable reconstruction',[
             item('Model explanation','Feature contributions','SHAP / LIME context','model'),item('Protected lineage','Inputs + versions','Prediction record'),item('Decision review','Policy + action','Authorized evidence','business')],
             [('INTERPRET','Why did this model','produce this output?'),('RECONSTRUCT','Which exact context','produced this score?'),('ASSESS','Was the action permitted','and appropriately reviewed?')],footer='Feature attribution does not establish causality, fairness, or a customer’s intention.'),
         ['<b>Explanation</b> helps interpret model behavior in context.', '<b>Auditability</b> needs historical evidence and traceable versions.', '<b>Decision review</b> includes business policy and action, not only the model.', '<b>Limits:</b> SHAP and LIME do not prove causality or fairness.'],
         'An engagement contribution may help explain Ana’s score; it cannot prove why she would leave the bank.',
-        'Protect evidence and test whether authorized reviewers can actually retrieve it.',BASS+' · Simon’s notes, §6–7',35)
-    add('Fairness: prediction versus treatment',Q,'TBD','Name what is being compared before selecting a metric or declaring an improvement.',
+        'Protect evidence and test whether authorized reviewers can actually retrieve it.',BASS,35)
+    add('Fairness: prediction versus treatment',Q,'Matheus','Name what is being compared before selecting a metric or declaring an improvement.',
         lambda:lanes('fairness-targets','Different fairness targets',[
             ('PREDICTION FAIRNESS',[item('Mature outcomes','Relevant customer groups'),item('Error comparison','False positives / negatives','Calibration where relevant','model'),item('Model review','Check trade-offs','Document limitations','business')]),
             ('TREATMENT FAIRNESS',[item('Eligible population','Preferences + policy'),item('Offer allocation','Who is contacted?','Who receives support?','business'),item('Outcome review','Observe treatment effects','Interpret with care','business')])],footer='Different fairness measures can conflict; define the objective and relevant groups in context.'),
@@ -324,21 +328,21 @@ def build_lecture():
         'Equal churn prediction errors do not imply equal access to retention offers under campaign allocation rules.',
         'Keep predictive quality and the consequences of intervention distinct.',QUALITY+' · Bass, Ch. 10 / §14.2',35)
 
-    add('Airflow: make workflow dependencies visible',T,'TBD','Orchestration supports task order, failure handling, and execution evidence.',
+    add('Airflow: make workflow dependencies visible',T,'Matheus','Orchestration supports task order, failure handling, and execution evidence.',
         lambda:sequence('airflow-record','Illustrative orchestration dependency',[
             item('Validate input','B017: failed check','Prepared teaching record'),item('Score M1','Not run','Blocked by dependency','model'),item('Campaign export','Not run','Publication withheld','business')],
             [('TASK EVIDENCE','Status, timing, run ID,','and failure context.'),('WHO ACTS','Operations and source','owners investigate.'),('LIMIT','A green workflow is not','proof of churn accuracy.')],footer='Prepared teaching record, not a screenshot or a captured Airflow run. States are deliberately simplified.'),
         ['<b>Architecture role:</b> order dependent pipeline work.', '<b>Evidence:</b> task state, timing, and run context.', '<b>Action:</b> operators and source owners inspect failed dependencies.', '<b>Limit:</b> orchestration does not supply predictive or release approval evidence by itself.'],
         'The required CRM validation must sit upstream of scoring and export so its failure blocks dependent work.',
         'Connect each tool to a responsibility, evidence, and a response owner.',BASS+' · Illustrative Airflow role',36)
-    add('MLflow: connect experiments and artifacts',T,'TBD','Model tracking supports reproducibility and review when evidence links are designed explicitly.',
+    add('MLflow: connect experiments and artifacts',T,'Matheus','Model tracking supports reproducibility and review when evidence links are designed explicitly.',
         lambda:sequence('mlflow-record','Illustrative experiment and model evidence',[
             item('Training run','Code + data context','Parameters + metrics','model'),item('Model artifact','M1 / candidate M2','Artifact and lineage','model'),item('Release context','Compatible version set','Review + approval','business')],
             [('EXPERIMENT','What was trained,','with which configuration?'),('REGISTRY','Which artifact is being','evaluated or released?'),('GOVERNANCE','Connect external checks','and release authority.')],footer='Illustrative records only. No experiment, registry transition, or production release was executed here.'),
         ['<b>Architecture role:</b> connect training evidence and model artifacts.', '<b>Evidence:</b> runs, configuration, metrics, and artifact identity.', '<b>Action:</b> reviewers compare candidates and verify compatible releases.', '<b>Limit:</b> no single tracking tool provides every governance control.'],
         'Link the approved M1 to its evidence while recording B017-R1’s separate input and execution context.',
         'Tool records support the release decision; they do not replace its policy.',BASS+' · Illustrative MLflow role',37)
-    add('Validation and drift reports support diagnosis',T,'TBD','A report is useful when its reference, feature meaning, cohort, and response are clear.',
+    add('Validation and drift reports support diagnosis',T,'Matheus','A report is useful when its reference, feature meaning, cohort, and response are clear.',
         lambda:sequence('report-record','A useful validation and monitoring report',[
             item('Input context','Feature definition','Reference + current set'),item('Report evidence','Completeness + drift','Cohort + run identity'),item('Owner response','Investigate cause','Record disposition','business')],
             [('VALIDATION','Does the input meet','the declared contract?'),('MONITORING','Did valid input behavior','change relative to reference?'),('DECISION','Repair, review applicability,','or request further evidence.')],footer='Reports here are teaching illustrations, not executed tool output.'),
@@ -354,7 +358,12 @@ def build_lecture():
             ('Kalinowski, Ch. 13–14','Architecture, serving, design principles and patterns'),('Bass, Engineering AI Systems','Bank churn; security, privacy and observability'),('Nazir et al., JSS 2024','Challenges, practices and contextual design decisions'),('Bucaioni et al., JSS 2026','Quality checklist; published Table 1 spot-check'),('Breck / NIST supplements','Testing, release / recovery, threat and privacy framing')],[42,58]),
         ['<b>Core readings:</b> architectural decisions, serving, maintenance, and quality concerns.', '<b>Supporting readings</b> extend monitoring, governance, and security.', '<b>Illustrations:</b> Ana, scores, dates, batches, and incidents are invented.', '<b>Source limit:</b> the separately catalogued checklist corrigendum remains unread.'],
         'No new churn outcome, repaired score, retention benefit, or real bank tool execution is claimed.',
-        'The separate guide records reading anchors and adaptation limits.','See source-review.md and presenter guide')
+        'The separate guide records reading anchors and adaptation limits.','See SOURCES.md and presenter guide')
+    by_title={s['title']:s for s in slides}
+    opening=['ML Architecture','Two blocks, one shared bank case','Two lifecycles, one compatible system',
+             'The bank case: features, labels, and predictions','What a test can’t tell us today',
+             'From a trained model to an ML system','Prediction and business action are separate']
+    slides=[by_title[t] for t in opening]+[s for s in slides if s['title'] not in opening]
     for slide in slides:
         if slide['visual'] in (temporal_reference,input_distribution,concept_relationship,concept_errors):
             slide['layout']='wide'

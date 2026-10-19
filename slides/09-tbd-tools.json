@@ -3,7 +3,7 @@
     "id": "airflow-make-workflow-dependencies-visible",
     "title": "Airflow: make workflow dependencies visible",
     "lead": "Orchestration supports task order, failure handling, and execution evidence.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Architecture role:</b> order dependent pipeline work.",
       "<b>Evidence:</b> task state, timing, and run context.",
@@ -17,7 +17,7 @@
     "id": "mlflow-connect-experiments-and-artifacts",
     "title": "MLflow: connect experiments and artifacts",
     "lead": "Model tracking supports reproducibility and review when evidence links are designed explicitly.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Architecture role:</b> connect training evidence and model artifacts.",
       "<b>Evidence:</b> runs, configuration, metrics, and artifact identity.",
@@ -31,7 +31,7 @@
     "id": "validation-and-drift-reports-support-diagnosis",
     "title": "Validation and drift reports support diagnosis",
     "lead": "A report is useful when its reference, feature meaning, cohort, and response are clear.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Validation:</b> test declared expectations before use.",
       "<b>Drift comparison:</b> inspect change against a named reference.",

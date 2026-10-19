@@ -21,16 +21,36 @@
   },
   {
     "number": 3,
+    "title": "Two lifecycles, one compatible system",
+    "section": "Block 1 / Foundations",
+    "owner": "Ricardo",
+    "steps": 4,
+    "kind": "diagram",
+    "layout": "standard",
+    "source": "Kalinowski, Ch. 13–14 · Bass, Ch. 11"
+  },
+  {
+    "number": 4,
     "title": "The bank case: features, labels, and predictions",
     "section": "Block 1 / Foundations",
     "owner": "Ricardo",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Bass, Ch. 14 · Simon’s notes, §1"
+    "source": "Bass, Ch. 14"
   },
   {
-    "number": 4,
+    "number": 5,
+    "title": "What a test can’t tell us today",
+    "section": "Block 1 / Foundations",
+    "owner": "Ricardo",
+    "steps": 4,
+    "kind": "diagram",
+    "layout": "standard",
+    "source": "Kalinowski, §13.2 · Bass, §14.1–14.1.4"
+  },
+  {
+    "number": 6,
     "title": "From a trained model to an ML system",
     "section": "Block 1 / Foundations",
     "owner": "Ricardo",
@@ -40,17 +60,7 @@
     "source": "Bass, Ch. 14 · Kalinowski, §13.2–13.3"
   },
   {
-    "number": 5,
-    "title": "Two lifecycles, one compatible system",
-    "section": "Block 1 / Foundations",
-    "owner": "Ricardo",
-    "steps": 4,
-    "kind": "diagram",
-    "layout": "standard",
-    "source": "Kalinowski, Ch. 13–14 · Bass, Ch. 11 · Simon’s notes, §1"
-  },
-  {
-    "number": 6,
+    "number": 7,
     "title": "Prediction and business action are separate",
     "section": "Block 1 / Foundations",
     "owner": "Ricardo",
@@ -60,97 +70,77 @@
     "source": "Bass, Ch. 14 · Teaching policy decomposition"
   },
   {
-    "number": 7,
-    "title": "Serving patterns: when is a prediction needed?",
-    "section": "Block 1 / Deployment & serving",
-    "owner": "Tomás",
-    "steps": 3,
-    "kind": "diagram",
-    "layout": "standard",
-    "source": "Kalinowski, §13.3–13.4; supporting Ch. 12"
-  },
-  {
     "number": 8,
-    "title": "Batch serving: validate, score, publish",
+    "title": "How do predictions reach the business?",
     "section": "Block 1 / Deployment & serving",
     "owner": "Tomás",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Bass, Ch. 14 · Kalinowski, §13.3"
+    "source": "Kalinowski, §13.3, Fig. 13.2–13.4; supporting Ch. 12 · Nazir et al., §4.3 (I12)"
   },
   {
     "number": 9,
-    "title": "Synchronous serving: the caller waits",
+    "title": "Batch path: Ana's score on day D0",
     "section": "Block 1 / Deployment & serving",
     "owner": "Tomás",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, §13.3–13.4 · Teaching comparison"
+    "source": "Bass, §14.1.4 · Kalinowski, §13.3, Fig. 13.2 · Nazir et al., §3.2 (I6)"
   },
   {
     "number": 10,
-    "title": "Asynchronous serving: decouple the work",
+    "title": "Online serving: the fraud contrast",
     "section": "Block 1 / Deployment & serving",
     "owner": "Tomás",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, §13.3 · Bank application is hypothetical"
+    "source": "Kalinowski, §13.3–13.4, Fig. 13.3–13.4 · Fraud and CRM cases are teaching comparisons"
   },
   {
     "number": 11,
-    "title": "Deployment location is a separate decision",
-    "section": "Block 1 / Deployment & serving",
-    "owner": "Tomás",
-    "steps": 0,
-    "kind": "table",
-    "layout": "standard",
-    "source": "Kalinowski, supporting Ch. 12; §13.3–13.4"
-  },
-  {
-    "number": 12,
     "title": "Package the whole compatible set",
     "section": "Block 1 / Deployment & serving",
     "owner": "Tomás",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Bass, Ch. 14 · Kalinowski, §13.3–13.4"
+    "source": "Bass, §14.1.4 · Kalinowski, §13.3 · Nazir et al., §4.1, Table 12 · Breck et al., infra. test 6"
   },
   {
-    "number": 13,
+    "number": 12,
     "title": "Shadow deployment: observe without acting",
     "section": "Block 1 / Deployment & serving",
     "owner": "Tomás",
     "steps": 5,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Group outline · Breck, infrastructure 6–7 · Teaching application"
+    "source": "Bass, §14.1.4 · Bank teaching application of the group release plan"
+  },
+  {
+    "number": 13,
+    "title": "Release strategies: what each proves",
+    "section": "Block 1 / Deployment & serving",
+    "owner": "Tomás",
+    "steps": 0,
+    "kind": "table",
+    "layout": "standard",
+    "source": "Breck et al., infra. tests 6–7 · Bank teaching application"
   },
   {
     "number": 14,
-    "title": "Canary deployment: limit exposure",
+    "title": "Release plan: shadow, canary, rollback",
     "section": "Block 1 / Deployment & serving",
     "owner": "Tomás",
-    "steps": 4,
+    "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Breck, infrastructure test 6 · Bank teaching application"
+    "source": "Breck et al., infra. tests 6–7 · Nazir et al., §4.1 · Proposed bank release design"
   },
   {
     "number": 15,
-    "title": "A/B testing: define the intervention",
-    "section": "Block 1 / Deployment & serving",
-    "owner": "Tomás",
-    "steps": 4,
-    "kind": "diagram",
-    "layout": "standard",
-    "source": "Group outline · Simon’s notes, §3 · Teaching application"
-  },
-  {
-    "number": 16,
     "title": "How the world changes over time",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
@@ -160,197 +150,197 @@
     "source": "Krawczyk & Cano (2018), Fig. 2 · Original figure; attribution and source link in guide"
   },
   {
-    "number": 17,
+    "number": 16,
     "title": "Monitoring: observe more than model accuracy",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5"
+    "source": "Bass, Ch. 11 / §14.1.5"
   },
   {
-    "number": 18,
+    "number": 17,
     "title": "Monitoring architecture: from signal to response",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching expansion of monitoring responsibilities"
+    "source": "Bass, Ch. 11 / §14.1.5 · Teaching expansion of monitoring responsibilities"
   },
   {
-    "number": 19,
+    "number": 18,
     "title": "Data drift: a different customer mix",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 2,
     "kind": "diagram",
     "layout": "wide",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented counts"
+    "source": "Bass, Ch. 11 / §14.1.5 · Invented counts"
   },
   {
-    "number": 20,
+    "number": 19,
     "title": "Concept drift: a different relationship",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 2,
     "kind": "diagram",
     "layout": "wide",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Schematic relationships"
+    "source": "Bass, Ch. 11 / §14.1.5 · Schematic relationships"
   },
   {
-    "number": 21,
+    "number": 20,
     "title": "Concept drift: how M1 starts making errors",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 2,
     "kind": "diagram",
     "layout": "wide",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented mature cohorts and deliberately simplified decision rule"
+    "source": "Bass, Ch. 11 / §14.1.5 · Invented mature cohorts and deliberately simplified decision rule"
   },
   {
-    "number": 22,
+    "number": 21,
     "title": "Input checks now; quality checks later",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching 30-day window"
+    "source": "Bass, Ch. 11 / §14.1.5 · Teaching 30-day window"
   },
   {
-    "number": 23,
+    "number": 22,
     "title": "Drift detection: methods and their purpose",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Simon’s technical atlas"
+    "source": "Bass, Ch. 11 / §14.1.5"
   },
   {
-    "number": 24,
+    "number": 23,
     "title": "Data-quality faults and training-serving skew",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 4,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5"
+    "source": "Bass, Ch. 11 / §14.1.5"
   },
   {
-    "number": 25,
+    "number": 24,
     "title": "A publication gate contains a bad batch",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Fictional B017 incident"
+    "source": "Bass, Ch. 11 / §14.1.5 · Fictional B017 incident"
   },
   {
-    "number": 26,
+    "number": 25,
     "title": "Respond: investigate, contain, repair, verify",
     "section": "Block 1 / Monitoring & degradation",
     "owner": "Simon",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5"
+    "source": "Bass, Ch. 11 / §14.1.5"
   },
   {
-    "number": 27,
+    "number": 26,
     "title": "Hidden dependencies create technical debt",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 4,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 14 · Nazir, §§5–6"
+    "source": "Kalinowski, Ch. 14 · Nazir et al. (2024)"
   },
   {
-    "number": 28,
+    "number": 27,
     "title": "Make the feature contract explicit",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Bass, Ch. 14 · Nazir, §§5–6 · Teaching contract"
+    "source": "Bass, Ch. 14 · Nazir et al. (2024) · Teaching contract"
   },
   {
-    "number": 29,
+    "number": 28,
     "title": "Separate responsibilities where change happens",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 14 · Nazir, §§5–6"
+    "source": "Kalinowski, Ch. 14 · Nazir et al. (2024)"
   },
   {
-    "number": 30,
+    "number": 29,
     "title": "Pipeline pattern: order the responsibilities",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 14 · Nazir, §§5–6"
+    "source": "Kalinowski, Ch. 14 · Nazir et al. (2024)"
   },
   {
-    "number": 31,
+    "number": 30,
     "title": "Strategy pattern: replace one implementation",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 4,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 14 · Nazir, §§5–6"
+    "source": "Kalinowski, Ch. 14 · Nazir et al. (2024)"
   },
   {
-    "number": 32,
+    "number": 31,
     "title": "Observer pattern: notify, then investigate",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 14 · Nazir, §§5–6"
+    "source": "Kalinowski, Ch. 14 · Nazir et al. (2024)"
   },
   {
-    "number": 33,
+    "number": 32,
     "title": "Version the system, not only the model",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 13–14 · Bass, Ch. 11 / §14.1 · Simon’s notes"
+    "source": "Kalinowski, Ch. 13–14 · Bass, Ch. 11 / §14.1"
   },
   {
-    "number": 34,
+    "number": 33,
     "title": "Modules or services? Make the trade-off",
     "section": "Block 1 / Design decisions",
     "owner": "Luca",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Kalinowski, Ch. 14 · Nazir, §§5–6"
+    "source": "Kalinowski, Ch. 14 · Nazir et al. (2024)"
   },
   {
-    "number": 35,
+    "number": 34,
     "title": "Architectural tactics connect concerns to controls",
     "section": "Block 2 / Architectural tactics",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
     "source": "Bass, Ch. 14 · Bass, Ch. 9–11 · Group Block 2 outline"
   },
   {
-    "number": 36,
+    "number": 35,
     "title": "CI, CD, and CT need different evidence",
     "section": "Block 2 / DevOps & MLOps",
     "owner": "Matheus",
@@ -360,7 +350,7 @@
     "source": "Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)"
   },
   {
-    "number": 37,
+    "number": 36,
     "title": "Candidate training ends before promotion",
     "section": "Block 2 / DevOps & MLOps",
     "owner": "Matheus",
@@ -370,167 +360,167 @@
     "source": "Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)"
   },
   {
-    "number": 38,
+    "number": 37,
     "title": "Repair the input path; retain M1 when appropriate",
     "section": "Block 2 / DevOps & MLOps",
     "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4"
+    "source": "Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)"
   },
   {
-    "number": 39,
+    "number": 38,
     "title": "Trace the prediction and the decision",
     "section": "Block 2 / DevOps & MLOps",
     "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4–6"
+    "source": "Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting)"
   },
   {
-    "number": 40,
+    "number": 39,
     "title": "Recovery restores a compatible path",
     "section": "Block 2 / DevOps & MLOps",
     "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Breck, infrastructure tests 6–7 · Simon’s notes, §4"
+    "source": "Breck, infrastructure tests 6–7"
   },
   {
-    "number": 41,
+    "number": 40,
     "title": "Security threats depend on attacker access",
     "section": "Block 2 / Security & privacy",
     "owner": "Simon + Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST AI 100-2e2025"
+    "source": "Bass, Ch. 9–10 / §14.2 · NIST AI 100-2e2025"
   },
   {
-    "number": 42,
+    "number": 41,
     "title": "Enforce access at the resource boundary",
     "section": "Block 2 / Security & privacy",
     "owner": "Simon + Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-207, §3"
+    "source": "Bass, Ch. 9–10 / §14.2 · NIST SP 800-207, §3"
   },
   {
-    "number": 43,
+    "number": 42,
     "title": "Least privilege follows responsibilities",
     "section": "Block 2 / Security & privacy",
     "owner": "Simon + Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · Proposed permissions"
+    "source": "Bass, Ch. 9–10 / §14.2 · Proposed permissions"
   },
   {
-    "number": 44,
+    "number": 43,
     "title": "Privacy: expose what each role needs",
     "section": "Block 2 / Security & privacy",
     "owner": "Simon + Matheus",
     "steps": 4,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2"
+    "source": "Bass, Ch. 9–10 / §14.2"
   },
   {
-    "number": 45,
+    "number": 44,
     "title": "Privacy techniques have specific limits",
     "section": "Block 2 / Security & privacy",
     "owner": "Simon + Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-226"
+    "source": "Bass, Ch. 9–10 / §14.2 · NIST SP 800-226"
   },
   {
-    "number": 46,
+    "number": 45,
     "title": "Use the quality checklist as a review tool",
     "section": "Block 2 / Quality concerns",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
     "source": "Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Corrigendum contents not reviewed"
   },
   {
-    "number": 47,
+    "number": 46,
     "title": "Predictive quality and system performance",
     "section": "Block 2 / Quality concerns",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
     "source": "Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Kalinowski, §13.4"
   },
   {
-    "number": 48,
+    "number": 47,
     "title": "Robustness: invalid, unfamiliar, or ordinary?",
     "section": "Block 2 / Quality concerns",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Simon’s notes, §2–4"
+    "source": "Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14"
   },
   {
-    "number": 49,
+    "number": 48,
     "title": "Explainability and auditability differ",
     "section": "Block 2 / Quality concerns",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Bass, Ch. 14 · Simon’s notes, §6–7"
+    "source": "Bass, Ch. 14"
   },
   {
-    "number": 50,
+    "number": 49,
     "title": "Fairness: prediction versus treatment",
     "section": "Block 2 / Quality concerns",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 4,
     "kind": "diagram",
     "layout": "standard",
     "source": "Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Bass, Ch. 10 / §14.2"
   },
   {
-    "number": 51,
+    "number": 50,
     "title": "Airflow: make workflow dependencies visible",
     "section": "Block 2 / Practical tools",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
     "source": "Bass, Ch. 14 · Illustrative Airflow role"
   },
   {
-    "number": 52,
+    "number": 51,
     "title": "MLflow: connect experiments and artifacts",
     "section": "Block 2 / Practical tools",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
     "source": "Bass, Ch. 14 · Illustrative MLflow role"
   },
   {
-    "number": 53,
+    "number": 52,
     "title": "Validation and drift reports support diagnosis",
     "section": "Block 2 / Practical tools",
-    "owner": "TBD",
+    "owner": "Matheus",
     "steps": 3,
     "kind": "diagram",
     "layout": "standard",
-    "source": "Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Group tool-showcase topic"
+    "source": "Bass, Ch. 11 / §14.1.5 · Group tool-showcase topic"
   },
   {
-    "number": 54,
+    "number": 53,
     "title": "ML architecture connects five responsibilities",
     "section": "Block 2 / Practical tools",
     "owner": "All presenters",
@@ -540,13 +530,13 @@
     "source": "Bass, Ch. 14 · Group synthesis"
   },
   {
-    "number": 55,
+    "number": 54,
     "title": "Sources and adaptation boundaries",
     "section": "Block 2 / Practical tools",
     "owner": "All presenters",
     "steps": 0,
     "kind": "table",
     "layout": "standard",
-    "source": "See source-review.md and presenter guide"
+    "source": "See SOURCES.md and presenter guide"
   }
 ]

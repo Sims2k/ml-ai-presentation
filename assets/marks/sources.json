@@ -1,0 +1,10 @@
+{
+  "airflow.svg": "https://airflow.apache.org/images/airflow-logo-small.svg",
+  "mlflow.svg": "https://raw.githubusercontent.com/mlflow/mlflow/master/assets/logo.svg",
+  "shield-check.svg": "https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/shield-check.svg",
+  "chart-no-axes-combined.svg": "https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/chart-no-axes-combined.svg",
+  "workflow.svg": "https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/workflow.svg",
+  "git-branch.svg": "https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/git-branch.svg",
+  "clipboard-check.svg": "https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/clipboard-check.svg",
+  "lock-keyhole.svg": "https://raw.githubusercontent.com/lucide-icons/lucide/main/icons/lock-keyhole.svg"
+}

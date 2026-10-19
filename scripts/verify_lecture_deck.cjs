@@ -16,6 +16,8 @@ const assert=(v,msg)=>{if(!v)throw new Error(msg)};
    await p.evaluate(n=>deck.show(n),i);
    const result=await p.locator('.slide.active').evaluate(s=>{
     const issues=[],stage=s.getBoundingClientRect(),bounds=e=>e.getBoundingClientRect(),overlap=(a,b)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1;
+    for(const img of s.querySelectorAll('img'))if(!img.complete||!img.naturalWidth)issues.push('Image did not load offline: '+img.alt);
+    const footer=s.querySelector('footer');if(/Simon[’']s\s+(notes|notations|technical atlas)/i.test(footer?.textContent||''))issues.push('Personal notes cited as original source');
     const regions=[...s.querySelectorAll('.masthead,.heading,.body-grid,.example,footer,.cover-side,.cover-speakers')];
     for(const e of regions){const b=bounds(e);if(b.left<stage.left-1||b.right>stage.right+1||b.top<stage.top-1||b.bottom>stage.bottom+1)issues.push('Outside stage: '+e.className);}
     for(let j=0;j<regions.length;j++)for(let k=j+1;k<regions.length;k++)if(overlap(bounds(regions[j]),bounds(regions[k])))issues.push('Region overlap: '+regions[j].className+' / '+regions[k].className);
@@ -42,15 +44,22 @@ const assert=(v,msg)=>{if(!v)throw new Error(msg)};
   const live=await ctx.newPage();live.on('pageerror',e=>report.errors.push(String(e)));await live.goto(url);await live.evaluate(()=>document.fonts.ready);
   for(const m of manifest.filter(x=>x.steps)){
    await live.evaluate(n=>deck.show(n),m.number-1);const f=live.locator('.slide.active [data-motion-root]');assert(await f.getAttribute('data-step-current')==='0','Build start '+m.number);
-   await live.keyboard.press('ArrowRight');assert(await f.getAttribute('data-step-current')==='1','Forward '+m.number);await live.keyboard.press('ArrowLeft');assert(await f.getAttribute('data-step-current')==='0','Reverse '+m.number);
+   await live.keyboard.press('ArrowRight');assert(await f.getAttribute('data-step-current')==='1','Forward '+m.number);
+   if(m.number===3){
+    await live.waitForTimeout(550);
+    assert(await f.locator('[data-motion-item][data-step="1"]').evaluateAll(es=>es.every(e=>getComputedStyle(e).opacity==='1')),'Revealed items actually visible');
+    assert(await f.locator('[data-motion-item][data-step="2"]').evaluateAll(es=>es.every(e=>Number(getComputedStyle(e).opacity)<.2)),'Pending items stay visually distinct');
+    assert(await f.locator('[data-motion-item]').first().evaluate(e=>getComputedStyle(e).transitionDuration.includes('0.48s')),'Animated opacity transition retained');
+   }
+   await live.keyboard.press('ArrowLeft');assert(await f.getAttribute('data-step-current')==='0','Reverse '+m.number);
    for(let step=0;step<m.steps;step++)await live.keyboard.press('ArrowRight');assert(await f.getAttribute('data-step-current')===String(m.steps),'Complete '+m.number);
   }
   assert(await live.locator('[data-motion-controls]:visible').count()===0,'Playback UI hidden');await live.keyboard.press('Home');await live.keyboard.press('PageDown');assert(await live.evaluate(()=>deck.current)===1,'Direct slide navigation');
   await live.keyboard.press('g');assert(await live.locator('#contents').isVisible(),'Contents keyboard');await live.locator('[data-jump="17"]').click();assert(await live.evaluate(()=>deck.current)===17,'Contents jump');
   await live.keyboard.press('e');assert(await live.locator('body').getAttribute('class')==='editing','Editing');
   const editable=live.locator('.slide.active h1[data-edit]'),editableId=await editable.getAttribute('id'),original=await editable.textContent();await editable.fill('Local review edit');
-  assert(await live.evaluate(id=>JSON.parse(localStorage.getItem('ml-architecture-lecture-v2'))[id],editableId)==='Local review edit','Local edit persisted');
-  await editable.fill(original);await live.keyboard.press('Escape');await live.evaluate(()=>localStorage.removeItem('ml-architecture-lecture-v2'));
+  assert(await live.evaluate(id=>JSON.parse(localStorage.getItem('ml-architecture-lecture-v3'))[id],editableId)==='Local review edit','Local edit persisted');
+  await editable.fill(original);await live.keyboard.press('Escape');await live.evaluate(()=>localStorage.removeItem('ml-architecture-lecture-v3'));
   await live.emulateMedia({reducedMotion:'reduce'});assert(await live.locator('[data-motion-item]').evaluateAll(es=>es.every(e=>getComputedStyle(e).opacity==='1')),'Reduced motion');
   report.checks.push('Reversible arrow builds on all diagram slides; direct navigation; contents; editing; no visible playback UI; offline fonts; reduced motion');
   const nojs=await browser.newContext({javaScriptEnabled:false,viewport:{width:1280,height:720}}),np=await nojs.newPage();await np.goto(url);assert(await np.locator('[data-motion-item]').evaluateAll(es=>es.every(e=>getComputedStyle(e).opacity==='1')),'Complete no-JS figures');await nojs.close();report.checks.push('Complete no-JavaScript figures');

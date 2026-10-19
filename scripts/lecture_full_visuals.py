@@ -138,10 +138,43 @@ def cover_map():
         ('','Deployment and serving','Tomás'),
         ('','Monitoring and degradation','Simon'),
         ('','Design decisions and technical debt','Luca'),
-        ('2 · Architecture & quality','Architectural tactics','TBD'),
+        ('2 · Architecture & quality','Architectural tactics','Matheus'),
         ('','DevOps / MLOps','Matheus'),
         ('','Security and privacy','Simon + Matheus'),
-        ('','Quality checklist and tools','TBD')],[25,49,26])
+        ('','Quality checklist and tools','Matheus')],[25,49,26])
+
+def serving_comparison(online=False):
+    """Colleague content in the existing three-lane, keyboard-build grammar."""
+    slug='online-contrast' if online else 'serving-overview'
+    rows=(
+        [('01 SYNCHRONOUS · BLOCK A PAYMENT','Authorization waits for the score',
+          ('Card payment','Authorization request'),('Fraud API','Scores in milliseconds'),('Authorizer','Approves or blocks'),'REQUEST','RESPONSE'),
+         ('02 ASYNCHRONOUS · NOTIFY','Other systems act after the event',
+          ('Online app','Publishes transaction'),('Stream processor','Invokes the model'),('Pub/sub output','Alert to the app'),'EVENT','PUSH'),
+         ('03 HYBRID · PRECOMPUTE + CACHE','Computed in batch, read with low latency',
+          ('Monthly batch','Churn scores'),('Low-latency store','Keyed by customer'),('CRM screen','Shows C042: 0.70'),'WRITE','READ')]
+        if online else
+        [('01 OFFLINE · BATCH','Precompute many predictions on a schedule',
+          ('Monthly job','Customer snapshot'),('Score + save','All active customers'),('Campaign','Reads saved scores'),'SCORE','READ'),
+         ('02 REAL-TIME · SYNCHRONOUS','The caller waits for the prediction',
+          ('Application','Sends request'),('Prediction API','REST microservice'),('Application','Uses the response'),'REQUEST','RESPONSE'),
+         ('03 REAL-TIME · ASYNCHRONOUS','Events and predictions travel through pub/sub',
+          ('Online app','Publishes an event'),('Stream processor','Invokes the model'),('Pub/sub output','Notifies the app'),'EVENT','PUSH')])
+    body=''
+    for step,(heading,sub,a,b,c,left,right) in enumerate(rows,1):
+        y=12+(step-1)*204;cy=y+128
+        layer=f'<rect x="8" y="{y}" width="1104" height="188" rx="6" class="zone"/>'
+        layer+=text(28,y+32,heading,'lane-title')+text(28,y+62,sub,'row-description')
+        layer+=arrow(slug,312,cy,432,cy,step==2 if online else step==3)
+        layer+=arrow(slug,712,cy,832,cy,step==2 if online else step==3)
+        for x,value in [(372,left),(772,right)]:
+            layer+=f'<rect x="{x-54}" y="{cy-48}" width="108" height="28" fill="{PAPER}"/>'
+            layer+=text(x,cy-28,value,'edge-label','middle')
+        for x,w,(name,subline),role in [(28,284,a,'data'),(432,280,b,'model'),(832,260,c,'business')]:
+            layer+=node(x,y+80,w,92,name,[subline],role)
+        body+=group(layer,step,heading)
+    return svg(slug,'Online serving contrasts' if online else 'Prediction serving patterns',
+        'Three timing patterns connect the producer, model execution, and consumer; the monthly churn case remains batch.',body),3
 
 def strategy_dispatch():
     s='strategy-pattern';body=zone(16,'ONE CLIENT CONTRACT · TWO POSSIBLE IMPLEMENTATIONS',584)
@@ -164,9 +197,9 @@ def shadow_paths():
     body+=arrow(s,700,432,816,432,True)
     body+=edge(s,'M700 216 H740 Q748 216 748 224 V392 Q748 400 756 400 H816',True)
     for step,(x,y,name,ls,role,tag) in enumerate([
-        (24,216,'Validated batch',['Same input snapshot','Stable customer IDs'],'data','INPUT'),
-        (420,96,'Approved M1',['Production result','Action path enabled'],'model','INCUMBENT'),
-        (420,352,'Candidate M2',['Comparison result','No action authority'],'model','SHADOW'),
+        (24,216,'Validated batch',['Same D0 snapshot','C042 in both runs'],'data','INPUT'),
+        (420,96,'Approved M1',['C042: 0.70','Action path enabled'],'model','INCUMBENT'),
+        (420,352,'Candidate M2',['C042 scored, logged','No action authority'],'model','SHADOW'),
         (816,96,'Campaign policy',['Only approved result','One permitted action'],'business','ACTION'),
         (816,352,'Evidence review',['Compare M1 and M2','Quality after labels'],'data','OBSERVATION')],1):
         body+=group(node(x,y,280,160,name,ls,role,tag),step,name)

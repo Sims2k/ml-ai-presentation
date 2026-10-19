@@ -3,7 +3,7 @@
     "id": "use-the-quality-checklist-as-a-review-tool",
     "title": "Use the quality checklist as a review tool",
     "lead": "Connect concerns to architectural controls, ownership, and observable evidence.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>System and process concerns</b> both matter in ML-intensive systems.",
       "<b>Select relevant checks</b> rather than treating a short list as the entire checklist.",
@@ -17,7 +17,7 @@
     "id": "predictive-quality-and-system-performance",
     "title": "Predictive quality and system performance",
     "lead": "Choose an acceptable model and system from several quality objectives.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Accuracy</b> alone is an incomplete objective, especially with imbalanced outcomes.",
       "<b>Performance</b> includes the end-to-end deadline and resource use.",
@@ -31,7 +31,7 @@
     "id": "robustness-invalid-unfamiliar-or-ordinary",
     "title": "Robustness: invalid, unfamiliar, or ordinary?",
     "lead": "Different inputs need different responses; do not treat every unusual value as the same failure.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Contract validity</b> and model applicability are distinct.",
       "<b>OOD inputs</b> may be structurally valid but poorly represented in training.",
@@ -45,7 +45,7 @@
     "id": "explainability-and-auditability-differ",
     "title": "Explainability and auditability differ",
     "lead": "Explaining feature influence and reconstructing a historical decision are complementary tasks.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Explanation</b> helps interpret model behavior in context.",
       "<b>Auditability</b> needs historical evidence and traceable versions.",
@@ -59,7 +59,7 @@
     "id": "fairness-prediction-versus-treatment",
     "title": "Fairness: prediction versus treatment",
     "lead": "Name what is being compared before selecting a metric or declaring an improvement.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Prediction fairness:</b> compare errors or calibration across relevant groups.",
       "<b>Treatment fairness:</b> inspect access to offers and policy effects.",

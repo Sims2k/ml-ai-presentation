@@ -3,7 +3,7 @@
     "id": "architectural-tactics-connect-concerns-to-controls",
     "title": "Architectural tactics connect concerns to controls",
     "lead": "Use explicit mechanisms to address uncertainty, change, recovery, and auditability.",
-    "owner": "TBD",
+    "owner": "Matheus",
     "bullets": [
       "<b>Separation</b> isolates data preparation, model execution, and business policy.",
       "<b>Observation</b> makes operational and predictive behavior reviewable.",

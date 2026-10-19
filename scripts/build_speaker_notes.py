@@ -12,7 +12,7 @@ from lecture_content import build_lecture
 from speaker_scripts import SCRIPTS
 
 ROOT=Path(__file__).resolve().parents[1]
-SHOTS=ROOT/'previews/speaker-notes'
+SHOTS=ROOT/'previews/lecture-full'
 OUT_TEX=ROOT/'src/speaker-notes.tex'
 OUT_DIR=ROOT/'outputs'
 
@@ -49,15 +49,29 @@ def cues_for(slide,n,steps,prev_section):
     lines=[]
     if slide['section']!=prev_section:
         lines.append(f"New block: \\textbf{{{esc(slide['section'])}}}.")
-    lines.append(f"Presenter: \\textbf{{{esc(slide['owner'])}}}.")
     if steps and steps>1:
-        lines.append(f"Animated build: click {steps-1} time{'s' if steps>2 else ''} to reveal the remaining steps before moving on.")
+        lines.append(f"\u200bBuild: press Right {steps} times to reveal the complete figure; press once more to advance.")
     elif steps==1:
-        lines.append("Single reveal: one click shows the complete figure.")
-    if slide['example']:
-        lines.append("Pause briefly before the bank example — let the concept land first.")
-    if slide['takeaway']:
-        lines.append("Close on the takeaway line before advancing.")
+        lines.append("Build: press Right once to reveal the figure, then again to advance.")
+    visual=slide['visual']
+    if callable(visual): visual,_=visual()
+    if isinstance(visual,str) and '<table' in visual:
+        headers=[unescape(re.sub('<[^>]+>','',x)) for x in re.findall(r'<th>(.*?)</th>',visual)]
+        lines.append('Table cue: introduce the columns, then explain the relevant rows using the spoken points below.')
+    elif isinstance(visual,str) and '<svg' in visual:
+        if slide.get('layout')=='wide':
+            lines.append('Point to the graphic: identify the axes or time direction and the legend before comparing the panels.')
+        else:
+            names=[unescape(x) for x in re.findall(r'data-node="([^"]+)"',visual)]
+            if names:lines.append('Diagram cue: follow '+esc(' → '.join(names[:3]))+'.')
+    elif isinstance(visual,str) and '<img' in visual:
+        lines.append('Graphic cue: follow time from left to right; distinguish the five rows before using the bank illustrations.')
+    if slide['title']=='What a test can’t tell us today':
+        lines.append('Handoff cue: this is the brief foundation; Simon revisits the monitoring timeline and delayed labels later.')
+    if slide['title']=='Input checks now; quality checks later':
+        lines.append('Callback: connect this monitoring timeline to Ricardo’s earlier test-versus-outcome distinction.')
+    if slide['title'].startswith('Release plan:'):
+        lines.append('Handoff to Simon: a successful release still needs ongoing input, execution and outcome evidence.')
     if slide.get('extra'):
         lines.append("Adaptation note on file for this slide; do not read aloud unless asked.")
     return lines
@@ -80,7 +94,7 @@ def bullets_for(slide):
         items.append(clause(b))
     if slide['example']:
         ex=slide['example']
-        if ex.lower().startswith('bank') or ex.startswith('Ana'):
+        if slide.get('example_label','').startswith('Next') or ex.lower().startswith('bank') or ex.startswith('Ana'):
             items.append(escape_keep_bold(ex))
         else:
             ex=ex[0:1].lower()+ex[1:]
@@ -94,7 +108,14 @@ def paragraph_for(slide):
     script=SCRIPTS.get(slide['title'])
     if script is None:
         raise KeyError(f"No hand-written spoken script for slide {slide['title']!r} -- add one to speaker_scripts.py")
-    return esc(script)
+    # Keep the authored prose. Short, bulleted paragraphs are reading aids,
+    # not a new, compressed script. Explicit blank lines define authored blocks.
+    if '\n\n' in script:
+        blocks=script.split('\n\n')
+    else:
+        sentences=re.split(r'(?<=[.!?])\s+(?=[A-Z“])',script)
+        blocks=[' '.join(sentences[i:i+2]) for i in range(0,len(sentences),2)]
+    return '\\begin{itemize}\n'+'\n'.join('\\item '+escape_keep_bold(b) for b in blocks)+'\n\\end{itemize}'
 
 def main():
     slides=build_lecture()
@@ -113,6 +134,8 @@ def main():
 \definecolor{accent}{HTML}{A62C40}
 \setstretch{1.12}
 \setlength{\parindent}{0pt}
+\hyphenpenalty=10000
+\exhyphenpenalty=10000
 \setlist[itemize]{leftmargin=1.3em,itemsep=0.25em,topsep=0.2em,parsep=0.1em}
 \pagestyle{fancy}
 \fancyhf{}
@@ -122,7 +145,7 @@ def main():
 \renewcommand{\headrulewidth}{0.3pt}
 \tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2mm,bottom=2mm,before skip=6pt,after skip=6pt,fonttitle=\bfseries\small,before upper={\setlength{\parskip}{0.4em}\RaggedRight}}
 \newtcolorbox{saybox}{colback=pale,colframe=teal,title={TO SAY}}
-\newtcolorbox{examplebox}{colback=white,colframe=teal!50,title={SPOKEN EXAMPLE --- practice this out loud},fontupper=\itshape\fontsize{10.5}{14}\selectfont}
+\newtcolorbox{examplebox}[1][]{colback=white,colframe=teal!50,title={SPOKEN SCRIPT --- short paragraphs for delivery},fontupper=\fontsize{10.5}{14}\selectfont\interlinepenalty=10000,#1}
 \newtcolorbox{cuebox}[1][]{colback=accent!5,colframe=accent!70!black,title={CUES},#1}
 \begin{document}
 \thispagestyle{empty}
@@ -131,7 +154,7 @@ def main():
 {\Large Speaker Notes}\\[2mm]
 {\large A bank customer-churn case --- 20 October 2026}\\[8mm]
 \end{center}
-\noindent Each page shows one slide exactly as presenters will see it, the key points to cover, delivery cues, and a worked spoken-example paragraph to practice from. The example is a model to rehearse and adapt, not a transcript to read verbatim. Animated builds are marked; press the arrow key the stated number of times before moving to the next slide.
+\noindent Each slide has its current image, key points, visual and handoff cues, and a spoken script. The authored prose is grouped into short bulleted paragraphs so presenters can find their place easily. Read or adapt it in your own voice. Longer notes may continue to the next page. Diagram builds use the Right arrow; the stated count reveals the figure, and one more press advances the slide.
 \clearpage
 ''')
     prev_section=None
@@ -170,7 +193,7 @@ def main():
             tex.append(f'\\item {b}')
         tex.append('\\end{itemize}')
         tex.append('\\end{saybox}')
-        tex.append('\\begin{examplebox}')
+        tex.append('\\begin{examplebox}[title after break={SPOKEN SCRIPT --- slide '+str(n)+' continued}]')
         tex.append(paragraph)
         tex.append('\\end{examplebox}')
         if slide['source']:

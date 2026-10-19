@@ -16,6 +16,8 @@ The missing CRM feature is a data-quality fault, not automatically concept drift
 The complete failed B017 batch is held before publication. A separately validated
 repaired execution B017-R1 can retain M1. Training and production promotion are
 separate decisions. Prediction and business action remain separate responsibilities.
+M1 identifies the current approved model; M2 identifies a candidate replacement.
+The identifiers stay attached to those artifacts even if their approval status changes.
 
 ## Presenting and editing
 
@@ -34,15 +36,14 @@ uses complete diagrams. No visible animation-playback controls are shown.
 | Deployment and serving | Tomás |
 | Monitoring and degradation | Simon |
 | Design decisions | Luca |
-| Architectural tactics | TBD |
+| Architectural tactics | Matheus |
 | DevOps/MLOps | Matheus |
 | Security and privacy | Simon + Matheus |
-| Quality checklist | TBD |
-| Practical tools | TBD |
+| Quality checklist | Matheus |
+| Practical tools | Matheus |
 
-Unassigned responsibilities remain explicit; this document does not invent new
-speaker assignments. Detailed statistical derivations remain in Simon's personal
-study notes, rather than the main lecture.
+Assignments follow the colleagues’ reviewed Google deck. Statistical derivations
+are outside the scope of this lecture.
 
 
 ## 1. ML Architecture
@@ -86,7 +87,7 @@ Follow the group’s topic outline; use the case to connect each architectural d
 
 - **Concept first:** explain the mechanism, then apply it to churn.
 
-- **Named handoffs:** each section identifies its presenter; unassigned topics remain TBD.
+- **Named handoffs:** each section identifies its presenter; the agenda matches the agreed presenters.
 
 
 **Bank example:** The same source → feature → model → score → policy path returns throughout the lecture.
@@ -98,10 +99,42 @@ Follow the group’s topic outline; use the case to connect each architectural d
 **Reading anchor:** Group discussion document · Agreed lecture redesign.
 
 
+**Next:** Two lifecycles, one compatible system — Ricardo.
+
+
+## 3. Two lifecycles, one compatible system
+
+**Section:** Block 1 / Foundations. **Presenter:** Ricardo.
+
+Code correctness and predictive usefulness depend on different feedback and release cycles.
+
+
+- **Software changes** can be checked through code, contract, and integration tests.
+
+- **Model development** also needs representative data, suitable labels, and evaluation.
+
+- **Feedback differs:** execution checks may be immediate; churn labels arrive later.
+
+- **Co-versioning** links changes across code, feature meaning, model, and configuration.
+
+
+**Bank example:** A CRM connector can change while the current approved model (M1) stays fixed; changed inputs can still alter scores.
+
+**Teaching point:** A passing software test does not establish future predictive quality.
+
+
+**Additional speaking context:**
+
+Software engineers can change a connector or business rule, integrate the code, run tests and release it. Model development also needs suitable examples, feature definitions, learning and evaluation. Its feedback may arrive weeks after a prediction. The two activities depend on each other: changing input meaning can alter a prediction even when model bytes remain unchanged.
+
+
+**Reading anchor:** Kalinowski, Ch. 13–14 · Bass, Ch. 11.
+
+
 **Next:** The bank case: features, labels, and predictions — Ricardo.
 
 
-## 3. The bank case: features, labels, and predictions
+## 4. The bank case: features, labels, and predictions
 
 **Section:** Block 1 / Foundations. **Presenter:** Ricardo.
 
@@ -127,13 +160,41 @@ A few ML terms connect familiar application data to a learned risk estimate.
 Ana's app logs are data. A consistent count of logins during the seven days ending at the scoring cutoff is a feature. A trained model turns prepared features into a risk estimate; in our invented example its output is 0.70. A label is the later observed churn outcome, defined consistently for learning and evaluation. Churn means ending the banking relationship, not simply opening the app less often.
 
 
-**Reading anchor:** Bass, Ch. 14 · Simon’s notes, §1.
+**Reading anchor:** Bass, Ch. 14.
+
+
+**Next:** What a test can’t tell us today — Ricardo.
+
+
+## 5. What a test can’t tell us today
+
+**Section:** Block 1 / Foundations. **Presenter:** Ricardo.
+
+A software test checks the run today; only mature labels can check the prediction.
+
+
+- **Today:** tests show the job runs, inputs are valid, and scores are saved.
+
+- **Not today:** whether Ana’s 0.70 is right. Her 30-day outcome is unknown.
+
+- **Later:** link labels to the scores, then measure precision and recall.
+
+- **Fixed model:** same inputs, same score. The uncertainty is predictive.
+
+
+**Bank example:** Ana / C042: scored 0.70 today. Only churn labels, available after the 30-day window, show whether she left.
+
+**Teaching point:** The bank need not wait 30 days to catch an incompatible input.
+
+
+
+**Reading anchor:** Kalinowski, §13.2 · Bass, §14.1–14.1.4.
 
 
 **Next:** From a trained model to an ML system — Ricardo.
 
 
-## 4. From a trained model to an ML system
+## 6. From a trained model to an ML system
 
 **Section:** Block 1 / Foundations. **Presenter:** Ricardo.
 
@@ -162,42 +223,10 @@ Read the production path from left to right: source records, preparation and val
 **Reading anchor:** Bass, Ch. 14 · Kalinowski, §13.2–13.3.
 
 
-**Next:** Two lifecycles, one compatible system — Ricardo.
-
-
-## 5. Two lifecycles, one compatible system
-
-**Section:** Block 1 / Foundations. **Presenter:** Ricardo.
-
-Code correctness and predictive usefulness depend on different feedback and release cycles.
-
-
-- **Software changes** can be checked through code, contract, and integration tests.
-
-- **Model development** also needs representative data, suitable labels, and evaluation.
-
-- **Feedback differs:** execution checks may be immediate; churn labels arrive later.
-
-- **Co-versioning** links changes across code, feature meaning, model, and configuration.
-
-
-**Bank example:** A CRM connector can change today while M1 stays fixed; its changed inputs can still alter predictions.
-
-**Teaching point:** A passing software test does not establish future predictive quality.
-
-
-**Additional speaking context:**
-
-Software engineers can change a connector or business rule, integrate the code, run tests and release it. Model development also needs suitable examples, feature definitions, learning and evaluation. Its feedback may arrive weeks after a prediction. The two activities depend on each other: changing input meaning can alter a prediction even when model bytes remain unchanged.
-
-
-**Reading anchor:** Kalinowski, Ch. 13–14 · Bass, Ch. 11 · Simon’s notes, §1.
-
-
 **Next:** Prediction and business action are separate — Ricardo.
 
 
-## 6. Prediction and business action are separate
+## 7. Prediction and business action are separate
 
 **Section:** Block 1 / Foundations. **Presenter:** Ricardo.
 
@@ -226,170 +255,94 @@ The score supports a retention process. The campaign must still consider contact
 **Reading anchor:** Bass, Ch. 14 · Teaching policy decomposition.
 
 
-**Next:** Serving patterns: when is a prediction needed? — Tomás.
+**Next:** How do predictions reach the business? — Tomás.
 
 
-## 7. Serving patterns: when is a prediction needed?
-
-**Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
-
-Select the interaction pattern from the decision’s timing and failure behavior.
-
-
-- **Batch:** compute many predictions; consumers read stored results later.
-
-- **Synchronous:** the caller waits for a result during its request.
-
-- **Asynchronous:** an event producer and consumer are decoupled through messaging.
-
-- **Edge:** a deployment location, independent of prediction timing.
-
-
-**Bank example:** The churn campaign can use precomputed scores. An immediate fraud check motivates a different timing need.
-
-**Teaching point:** Timing, location, and release strategy are separate choices.
-
-
-**Additional speaking context:**
-
-Batch processes many records and stores results for later consumption. In a synchronous interaction a caller waits for the response before continuing. In an asynchronous design, messages separate request or event production from processing and result delivery. The prediction may still need to arrive quickly even though the original caller does not wait on one direct request-response call.
-
-
-**Reading anchor:** Kalinowski, §13.3–13.4; supporting Ch. 12.
-
-
-**Next:** Batch serving: validate, score, publish — Tomás.
-
-
-## 8. Batch serving: validate, score, publish
+## 8. How do predictions reach the business?
 
 **Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
 
-A complete validated batch must be available before its business deadline.
+It depends on when the decision needs them: offline (batch) or real-time, synchronously or asynchronously.
 
 
-- **Snapshot:** define population, cutoff, and required source freshness.
+- **Offline:** historical data in bulk; results are read later.
+
+- **Real-time:** current context plus history, per request.
+
+- **Location:** central, embedded or edge is a separate axis.
+
+- **Ask first:** does the decision need real-time? (Nazir, I12)
+
+
+**Bank example:** Ana's risk is needed only before the monthly campaign: a central batch suffices. Edge adds rollout cost, no benefit.
+
+**Teaching point:** Churn needs none of the online paths: monthly, central, batch.
+
+
+
+**Reading anchor:** Kalinowski, §13.3, Fig. 13.2–13.4; supporting Ch. 12 · Nazir et al., §4.3 (I12).
+
+
+**Next:** Batch path: Ana's score on day D0 — Tomás.
+
+
+## 9. Batch path: Ana's score on day D0
+
+**Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
+
+A complete, validated batch must be published before the campaign deadline.
+
+
+- **Snapshot:** define population, cutoff, and source freshness.
 
 - **Validate:** reject incompatible inputs before scoring.
 
-- **Reconcile:** account for written, rejected, and withheld records.
+- **Reconcile:** account for written, rejected, withheld records.
 
-- **Publish:** expose a validated batch under a defined consumer contract.
-
-
-**Bank example:** Monthly churn scores are saved for the campaign. A real numerical deadline must be agreed with campaign owners.
-
-**Teaching point:** Optimize the whole batch deadline, not only per-record prediction speed.
+- **Publish:** expose the validated batch under a consumer contract.
 
 
-**Additional speaking context:**
+**Bank example:** Ana's 0.70 is stored with M1, D0 and the feature version; her 30-day outcome is still unknown on D0.
 
-Walk one normal batch: required sources arrive, records are checked, features are computed, the compatible M1 package is loaded, scores are stored and expected coverage is reconciled. The objective is a complete validated batch in time for its campaign. The team has not specified a real numerical deadline or availability target, so do not invent one.
-
-
-**Reading anchor:** Bass, Ch. 14 · Kalinowski, §13.3.
+**Teaching point:** Saving batch scores at scale is a reported challenge (Nazir, I6).
 
 
-**Next:** Synchronous serving: the caller waits — Tomás.
+
+**Reading anchor:** Bass, §14.1.4 · Kalinowski, §13.3, Fig. 13.2 · Nazir et al., §3.2 (I6).
 
 
-## 9. Synchronous serving: the caller waits
+**Next:** Online serving: the fraud contrast — Tomás.
+
+
+## 10. Online serving: the fraud contrast
 
 **Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
 
-Prediction becomes part of the application’s response path.
+Same domain, different timing needs. A comparison, not a new part of the churn system.
 
 
-- **Response time** includes lookup, preparation, inference, and network work.
+- **Model time:** smaller models, leaner code, GPU/TPU at a cost.
 
-- **Availability** now affects the waiting application’s request.
+- **System time:** fast input lookup; precomputed, cached scores.
 
-- **Failure behavior** needs explicit timeout, error, and fallback policies.
+- **Inputs:** the back-end usually fetches features the caller lacks.
 
-- **Consistency** still requires compatible feature meanings and model versions.
+- **Async:** idempotent consumers, lag and failed-message handling.
 
 
-**Bank example:** An immediate fraud check can justify this pattern. The monthly churn campaign does not require it.
+**Bank example:** Fraud blocking is synchronous, fraud alerts asynchronous. Churn stays batch; CRM can read Ana's cached score.
 
 **Teaching point:** A fast model does not guarantee a fast end-to-end service.
 
 
-**Additional speaking context:**
 
-Batch processes many records and stores results for later consumption. In a synchronous interaction a caller waits for the response before continuing. In an asynchronous design, messages separate request or event production from processing and result delivery. The prediction may still need to arrive quickly even though the original caller does not wait on one direct request-response call.
-
-
-**Reading anchor:** Kalinowski, §13.3–13.4 · Teaching comparison.
-
-
-**Next:** Asynchronous serving: decouple the work — Tomás.
-
-
-## 10. Asynchronous serving: decouple the work
-
-**Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
-
-Messages separate production, processing, and consumption of a prediction.
-
-
-- **Buffering** absorbs bursts and supports independent processing.
-
-- **Lag** and queue health become operational concerns.
-
-- **Retries** require failure handling and idempotent processing.
-
-- **Contracts** define message identity, timing, schema, and result interpretation.
-
-
-**Bank example:** If a future campaign consumes prediction events, a repeated message must not cause duplicate customer contacts.
-
-**Teaching point:** Decoupling adds messaging responsibilities; it does not remove timing requirements.
-
-
-**Additional speaking context:**
-
-Batch processes many records and stores results for later consumption. In a synchronous interaction a caller waits for the response before continuing. In an asynchronous design, messages separate request or event production from processing and result delivery. The prediction may still need to arrive quickly even though the original caller does not wait on one direct request-response call.
-
-
-**Reading anchor:** Kalinowski, §13.3 · Bank application is hypothetical.
-
-
-**Next:** Deployment location is a separate decision — Tomás.
-
-
-## 11. Deployment location is a separate decision
-
-**Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
-
-Central, embedded, and edge deployments change operations and constraints.
-
-
-- **Central:** simplify shared operation and governance.
-
-- **Embedded:** deploy the model with its host application.
-
-- **Edge:** account for constrained hardware and intermittent connectivity.
-
-- **Choose independently:** location does not uniquely determine batch or request timing.
-
-
-**Bank example:** Keep churn centrally governed. Device-local inference is a contrast, not an extra subsystem to implement here.
-
-**Teaching point:** Architecture follows the operational context.
-
-
-**Additional speaking context:**
-
-A model can run centrally, embedded in an application, or near a device. Those locations do not by themselves specify batch, synchronous or asynchronous behavior. An edge deployment can respond locally; a central service can participate in a message-based architecture. Choose the location using resource, connectivity, ownership and operational requirements.
-
-
-**Reading anchor:** Kalinowski, supporting Ch. 12; §13.3–13.4.
+**Reading anchor:** Kalinowski, §13.3–13.4, Fig. 13.3–13.4 · Fraud and CRM cases are teaching comparisons.
 
 
 **Next:** Package the whole compatible set — Tomás.
 
 
-## 12. Package the whole compatible set
+## 11. Package the whole compatible set
 
 **Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
 
@@ -398,126 +351,114 @@ A deployable release contains more than the learned model file.
 
 - **Model artifact:** the learned parameters and required format.
 
-- **Runtime:** dependencies, preparation code, and execution environment.
+- **Runtime:** dependencies, preparation code, environment.
 
-- **Contract:** feature meaning, types, missingness, and temporal cutoff.
+- **Contract:** feature meaning, types, missingness, cutoff.
 
 - **Configuration:** scoring population and execution settings.
 
 
-**Bank example:** The bank packages M1 with the exact feature interpretation needed to score the monthly customer snapshot.
+**Bank example:** M1 ships with the exact feature meaning it was trained on, such as the 7-day login count used to score C042.
 
-**Teaching point:** A package that loads successfully still needs release and quality evidence.
-
-
-**Additional speaking context:**
-
-The learned model needs its dependencies, expected input schema, feature semantics and scoring configuration. Check that the intended runtime can load it and perform inference. A column with the same name but a different time window is not necessarily compatible. Containerization can standardize a runtime; it does not establish that the inputs represent the right business meaning.
+**Teaching point:** Smoke-test in the serving environment before exposure (Breck, infra. 6).
 
 
-**Reading anchor:** Bass, Ch. 14 · Kalinowski, §13.3–13.4.
+
+**Reading anchor:** Bass, §14.1.4 · Kalinowski, §13.3 · Nazir et al., §4.1, Table 12 · Breck et al., infra. test 6.
 
 
 **Next:** Shadow deployment: observe without acting — Tomás.
 
 
-## 13. Shadow deployment: observe without acting
+## 12. Shadow deployment: observe without acting
 
 **Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
 
 A candidate scores real inputs while the approved model remains the action source.
 
 
-- **Run in parallel** against comparable production inputs.
+- Run in parallel against the same production snapshot.
 
-- **Record identity:** distinguish M1 and M2 outputs explicitly.
+- **Record identity:** label M1 and M2 outputs explicitly.
 
-- **Compare** operational behavior and score differences first.
+- Compare operational behavior and score differences first.
 
-- **Wait for labels** to compare future churn quality.
+- Wait for labels to compare 30-day churn quality.
 
 
-**Bank example:** Only the M1 record is eligible for campaign use; M2’s shadow score cannot create a second offer.
+**Bank example:** Only M1's 0.70 for Ana is eligible for campaign use; M2's shadow score is logged and cannot create a second offer.
 
 **Teaching point:** Shadow checks observation, not the business effect of acting on the candidate.
 
 
-**Additional speaking context:**
 
-In shadow mode, M1 and candidate M2 may score the same batch, but only the approved action path can influence the campaign. Candidate outputs are comparison records. A canary lets a limited approved cohort use the new version while the remainder retains the old one. In both cases, customer eligibility must prevent duplicate offers.
-
-
-**Reading anchor:** Group outline · Breck, infrastructure 6–7 · Teaching application.
+**Reading anchor:** Bass, §14.1.4 · Bank teaching application of the group release plan.
 
 
-**Next:** Canary deployment: limit exposure — Tomás.
+**Next:** Release strategies: what each proves — Tomás.
 
 
-## 14. Canary deployment: limit exposure
+## 13. Release strategies: what each proves
 
 **Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
 
-An approved limited cohort uses the candidate before broader rollout.
+Shadow, canary and A/B tests answer different questions on different clocks.
 
 
-- **Restrict exposure** to a defined cohort and scope.
+- **Canary:** limit exposure; set stop rules and a rollback.
 
-- **Observe** execution, compatibility, coverage, and policy behavior.
+- **A/B test:** state what changes: model, policy or offer.
 
-- **Define stop rules** and a rehearsed recovery path.
+- **Confounding:** changing model and offer together hides both.
 
-- **Separate evidence:** short operational success cannot prove 30-day predictive quality.
-
-
-**Bank example:** The bank may authorize a small cohort to use M2 while retaining M1 for the remainder.
-
-**Teaching point:** A canary controls risk; it is not automatically a valid business experiment.
+- **Labels:** D0 success cannot prove 30-day quality.
 
 
-**Additional speaking context:**
+**Bank example:** Ask 'does M2 rank churn risk better than M1?' separately from 'does offer B retain more customers than offer A?'
 
-In shadow mode, M1 and candidate M2 may score the same batch, but only the approved action path can influence the campaign. Candidate outputs are comparison records. A canary lets a limited approved cohort use the new version while the remainder retains the old one. In both cases, customer eligibility must prevent duplicate offers.
-
-
-**Reading anchor:** Breck, infrastructure test 6 · Bank teaching application.
+**Teaching point:** A canary controls risk; it is not automatically an experiment.
 
 
-**Next:** A/B testing: define the intervention — Tomás.
+
+**Reading anchor:** Breck et al., infra. tests 6–7 · Bank teaching application.
 
 
-## 15. A/B testing: define the intervention
+**Next:** Release plan: shadow, canary, rollback — Tomás.
+
+
+## 14. Release plan: shadow, canary, rollback
 
 **Section:** Block 1 / Deployment & serving. **Presenter:** Tomás.
 
-Assigned groups and a stated outcome make the comparison interpretable.
+Proposed decision: evidence arrives on two clocks, so exposure grows in steps.
 
 
-- **State what changes:** model, decision policy, or retention treatment.
+- **Decision:** central monthly batch; shadow M2, then canary.
 
-- **Assign comparable groups** under an appropriate experiment design.
+- **Trade-off:** one or two extra cycles before M2 is fully used.
 
-- **Define outcomes** and the observation window before interpreting results.
+- **Rollback:** reuse the last validated M1 batch only while it remains eligible and fresh.
 
-- **Avoid confounding:** changing model and offer together obscures their separate effects.
-
-
-**Bank example:** Compare two offer policies separately from asking whether M2 ranks churn risk better than M1.
-
-**Teaching point:** Prediction accuracy and the effect of contacting a customer are different targets.
+- **Record:** link model, features, config and approval (Matheus).
 
 
-**Additional speaking context:**
-
-An experiment needs a clear question, appropriate group assignment and a measured outcome. State whether the alternative is the risk model, the campaign treatment, or another controlled change. If model selection and treatment change together, interpreting an observed retention difference becomes harder. Comparing people who received an offer with everyone else is not automatically a valid estimate of the offer's effect.
+**Figure explanation:** The staged rollout is a proposed teaching design. Reusing an older batch requires valid population, feature meaning, freshness and campaign eligibility. Otherwise pause use or produce a new validated batch with the compatible approved model. Model rollback does not repair the later CRM input fault.
 
 
-**Reading anchor:** Group outline · Simon’s notes, §3 · Teaching application.
+
+**Bank example:** The first scoring run worked. What evidence tells us the system stays reliable as data and customers change?
+
+**Teaching point:** Exposure grows only as evidence arrives.
+
+
+
+**Reading anchor:** Breck et al., infra. tests 6–7 · Nazir et al., §4.1 · Proposed bank release design.
 
 
 **Next:** How the world changes over time — Simon.
 
 
-## 16. How the world changes over time
+## 15. How the world changes over time
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -549,7 +490,7 @@ Sudden, gradual, incremental, and recurring changes are different time patterns�
 **Next:** Monitoring: observe more than model accuracy — Simon.
 
 
-## 17. Monitoring: observe more than model accuracy
+## 16. Monitoring: observe more than model accuracy
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -575,13 +516,13 @@ Inputs, system execution, predictions, and business actions need different evide
 Ask whether the inputs are valid, whether training and production compute them consistently, whether the population changed, and whether the relationship to churn changed. A source-quality fault concerns absent, stale or incompatible records. Training-serving skew concerns inconsistent preparation. Input drift concerns the distribution of valid features. Concept drift concerns the relationship between valid inputs and the outcome.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5.
 
 
 **Next:** Monitoring architecture: from signal to response — Simon.
 
 
-## 18. Monitoring architecture: from signal to response
+## 17. Monitoring architecture: from signal to response
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -607,13 +548,13 @@ Collect linked evidence and route it to an owner who can investigate and act.
 Start with the three evidence sources. Input quality and run health can be assessed immediately; predictive quality requires outcomes linked back to the original prediction context. The evidence store represents linked logs, metrics and reports, not a required single product. Alert routing brings a defined condition to a named owner. That owner reviews the supporting evidence and selects a controlled response. Review authority does not bypass the separate release policy.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching expansion of monitoring responsibilities.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Teaching expansion of monitoring responsibilities.
 
 
 **Next:** Data drift: a different customer mix — Simon.
 
 
-## 19. Data drift: a different customer mix
+## 18. Data drift: a different customer mix
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -639,13 +580,13 @@ Compare the same input definition across a reference cohort and the current coho
 Read the bin labels first: 0, 1–2, 3–5, and 6+ app logins in the same seven-day window. Each bar is a count within a fictional 100-customer cohort; this is a categorical proportion comparison, not a measured bank distribution. The current cohort contains more low-activity customers. Input evidence alone can establish this change, without knowing whether those customers later churned. It does not establish whether model errors increased. Reference selection and cohort comparability matter as much as the comparison method.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented counts.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Invented counts.
 
 
 **Next:** Concept drift: a different relationship — Simon.
 
 
-## 20. Concept drift: a different relationship
+## 19. Concept drift: a different relationship
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -671,13 +612,13 @@ The same inputs can have different outcomes while the deployed model keeps its e
 Explain both axes and the legend first: app logins and products used are inputs; circles and triangles are mature observed outcomes. The same 15 positions are used twice to isolate a changed relationship. The gray dashed M1 boundary stays fixed in both panels. The solid line illustrates the changed outcome relationship, not an automatically deployed replacement. These deliberately simplified examples are invented and do not claim measured bank performance.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Schematic relationships.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Schematic relationships.
 
 
 **Next:** Concept drift: how M1 starts making errors — Simon.
 
 
-## 21. Concept drift: how M1 starts making errors
+## 20. Concept drift: how M1 starts making errors
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -703,13 +644,13 @@ A fixed model can miss churners because the world changed—not because its soft
 
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Invented mature cohorts and deliberately simplified decision rule.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Invented mature cohorts and deliberately simplified decision rule.
 
 
 **Next:** Input checks now; quality checks later — Simon.
 
 
-## 22. Input checks now; quality checks later
+## 21. Input checks now; quality checks later
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -735,13 +676,13 @@ The target window creates a delay between a prediction and complete outcome evid
 At scoring time, check freshness, completeness, coverage, valid features, job completion and score distributions. Ana's 30-day outcome is still pending. After the defined window closes and labels arrive reliably, join outcomes to the original saved predictions. Record prediction time, target window and label definition so that next month's outcome is not attached to this month's score.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Teaching 30-day window.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Teaching 30-day window.
 
 
 **Next:** Drift detection: methods and their purpose — Simon.
 
 
-## 23. Drift detection: methods and their purpose
+## 22. Drift detection: methods and their purpose
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -767,13 +708,13 @@ Methods compare inputs; they do not directly measure business value or model cor
 The notes compare activity groups changing from 60/30/10% to 30/40/30%. No churn labels are needed for that comparison. PSI summarizes changes in common bins, KL compares distributions directionally, and JS provides a symmetric comparison. They have different properties and scales. KS instead uses the largest cumulative-distribution gap, with test assumptions that must fit the input type.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Simon’s technical atlas.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5.
 
 
 **Next:** Data-quality faults and training-serving skew — Simon.
 
 
-## 24. Data-quality faults and training-serving skew
+## 23. Data-quality faults and training-serving skew
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -799,13 +740,13 @@ Invalid data and inconsistent preparation differ from a shifted valid population
 Ask whether the inputs are valid, whether training and production compute them consistently, whether the population changed, and whether the relationship to churn changed. A source-quality fault concerns absent, stale or incompatible records. Training-serving skew concerns inconsistent preparation. Input drift concerns the distribution of valid features. Concept drift concerns the relationship between valid inputs and the outcome.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5.
 
 
 **Next:** A publication gate contains a bad batch — Simon.
 
 
-## 25. A publication gate contains a bad batch
+## 24. A publication gate contains a bad batch
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -831,13 +772,13 @@ The CRM incident illustrates a concrete input fault and a controlled response.
 A CRM migration makes engagement values unavailable for part of B017. M1 is unchanged. Missing values are not evidence of zero app activity; replacing them with zero would create a new unvalidated interpretation. The input gate holds the entire batch before publication, so no new B017 scores are released for campaign use.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Fictional B017 incident.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Fictional B017 incident.
 
 
 **Next:** Respond: investigate, contain, repair, verify — Simon.
 
 
-## 26. Respond: investigate, contain, repair, verify
+## 25. Respond: investigate, contain, repair, verify
 
 **Section:** Block 1 / Monitoring & degradation. **Presenter:** Simon.
 
@@ -863,13 +804,13 @@ A monitoring signal opens a decision process; it does not select or approve a re
 Use B017 to locate the CRM export, feature definition, code and last healthy run. The notes' optional example has 170 missing values among 1,000 expected rows, compared with a 0.5% reference and an invented 2% hold threshold. The denominator includes the expected population; counting only received rows could conceal missing records. The gate holds publication; an assigned owner investigates the change.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5.
 
 
 **Next:** Hidden dependencies create technical debt — Luca.
 
 
-## 27. Hidden dependencies create technical debt
+## 26. Hidden dependencies create technical debt
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -895,13 +836,13 @@ An innocent upstream change can alter ML behavior without changing the model.
 The phrase “CRM feeds the model” hides assumptions about identity, timestamps, feature meaning and ownership. Define engagement_7d as the count of logins during the seven days ending at the scoring cutoff. Include type, missingness policy, compatible preparation and the team responsible for source changes. The migration must preserve those meanings or initiate coordinated review.
 
 
-**Reading anchor:** Kalinowski, Ch. 14 · Nazir, §§5–6.
+**Reading anchor:** Kalinowski, Ch. 14 · Nazir et al. (2024).
 
 
 **Next:** Make the feature contract explicit — Luca.
 
 
-## 28. Make the feature contract explicit
+## 27. Make the feature contract explicit
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -927,13 +868,13 @@ A contract records meaning and ownership as well as structural schema.
 The phrase “CRM feeds the model” hides assumptions about identity, timestamps, feature meaning and ownership. Define engagement_7d as the count of logins during the seven days ending at the scoring cutoff. Include type, missingness policy, compatible preparation and the team responsible for source changes. The migration must preserve those meanings or initiate coordinated review.
 
 
-**Reading anchor:** Bass, Ch. 14 · Nazir, §§5–6 · Teaching contract.
+**Reading anchor:** Bass, Ch. 14 · Nazir et al. (2024) · Teaching contract.
 
 
 **Next:** Separate responsibilities where change happens — Luca.
 
 
-## 29. Separate responsibilities where change happens
+## 28. Separate responsibilities where change happens
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -959,13 +900,13 @@ Clear interfaces let different concerns evolve without unnecessary relearning.
 Ingestion obtains source records. Preparation checks and computes features. Scoring applies the approved learned rule. Storage preserves results and version links. Campaign policy decides appropriate action. A connector repair belongs near preparation; a contact-limit change belongs to campaign policy. Those different reasons for change should remain understandable and testable.
 
 
-**Reading anchor:** Kalinowski, Ch. 14 · Nazir, §§5–6.
+**Reading anchor:** Kalinowski, Ch. 14 · Nazir et al. (2024).
 
 
 **Next:** Pipeline pattern: order the responsibilities — Luca.
 
 
-## 30. Pipeline pattern: order the responsibilities
+## 29. Pipeline pattern: order the responsibilities
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -991,13 +932,13 @@ Make preparation and validation steps explicit and testable.
 Pipeline divides processing into steps, placing required validation before scoring. Strategy provides a stable interface behind which a preparation or algorithm implementation can change. Observer notifies interested components of an event, such as a monitoring result. These solve different design problems. An interface-compatible replacement still needs behavioral validation, and a notification does not authorize promotion.
 
 
-**Reading anchor:** Kalinowski, Ch. 14 · Nazir, §§5–6.
+**Reading anchor:** Kalinowski, Ch. 14 · Nazir et al. (2024).
 
 
 **Next:** Strategy pattern: replace one implementation — Luca.
 
 
-## 31. Strategy pattern: replace one implementation
+## 30. Strategy pattern: replace one implementation
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -1023,13 +964,13 @@ A stable interface separates the client from a specific implementation choice.
 Pipeline divides processing into steps, placing required validation before scoring. Strategy provides a stable interface behind which a preparation or algorithm implementation can change. Observer notifies interested components of an event, such as a monitoring result. These solve different design problems. An interface-compatible replacement still needs behavioral validation, and a notification does not authorize promotion.
 
 
-**Reading anchor:** Kalinowski, Ch. 14 · Nazir, §§5–6.
+**Reading anchor:** Kalinowski, Ch. 14 · Nazir et al. (2024).
 
 
 **Next:** Observer pattern: notify, then investigate — Luca.
 
 
-## 32. Observer pattern: notify, then investigate
+## 31. Observer pattern: notify, then investigate
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -1055,13 +996,13 @@ A change notification decouples the signal producer from interested responders.
 Pipeline divides processing into steps, placing required validation before scoring. Strategy provides a stable interface behind which a preparation or algorithm implementation can change. Observer notifies interested components of an event, such as a monitoring result. These solve different design problems. An interface-compatible replacement still needs behavioral validation, and a notification does not authorize promotion.
 
 
-**Reading anchor:** Kalinowski, Ch. 14 · Nazir, §§5–6.
+**Reading anchor:** Kalinowski, Ch. 14 · Nazir et al. (2024).
 
 
 **Next:** Version the system, not only the model — Luca.
 
 
-## 33. Version the system, not only the model
+## 32. Version the system, not only the model
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -1087,13 +1028,13 @@ A prediction depends on a compatible set of data meaning, code, model, and confi
 The same M1 artifact can receive features computed differently or run with different configuration. A score record therefore needs links to the relevant source/feature definition, preparation code, dependencies, model, scoring configuration and time. These links let the team identify which compatible set actually produced a batch.
 
 
-**Reading anchor:** Kalinowski, Ch. 13–14 · Bass, Ch. 11 / §14.1 · Simon’s notes.
+**Reading anchor:** Kalinowski, Ch. 13–14 · Bass, Ch. 11 / §14.1.
 
 
 **Next:** Modules or services? Make the trade-off — Luca.
 
 
-## 34. Modules or services? Make the trade-off
+## 33. Modules or services? Make the trade-off
 
 **Section:** Block 1 / Design decisions. **Presenter:** Luca.
 
@@ -1119,15 +1060,15 @@ Independent deployment is useful only when it justifies its operating cost.
 Modules can give a clear separation of responsibilities with simpler operation. Services may support independent ownership, deployment and scaling, but they introduce communication failures, interface evolution, release coordination and distributed recovery. Evaluate those benefits against the actual bank team's needs and capacity.
 
 
-**Reading anchor:** Kalinowski, Ch. 14 · Nazir, §§5–6.
+**Reading anchor:** Kalinowski, Ch. 14 · Nazir et al. (2024).
 
 
-**Next:** Architectural tactics connect concerns to controls — TBD.
+**Next:** Architectural tactics connect concerns to controls — Matheus.
 
 
-## 35. Architectural tactics connect concerns to controls
+## 34. Architectural tactics connect concerns to controls
 
-**Section:** Block 2 / Architectural tactics. **Presenter:** TBD.
+**Section:** Block 2 / Architectural tactics. **Presenter:** Matheus.
 
 Use explicit mechanisms to address uncertainty, change, recovery, and auditability.
 
@@ -1157,7 +1098,7 @@ Ingestion obtains source records. Preparation checks and computes features. Scor
 **Next:** CI, CD, and CT need different evidence — Matheus.
 
 
-## 36. CI, CD, and CT need different evidence
+## 35. CI, CD, and CT need different evidence
 
 **Section:** Block 2 / DevOps & MLOps. **Presenter:** Matheus.
 
@@ -1189,7 +1130,7 @@ Continuous integration checks combined code changes, including the connector and
 **Next:** Candidate training ends before promotion — Matheus.
 
 
-## 37. Candidate training ends before promotion
+## 36. Candidate training ends before promotion
 
 **Section:** Block 2 / DevOps & MLOps. **Presenter:** Matheus.
 
@@ -1221,7 +1162,7 @@ Read the illustrative release record by function: what changed, which versions b
 **Next:** Repair the input path; retain M1 when appropriate — Matheus.
 
 
-## 38. Repair the input path; retain M1 when appropriate
+## 37. Repair the input path; retain M1 when appropriate
 
 **Section:** Block 2 / DevOps & MLOps. **Presenter:** Matheus.
 
@@ -1247,13 +1188,13 @@ The CRM incident requires a verified source repair, not an assumed new model.
 B017 failed before publication. Review the connector or mapping correction, restore complete source inputs, recompute features and identify the new execution as B017-R1. Check row coverage, feature meaning, required fields, compatibility with M1, stored outputs and campaign consumption. The approved learned rule can remain M1 because the demonstrated fault was in the input path.
 
 
-**Reading anchor:** Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4.
+**Reading anchor:** Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting).
 
 
 **Next:** Trace the prediction and the decision — Matheus.
 
 
-## 39. Trace the prediction and the decision
+## 38. Trace the prediction and the decision
 
 **Section:** Block 2 / DevOps & MLOps. **Presenter:** Matheus.
 
@@ -1279,13 +1220,13 @@ Lineage connects input evidence, execution, approval, and downstream action.
 Start with Ana's prediction identifier. Retrieve the feature definition and protected input snapshot or sufficient historical reference, M1, scoring configuration, cutoff, target window and campaign-policy version. The action record may say no contact. The later outcome reference remains pending until available. Reconstructing a score and reconstructing a policy action are related but different tasks.
 
 
-**Reading anchor:** Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting) · Simon’s notes, §4–6.
+**Reading anchor:** Bass, §14.1 · Kalinowski, §16.3–16.5 (supporting).
 
 
 **Next:** Recovery restores a compatible path — Matheus.
 
 
-## 40. Recovery restores a compatible path
+## 39. Recovery restores a compatible path
 
 **Section:** Block 2 / DevOps & MLOps. **Presenter:** Matheus.
 
@@ -1311,13 +1252,13 @@ Rehearse restoration before release, and verify it at the consumer boundary.
 Identify what a rollback restores: preparation, configuration, model references, batch outputs and downstream handling may all matter. Reverting the unchanged M1 cannot restore the missing CRM field. A fallback is a previously defined alternative, such as pausing automation or a validated manual process; old scores are not automatically suitable simply because they are available.
 
 
-**Reading anchor:** Breck, infrastructure tests 6–7 · Simon’s notes, §4.
+**Reading anchor:** Breck, infrastructure tests 6–7.
 
 
 **Next:** Security threats depend on attacker access — Simon + Matheus.
 
 
-## 41. Security threats depend on attacker access
+## 40. Security threats depend on attacker access
 
 **Section:** Block 2 / Security & privacy. **Presenter:** Simon + Matheus.
 
@@ -1343,13 +1284,13 @@ Locate the attacker’s control before naming the ML attack mechanism.
 Explicitly open a hypothetical branch: suppose a compromised writer alters engagement records. Manipulating records that later enter learning creates a poisoning opportunity. Manipulating features consumed by an already trained model concerns prediction-time inputs. Privacy inference concerns learning sensitive information through outputs or model access. These are different mechanisms with different prerequisites.
 
 
-**Reading anchor:** Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST AI 100-2e2025.
+**Reading anchor:** Bass, Ch. 9–10 / §14.2 · NIST AI 100-2e2025.
 
 
 **Next:** Enforce access at the resource boundary — Simon + Matheus.
 
 
-## 42. Enforce access at the resource boundary
+## 41. Enforce access at the resource boundary
 
 **Section:** Block 2 / Security & privacy. **Presenter:** Simon + Matheus.
 
@@ -1375,13 +1316,13 @@ Authentication, authorization, validation, and audit solve different parts of th
 The campaign presents a credential to read its approved score view. Authentication establishes the identity; authorization checks its requested operation on that resource. An allowed read returns only permitted fields. A write or unrestricted CRM read is denied without returning protected data. Record the decision and reason in restricted audit evidence without logging the secret credential.
 
 
-**Reading anchor:** Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-207, §3.
+**Reading anchor:** Bass, Ch. 9–10 / §14.2 · NIST SP 800-207, §3.
 
 
 **Next:** Least privilege follows responsibilities — Simon + Matheus.
 
 
-## 43. Least privilege follows responsibilities
+## 42. Least privilege follows responsibilities
 
 **Section:** Block 2 / Security & privacy. **Presenter:** Simon + Matheus.
 
@@ -1407,13 +1348,13 @@ Separate source writes, candidate creation, release approval, and campaign use.
 Read the matrix by identity and operation. A feature job reads authorized source data and writes prepared features. A trainer creates candidates. A release reviewer can promote an approved compatible set. The scorer reads approved artifacts and writes scores; the campaign reads a restricted approved view. Write access does not silently include promotion authority.
 
 
-**Reading anchor:** Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · Proposed permissions.
+**Reading anchor:** Bass, Ch. 9–10 / §14.2 · Proposed permissions.
 
 
 **Next:** Privacy: expose what each role needs — Simon + Matheus.
 
 
-## 44. Privacy: expose what each role needs
+## 43. Privacy: expose what each role needs
 
 **Section:** Block 2 / Security & privacy. **Presenter:** Simon + Matheus.
 
@@ -1439,13 +1380,13 @@ Campaign use and incident investigation require different views of customer info
 The campaign needs enough information to apply its permitted action policy. An authorized investigator may need protected inputs, versions and action history. Those are different views with different retention needs. Features, model outputs, explanations and logs can remain sensitive even when direct identifiers are replaced.
 
 
-**Reading anchor:** Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2.
+**Reading anchor:** Bass, Ch. 9–10 / §14.2.
 
 
 **Next:** Privacy techniques have specific limits — Simon + Matheus.
 
 
-## 45. Privacy techniques have specific limits
+## 44. Privacy techniques have specific limits
 
 **Section:** Block 2 / Security & privacy. **Presenter:** Simon + Matheus.
 
@@ -1471,15 +1412,15 @@ Choose a mechanism for a defined objective rather than claiming privacy by techn
 The campaign needs enough information to apply its permitted action policy. An authorized investigator may need protected inputs, versions and action history. Those are different views with different retention needs. Features, model outputs, explanations and logs can remain sensitive even when direct identifiers are replaced.
 
 
-**Reading anchor:** Simon’s notes, §5–7 · Bass, Ch. 9–10 / §14.2 · NIST SP 800-226.
+**Reading anchor:** Bass, Ch. 9–10 / §14.2 · NIST SP 800-226.
 
 
-**Next:** Use the quality checklist as a review tool — TBD.
+**Next:** Use the quality checklist as a review tool — Matheus.
 
 
-## 46. Use the quality checklist as a review tool
+## 45. Use the quality checklist as a review tool
 
-**Section:** Block 2 / Quality concerns. **Presenter:** TBD.
+**Section:** Block 2 / Quality concerns. **Presenter:** Matheus.
 
 Connect concerns to architectural controls, ownership, and observable evidence.
 
@@ -1506,12 +1447,12 @@ For SMN3, connect input-distribution monitoring to a dated cohort comparison and
 **Reading anchor:** Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Corrigendum contents not reviewed.
 
 
-**Next:** Predictive quality and system performance — TBD.
+**Next:** Predictive quality and system performance — Matheus.
 
 
-## 47. Predictive quality and system performance
+## 46. Predictive quality and system performance
 
-**Section:** Block 2 / Quality concerns. **Presenter:** TBD.
+**Section:** Block 2 / Quality concerns. **Presenter:** Matheus.
 
 Choose an acceptable model and system from several quality objectives.
 
@@ -1538,12 +1479,12 @@ Precision asks how many flagged customers actually churned; recall asks how many
 **Reading anchor:** Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Kalinowski, §13.4.
 
 
-**Next:** Robustness: invalid, unfamiliar, or ordinary? — TBD.
+**Next:** Robustness: invalid, unfamiliar, or ordinary? — Matheus.
 
 
-## 48. Robustness: invalid, unfamiliar, or ordinary?
+## 47. Robustness: invalid, unfamiliar, or ordinary?
 
-**Section:** Block 2 / Quality concerns. **Presenter:** TBD.
+**Section:** Block 2 / Quality concerns. **Presenter:** Matheus.
 
 Different inputs need different responses; do not treat every unusual value as the same failure.
 
@@ -1567,15 +1508,15 @@ Different inputs need different responses; do not treat every unusual value as t
 Use the notes' invented mature cohort if needed: 12 of 20 flagged customers leave, giving 60% precision; 12 of 30 actual churners were flagged, giving 40% recall. Those answer different questions. Calibration asks whether probability estimates agree with observed frequencies in comparable groups; the notes' group near 0.70 with 0.40 observed churn illustrates overprediction for that group only.
 
 
-**Reading anchor:** Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Simon’s notes, §2–4.
+**Reading anchor:** Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14.
 
 
-**Next:** Explainability and auditability differ — TBD.
+**Next:** Explainability and auditability differ — Matheus.
 
 
-## 49. Explainability and auditability differ
+## 48. Explainability and auditability differ
 
-**Section:** Block 2 / Quality concerns. **Presenter:** TBD.
+**Section:** Block 2 / Quality concerns. **Presenter:** Matheus.
 
 Explaining feature influence and reconstructing a historical decision are complementary tasks.
 
@@ -1599,15 +1540,15 @@ Explaining feature influence and reconstructing a historical decision are comple
 The notes' fictional comparison improves overall recall from 40% with M1 to 50% with M2, while group A falls from 40% to 30%. The tiny group counts demonstrate the arithmetic, not a statistically reliable production verdict. If using the notes' 35% per-group gate, label it an invented teaching rule. Rejecting M2 does not certify that M1 is suitable forever.
 
 
-**Reading anchor:** Bass, Ch. 14 · Simon’s notes, §6–7.
+**Reading anchor:** Bass, Ch. 14.
 
 
-**Next:** Fairness: prediction versus treatment — TBD.
+**Next:** Fairness: prediction versus treatment — Matheus.
 
 
-## 50. Fairness: prediction versus treatment
+## 49. Fairness: prediction versus treatment
 
-**Section:** Block 2 / Quality concerns. **Presenter:** TBD.
+**Section:** Block 2 / Quality concerns. **Presenter:** Matheus.
 
 Name what is being compared before selecting a metric or declaring an improvement.
 
@@ -1634,12 +1575,12 @@ The notes' fictional comparison improves overall recall from 40% with M1 to 50% 
 **Reading anchor:** Bucaioni, published Table 1, pp. 6–7 · Bass, Ch. 14 · Bass, Ch. 10 / §14.2.
 
 
-**Next:** Airflow: make workflow dependencies visible — TBD.
+**Next:** Airflow: make workflow dependencies visible — Matheus.
 
 
-## 51. Airflow: make workflow dependencies visible
+## 50. Airflow: make workflow dependencies visible
 
-**Section:** Block 2 / Practical tools. **Presenter:** TBD.
+**Section:** Block 2 / Practical tools. **Presenter:** Matheus.
 
 Orchestration supports task order, failure handling, and execution evidence.
 
@@ -1666,12 +1607,12 @@ Introduce the display as a prepared illustrative workflow, not a captured Airflo
 **Reading anchor:** Bass, Ch. 14 · Illustrative Airflow role.
 
 
-**Next:** MLflow: connect experiments and artifacts — TBD.
+**Next:** MLflow: connect experiments and artifacts — Matheus.
 
 
-## 52. MLflow: connect experiments and artifacts
+## 51. MLflow: connect experiments and artifacts
 
-**Section:** Block 2 / Practical tools. **Presenter:** TBD.
+**Section:** Block 2 / Practical tools. **Presenter:** Matheus.
 
 Model tracking supports reproducibility and review when evidence links are designed explicitly.
 
@@ -1698,12 +1639,12 @@ Show a model artifact linked to its training run, data reference and evaluation 
 **Reading anchor:** Bass, Ch. 14 · Illustrative MLflow role.
 
 
-**Next:** Validation and drift reports support diagnosis — TBD.
+**Next:** Validation and drift reports support diagnosis — Matheus.
 
 
-## 53. Validation and drift reports support diagnosis
+## 52. Validation and drift reports support diagnosis
 
-**Section:** Block 2 / Practical tools. **Presenter:** TBD.
+**Section:** Block 2 / Practical tools. **Presenter:** Matheus.
 
 A report is useful when its reference, feature meaning, cohort, and response are clear.
 
@@ -1727,13 +1668,13 @@ A report is useful when its reference, feature meaning, cohort, and response are
 Show a model artifact linked to its training run, data reference and evaluation metrics. A complementary validation report describes required feature checks and the affected batch. The release record links this evidence to the approved compatible versions and recovery reference. Reviewers use these links to assess a release; source owners investigate invalid inputs.
 
 
-**Reading anchor:** Simon’s notes, §2–4 · Bass, Ch. 11 / §14.1.5 · Group tool-showcase topic.
+**Reading anchor:** Bass, Ch. 11 / §14.1.5 · Group tool-showcase topic.
 
 
 **Next:** ML architecture connects five responsibilities — All presenters.
 
 
-## 54. ML architecture connects five responsibilities
+## 53. ML architecture connects five responsibilities
 
 **Section:** Block 2 / Practical tools. **Presenter:** All presenters.
 
@@ -1765,7 +1706,7 @@ Ana's original illustrative score was 0.70. The CRM failure showed that usable p
 **Next:** Sources and adaptation boundaries — All presenters.
 
 
-## 55. Sources and adaptation boundaries
+## 54. Sources and adaptation boundaries
 
 **Section:** Block 2 / Practical tools. **Presenter:** All presenters.
 
@@ -1787,7 +1728,7 @@ The bibliography supplies concepts; the bank diagrams and incidents are explicit
 
 
 
-**Reading anchor:** See source-review.md and presenter guide.
+**Reading anchor:** See SOURCES.md and presenter guide.
 
 
 ## Source and adaptation notes

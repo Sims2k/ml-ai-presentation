@@ -15,7 +15,7 @@ SCRIPTS = {
 
 "From a trained model to an ML system": "So how does a model like the one that scored Ana actually become part of a real system? There's a training side, where we learn from historical data, and a production side, where we apply an already-approved model to current customers. Every score we produce gets stored together with who it was for, when it happened, and which model version made it. And crucially, the business policy — who actually gets contacted — sits completely separate from that score. At our bank, that means the churn score is computed once a month, in a batch, and only afterward does the campaign team apply its own eligibility rules.",
 
-"Two lifecycles, one compatible system": "Here's something that trips a lot of teams up: code and models don't change on the same clock. You can test a code change quickly — does it compile, does it pass its tests. But testing whether a model is still predictively useful takes much longer, because you need real labels, and those arrive late. Imagine our bank's CRM connector changes today. The code deploys fine, the tests pass — but the model, M1, hasn't changed at all. Yet its inputs have, and that alone can shift what it predicts. So a green test suite is not a guarantee that your predictions are still good.",
+"Two lifecycles, one compatible system": "Here's something that trips a lot of teams up: code and models don't change on the same clock. You can test a code change quickly — does it compile, does it pass its tests. But testing whether a model is still predictively useful takes much longer, because you need real labels, and those arrive late. Imagine our bank's CRM connector changes today. The code deploys fine, the tests pass — but the current approved model, which we call M1, hasn't changed at all. Yet its inputs have, and that alone can shift what it predicts. So a green test suite is not a guarantee that your predictions are still good.",
 
 "Prediction and business action are separate": "A model's score is just an estimate — never a guaranteed outcome. What happens next is governed by business policy: contact preferences, who's eligible, how many times someone can be contacted, and the campaign's budget. So picture Ana again. Even with a high churn-risk score, she might receive no offer at all, simply because policy says no. That separation matters a lot in practice — it means if the bank wants to change its contact rules tomorrow, nobody needs to retrain the model to do it.",
 
@@ -55,7 +55,7 @@ SCRIPTS = {
 
 "Data-quality faults and training-serving skew": "It's worth drawing a sharp line between two things that often get lumped together. A data-quality fault is something simply broken — missing, stale, or corrupted records. Training-serving skew is subtler: training and production are preparing the exact same feature in two different ways. A missing engagement value after a CRM migration is a quality fault, plain and simple. Using a 30-day activity count in production when training used seven days — that's skew. In both cases, the fix is to repair the actual cause. If you retrain on data that's still broken, you just teach the model to be wrong in a new, more confident way. Don't let ‘drift’ become the catch-all word you reach for every time an alarm fires.",
 
-"A publication gate contains a bad batch": "Let's walk through a real incident, even if the details are invented for teaching. After the CRM migration, some records come in with engagement missing — not zero, genuinely missing — and that violates our agreed input contract. The detection is automatic. What happens next is containment: we hold the entire batch, which we'll call B017, before it ever reaches the campaign. Then we investigate — how does this cohort, this source change, and this feature definition actually connect? And importantly, we keep M1 exactly as it is. A broken input source, on its own, is never a reason to reach for a new model. The gate's job is to block unsafe use; the alert's job is to get the evidence to someone who can actually dig in.",
+"A publication gate contains a bad batch": "Let's walk through our fictional teaching incident. After the CRM migration, some records come in with engagement missing — not zero, genuinely missing — and that violates our agreed input contract. The detection is automatic. What happens next is containment: we hold the entire batch, which we'll call B017, before it ever reaches the campaign. Then we investigate — how does this cohort, this source change, and this feature definition actually connect? And importantly, we keep M1 exactly as it is. A broken input source, on its own, is never a reason to reach for a new model. The gate's job is to block unsafe use; the alert's job is to get the evidence to someone who can actually dig in.",
 
 "Respond: investigate, contain, repair, verify": "A monitoring signal is the start of a decision process — it never makes the decision for you. The first step is always to diagnose before reaching for a fix, whether that's a repair, a rollback, a fallback, or retraining. Along the way, we preserve the evidence of exactly what failed and how. Once we've chosen a repair, we validate the whole path end to end, not just the piece we touched. And a model change only gets requested when the evidence actually supports one. In our incident, that means: repair the CRM path, validate a brand-new execution we'll call B017-R1, and keep M1 unless there's a separate, justified reason to change it. From here, Luca's going to pick up the question of what let this failure happen in the first place.",
 
@@ -117,3 +117,194 @@ SCRIPTS = {
 
 "Sources and adaptation boundaries": "One last thing before we close. Our bibliography is where the real concepts come from; the bank diagrams and the incidents you've seen today are our own invented teaching applications of those concepts, built to make them concrete. The core readings cover architectural decisions, serving, maintenance, and quality; the supporting readings extend into monitoring, governance, and security. To be completely clear: Ana, her scores, the dates, the batches, the incident — all of it is invented for this lecture. No real churn outcome, no real repaired score, no real retention benefit, and no real bank tool execution is being claimed anywhere in this talk. A separate guide records exactly where each idea in this lecture actually comes from, and the limits of how we've adapted it.",
 }
+
+
+# Colleague content merge and targeted clarity improvements, 19 October 2026.
+SCRIPTS.update({'What a test can’t tell us today': 'On scoring day, which we call D0, software tests can tell us '
+                                    'that the job finished, the inputs matched their contract, and '
+                                    'the scores were saved for the expected customers. These are '
+                                    'useful checks we can perform immediately.\n'
+                                    '\n'
+                                    "But Ana's score of 0.70 is a risk estimate, not a statement "
+                                    'that she definitely leaves. Her next-30-day outcome does not '
+                                    'exist yet. Once the window closes and the labels arrive, we '
+                                    'link them to the original scores and evaluate precision and '
+                                    "recall across the cohort; one customer's outcome cannot "
+                                    'validate a probability estimate on its own.\n'
+                                    '\n'
+                                    'With the same inputs and a fixed model, the score can remain '
+                                    'reproducible while the prediction is still uncertain. We do '
+                                    'not have to wait for labels to catch a broken input contract. '
+                                    'Simon will return to this distinction when he explains what '
+                                    'monitoring can check now and what must wait.',
+ 'How do predictions reach the business?': 'The first serving decision is when the business '
+                                           'actually needs a prediction. Read the three rows from '
+                                           'left to right. In the first, a scheduled job takes a '
+                                           'customer snapshot, computes many scores, and saves '
+                                           'them for a campaign to read later. That is offline, or '
+                                           'batch, serving.\n'
+                                           '\n'
+                                           'In the second row, an application sends a request to a '
+                                           'prediction API and waits for the response. In the '
+                                           'third, the online application publishes an event; a '
+                                           'stream processor invokes the model and publishes an '
+                                           'output for another system to consume. Asynchronous '
+                                           'does not mean there is no deadline.\n'
+                                           '\n'
+                                           "For our bank's monthly churn campaign, a central batch "
+                                           'is sufficient. Location is a separate choice: central, '
+                                           'embedded, or edge. Pushing this churn model to devices '
+                                           'would add rollout work without serving an identified '
+                                           'need. The architecture question comes first: does this '
+                                           'decision actually require real-time inference?',
+ "Batch path: Ana's score on day D0": 'Follow the same source-to-policy path from the shared '
+                                      'architecture on slide 6. Here we are expanding the batch '
+                                      'part of that path. First, define the scoring cutoff, D0, '
+                                      'the customer population, and how fresh the source data must '
+                                      'be. Ana, C042, is included in that snapshot.\n'
+                                      '\n'
+                                      'Next, validate the inputs and prepare the features '
+                                      'consistently. Her seven-day login count has fallen from '
+                                      'seven to one. The current approved model, M1, produces our '
+                                      'illustrative score of 0.70. That output is saved with her '
+                                      'customer identity, the scoring date, and the model and '
+                                      'feature versions.\n'
+                                      '\n'
+                                      'Finally, reconcile written, rejected, and withheld records '
+                                      'before exposing a validated batch to the campaign. Saving '
+                                      'scores at scale is itself an architectural responsibility. '
+                                      'A final task turning green does not establish that every '
+                                      'expected customer was accounted for, or that Ana will '
+                                      'actually churn; her future outcome is still unknown on D0.',
+ 'Online serving: the fraud contrast': 'These three rows are comparisons, not extra services we '
+                                       'are adding to the churn system. For payment blocking, the '
+                                       "authorization service waits for the fraud API's response. "
+                                       'That is synchronous. For a fraud alert, the transaction '
+                                       'can instead be published as an event, scored by a stream '
+                                       'processor, and sent to another application '
+                                       'asynchronously.\n'
+                                       '\n'
+                                       'The third row shows a hybrid: churn scores are still '
+                                       "computed in batch, but a CRM screen can look up Ana's "
+                                       'stored score quickly from a customer-keyed store. A fast '
+                                       'lookup is not the same thing as calculating a new '
+                                       'prediction during the request.\n'
+                                       '\n'
+                                       'End-to-end response time includes feature lookup and data '
+                                       'preparation, not just the model. Smaller models, leaner '
+                                       'execution, or accelerators may reduce computation, with '
+                                       'cost and quality trade-offs. Asynchronous paths also need '
+                                       'idempotent consumers, lag monitoring, and failed-message '
+                                       "handling. The bank's monthly churn campaign continues to "
+                                       'use batch inference.',
+ 'Release strategies: what each proves': 'Read the table across: the strategy, who is exposed, and '
+                                         'what evidence it produces. In shadow deployment, '
+                                         'customers are not acted on using the candidate model, '
+                                         'M2. The current approved model, M1, still supplies the '
+                                         "action path, while M2's results are logged. We can "
+                                         'compare score differences now, but predictive quality '
+                                         'still needs labels.\n'
+                                         '\n'
+                                         'A canary allows a limited, approved cohort to use M2. It '
+                                         'reduces exposure and needs clear stop rules and a '
+                                         'rollback path. Operational success over that cohort does '
+                                         'not establish 30-day churn quality.\n'
+                                         '\n'
+                                         'An A/B test needs comparable assigned groups and one '
+                                         'clearly stated intervention. Ask whether M2 ranks churn '
+                                         'risk better than M1 separately from whether offer B '
+                                         'retains more customers than offer A. If we change both '
+                                         'the model and the offer together, we cannot cleanly '
+                                         'attribute the result to either. A canary controls '
+                                         'rollout risk; it is not automatically an experiment.',
+ 'Release plan: shadow, canary, rollback': 'This is our proposed release design for the teaching '
+                                           'case, not a rollout that has already happened. In the '
+                                           'first cycle, the candidate model, M2, scores the same '
+                                           'batch as the current approved model, M1, but its '
+                                           'outputs cannot generate offers. In a later cycle, a '
+                                           'limited approved cohort can use M2 under defined stop '
+                                           'rules.\n'
+                                           '\n'
+                                           'There are two clocks. Compatibility checks, run '
+                                           'health, and score differences are available '
+                                           'immediately. Churn quality requires the target window '
+                                           'and reliable labels. Promotion is a separate '
+                                           'evidence-and-approval decision, so one or two extra '
+                                           'cycles can be an acceptable cost for limiting customer '
+                                           'exposure.\n'
+                                           '\n'
+                                           'A rollback may return the campaign to a previously '
+                                           'validated M1 batch only if its customer population, '
+                                           'freshness, and eligibility are still suitable. '
+                                           'Otherwise pause use or create a new validated batch '
+                                           'with a compatible approved release. Changing the model '
+                                           'does not repair invalid source data. Keep the model, '
+                                           'features, configuration, and approval linked; Matheus '
+                                           'develops that governance later. Simon now takes over: '
+                                           'after the first run works, what tells us it stays '
+                                           'reliable?',
+ 'Drift detection: methods and their purpose': 'These methods compare input distributions. They do '
+                                               'not, by themselves, tell us whether predictions '
+                                               'became less accurate or whether the bank lost '
+                                               'business value. The table gives us a useful '
+                                               'interpretation and a limitation for each method; '
+                                               'we do not need the calculations here.\n'
+                                               '\n'
+                                               '<b>PSI:</b> compares the share of customers in '
+                                               'fixed bins. It is useful for seeing a changed '
+                                               'input mix, but the result depends on the bins and '
+                                               'the reference we chose.\n'
+                                               '\n'
+                                               '<b>KS:</b> compares two continuous distributions '
+                                               'and looks for their largest cumulative separation. '
+                                               'Sample size affects how readily a difference is '
+                                               'detected. The usual continuous-distribution test '
+                                               'needs care with discrete counts such as app logins '
+                                               'or many tied values; a small p-value is not a '
+                                               'measure of business harm.\n'
+                                               '\n'
+                                               '<b>KL divergence:</b> describes a directional '
+                                               'difference between distributions, so reversing '
+                                               'reference and current changes the interpretation. '
+                                               'Categories with zero reference probability need '
+                                               'careful handling. <b>JS divergence</b> gives a '
+                                               'symmetric comparison, but it still measures '
+                                               'distribution difference, not model accuracy.\n'
+                                               '\n'
+                                               '<b>Reference</b> means the named baseline '
+                                               'population and period, using the same feature '
+                                               'definition. A <b>threshold</b> is the alerting '
+                                               'rule we choose for the application, not a '
+                                               'universal cutoff. <b>Segments</b> are customer '
+                                               'subgroups we check separately, because an overall '
+                                               'average can hide a local change. <b>Action</b> '
+                                               'means investigate data validity, source changes, '
+                                               'and any available outcome evidence; a drift '
+                                               'statistic alone does not authorize retraining.',
+ 'Shadow deployment: observe without acting': 'Shadow deployment lets a new candidate model '
+                                              'quietly score the same real inputs as the approved '
+                                              'model, without ever influencing a real decision. We '
+                                              "run both in parallel, and we're careful to record "
+                                              'which output came from which model — the current '
+                                              'approved model (M1) or the candidate model (M2). At '
+                                              "this stage we're only comparing operational "
+                                              'behavior and how the scores differ; we still need '
+                                              'to wait for actual outcomes to judge predictive '
+                                              "quality. At our bank, only M1's record is ever "
+                                              'eligible to trigger a campaign offer — M2 running '
+                                              'in the shadows can never create a second, invisible '
+                                              'offer.',
+ 'Input checks now; quality checks later': "As Ricardo introduced earlier, there's an unavoidable "
+                                           'delay baked into how we evaluate churn predictions: we '
+                                           'define a target window, so by definition the full '
+                                           "outcome isn't known yet when we score someone. At "
+                                           'scoring time, all we can check is whether the inputs '
+                                           'were fresh, complete, and the pipeline ran correctly. '
+                                           'Only once that window closes and the real labels '
+                                           'arrive can we join them back to the original score and '
+                                           'properly evaluate precision, recall, and calibration '
+                                           "by cohort. Think of Ana's score on day zero: it's "
+                                           'saved with its full context, but we genuinely cannot '
+                                           'evaluate it properly until 30 days later. And a '
+                                           'missing label at that point does not mean she stayed — '
+                                           "it might just mean the data hasn't arrived yet."})
