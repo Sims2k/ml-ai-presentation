@@ -1,0 +1,100 @@
+[
+ {
+  "id": "from-session-agent-to-always-on-agent",
+  "title": "From session agent to always-on agent",
+  "lead": "The same loop can run per session, survive crashes, or run all the time — each step adds state and responsibility.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>Pi:</b> a person at a terminal starts and supervises each run.",
+   "<b>Pi Durable:</b> a library for apps whose agents must survive restarts.",
+   "<b>Hermes:</b> started by chats and schedules, not only by people.",
+   "<b>What grows:</b> state, triggers and the surfaces that reach the agent."
+  ],
+  "takeaway": "Always-on is an architectural decision, not a feature flag.",
+  "source": "Zechner (2025); Pi docs, github.com/earendil-works/pi · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable · Nous Research, Hermes Agent docs; Alejandro AO (2026), Hermes architecture"
+ },
+ {
+  "id": "pi-durable-surviving-a-crash",
+  "title": "Pi Durable: surviving a crash",
+  "lead": "Every step is a task that stores a checkpoint before it moves on.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>Checkpoint first:</b> a tool call’s intent is stored before it runs.",
+   "<b>After a restart</b>, a new process resumes open tasks.",
+   "<b>Replay rule:</b> only tools marked safe rerun; otherwise the model is told.",
+   "<b>requestId</b> makes a submission exactly-once."
+  ],
+  "takeaway": "Durability means deciding, per tool, what may happen twice.",
+  "source": "Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+ },
+ {
+  "id": "hermes-an-always-on-agent",
+  "title": "Hermes: an always-on agent",
+  "lead": "One agent core, reached through a CLI, chat gateways and editors, and started by a scheduler.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>Entry points:</b> CLI, a long-running gateway, ACP clients.",
+   "<b>Cron</b> starts work without a person in the loop.",
+   "<b>Memory files</b> are always in context; sessions live in SQLite.",
+   "<b>Self-improving:</b> the agent writes and patches its own skills."
+  ],
+  "takeaway": "An always-on agent is a service, with a service’s responsibilities.",
+  "source": "Nous Research, Hermes Agent docs; Alejandro AO (2026), Hermes architecture · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §7–10"
+ },
+ {
+  "id": "what-always-on-costs",
+  "title": "What always-on costs",
+  "lead": "More autonomy moves risk from the person at the terminal into the architecture.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>Each step right</b> adds state that must stay consistent.",
+   "<b>Unattended runs</b> need durable checkpoints and replay rules.",
+   "<b>Long-running processes</b> fail in new ways: leaks, replays, fragmentation.",
+   "<b>Field reports</b> are evidence too: read the issue tracker."
+  ],
+  "takeaway": "Every hour an agent runs unattended is an hour of architecture to own.",
+  "source": "Zechner (2025); Pi docs, github.com/earendil-works/pi · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable · Hermes issue #5563"
+ },
+ {
+  "id": "the-platform-turn",
+  "title": "The platform turn",
+  "lead": "Harnesses are becoming platforms, and frameworks are becoming harnesses.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>Bottom up:</b> model, harness, platform, meta-harness.",
+   "<b>Platform:</b> SDKs, durable libraries, ACP servers, skill marketplaces.",
+   "<b>Meta-harness:</b> Omnigent ships adapters for 23 harnesses.",
+   "<b>Implication:</b> extensions are a supply chain to secure."
+  ],
+  "takeaway": "The developer increasingly programs inside the harness.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §14 · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+ },
+ {
+  "id": "recommendations-from-eleven-harnesses",
+  "title": "Recommendations from eleven harnesses",
+  "lead": "The study ends with 18 recommendations; seven connect directly to today’s topics.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>Recommendations</b> come from what eleven systems converged on.",
+   "<b>Evidence column:</b> where today’s systems follow or diverge.",
+   "<b>R18 splits the field:</b> budgets versus trusting the model to stop.",
+   "<b>Use them as defaults</b>, and know when you diverge."
+  ],
+  "takeaway": "Recommendations are evidence, not rules — know when you diverge.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §16"
+ },
+ {
+  "id": "a-minimum-viable-harness-in-90-lines",
+  "title": "A minimum viable harness in ~90 lines",
+  "lead": "The study closes with a scaffold that implements ten of its recommendations.",
+  "owner": "Matheus",
+  "cues": [
+   "<b>The while loop</b> is the whole agent.",
+   "<b>Limits and compaction</b> run before every model call.",
+   "<b>Return when</b> the model stops calling tools.",
+   "<b>Left out on purpose:</b> sandbox, multi-agent, MCP, skills."
+  ],
+  "takeaway": "Start minimal; add what your observed failures demand.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §16.10, Listing 3"
+ }
+]

@@ -18,18 +18,19 @@ Right/Left advances/reverses builds, then slides. Page Down/Page Up skips builds
 The keyboard regression must traverse cover slides, tables, figures, and both
 ends of the deck. Do not restore the previous null-motion-root bug.
 
-One section file per owner limits merge conflicts. Avoid reformatting unrelated
+One section file per owner and lecture limits merge conflicts. Avoid reformatting unrelated
 sections. Adding/reordering a slide currently requires a change to the Python
 sequence as well as its JSON content. The guide numbering is regenerated.
 
-Public review updates: GitHub Pages deploys after main changes only if Pages has
-been enabled by the repository owner. The existing Funnel review is a separate
-server checkout and needs a pull/build/test refresh. Actions artifacts are an
-alternative way to review a branch's generated site.
+The temporary public review endpoints are retired. GitHub Actions builds a
+portable archive artifact; use `npm run serve` for a loopback-only local preview.
+Both lecture builds and checks run through the default npm commands. Do not
+reintroduce the old endpoint verification or automatic public deployment.
 
 ## Speaker notes and citations
 
-Preserve the authored prose in `scripts/speaker_scripts.py`; keep explanations
+Preserve the authored prose in `scripts/speaker_scripts.py` and
+`scripts/day2_speaker_scripts.py`; keep explanations
 aligned when editing a slide. Paragraph breaks are respected by the notes
 builder. Use short `<b>...</b>` cues where they aid reading. Cite the original
 book, paper or official technical documentation in `source`; personal study
@@ -39,3 +40,8 @@ plain model roles alongside these identifiers when introducing them.
 
 Official tool logos and Lucide icons live in `assets/marks/`. Preserve the
 sources manifest and license notices. The HTML embeds assets for offline use.
+
+Generated speaker-note LaTeX belongs in `outputs/`; only authored preparation
+LaTeX belongs in `preparation/`. Notes must use repository-relative image paths.
+Rebuild and verify the decks before regenerating notes, then run
+`python3 scripts/verify_speaker_notes.py` and `npm run site`.

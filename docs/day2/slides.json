@@ -1,0 +1,308 @@
+[
+  {
+    "number": 1,
+    "title": "Agentic AI Architecture",
+    "section": "Opening",
+    "owner": "All presenters",
+    "steps": 0,
+    "kind": "cover",
+    "source": ""
+  },
+  {
+    "number": 2,
+    "title": "Five questions in forty minutes",
+    "section": "Opening",
+    "owner": "All presenters",
+    "steps": 0,
+    "kind": "figure",
+    "source": "Group handoff · Day 2 outline"
+  },
+  {
+    "number": 3,
+    "title": "One layer up from Day 1",
+    "section": "Opening",
+    "owner": "Ricardo",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Day 1 lecture · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §1"
+  },
+  {
+    "number": 4,
+    "title": "Agent = model + harness",
+    "section": "Topic 1 / Harness engineering",
+    "owner": "Ricardo",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §2.3, Table 1"
+  },
+  {
+    "number": 5,
+    "title": "Eleven harnesses, from one tool to 109",
+    "section": "Topic 1 / Harness engineering",
+    "owner": "Ricardo",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §5 Table 4, §8.1 Fig. 3"
+  },
+  {
+    "number": 6,
+    "title": "The agent loop: decide, act, observe",
+    "section": "Topic 1 / Harness engineering",
+    "owner": "Ricardo",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §6"
+  },
+  {
+    "number": 7,
+    "title": "Pi: a minimal core, everything else an extension",
+    "section": "Topic 1 / Harness engineering",
+    "owner": "Ricardo",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §10–12 · Zechner (2025); Pi docs, github.com/earendil-works/pi"
+  },
+  {
+    "number": 8,
+    "title": "What eleven harnesses share — and lack",
+    "section": "Topic 1 / Harness engineering",
+    "owner": "Ricardo",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §13.2, Observation 8–9"
+  },
+  {
+    "number": 9,
+    "title": "A shared vocabulary for agent design",
+    "section": "Topic 2 / Design patterns",
+    "owner": "Tomás",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §2–4, Fig. 2"
+  },
+  {
+    "number": 10,
+    "title": "Eighteen patterns in eight families",
+    "section": "Topic 2 / Design patterns",
+    "owner": "Tomás",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, Table 1 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §13.2"
+  },
+  {
+    "number": 11,
+    "title": "Planning: one path or many?",
+    "section": "Topic 2 / Design patterns",
+    "owner": "Tomás",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §4.7–4.8"
+  },
+  {
+    "number": 12,
+    "title": "Reflection: who checks the work?",
+    "section": "Topic 2 / Design patterns",
+    "owner": "Tomás",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §4.9–4.11 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §6"
+  },
+  {
+    "number": 13,
+    "title": "Registries and adapters: finding capabilities",
+    "section": "Topic 2 / Design patterns",
+    "owner": "Tomás",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §4.16–4.17 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §8"
+  },
+  {
+    "number": 14,
+    "title": "Choosing patterns: the decision model",
+    "section": "Topic 2 / Design patterns",
+    "owner": "Tomás",
+    "steps": 0,
+    "kind": "figure",
+    "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §5.1, Fig. 19"
+  },
+  {
+    "number": 15,
+    "title": "Why architecture evaluation must change",
+    "section": "Topic 3 / Architecture evaluation",
+    "owner": "Simon",
+    "steps": 4,
+    "kind": "diagram",
+    "source": "Lu et al. (2026), AgentArcEval, JSS 232, §1"
+  },
+  {
+    "number": 16,
+    "title": "AgentArcEval: the process",
+    "section": "Topic 3 / Architecture evaluation",
+    "owner": "Simon",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Lu et al. (2026), AgentArcEval, JSS 232, §4, Fig. 2"
+  },
+  {
+    "number": 17,
+    "title": "A quality scenario in six parts",
+    "section": "Topic 3 / Architecture evaluation",
+    "owner": "Simon",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Lu et al. (2026), AgentArcEval, JSS 232, §5, §6.4"
+  },
+  {
+    "number": 18,
+    "title": "Eleven general scenarios and their measures",
+    "section": "Topic 3 / Architecture evaluation",
+    "owner": "Simon",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Lu et al. (2026), AgentArcEval, JSS 232, §5–6"
+  },
+  {
+    "number": 19,
+    "title": "Scenarios as a lens on real harnesses",
+    "section": "Topic 3 / Architecture evaluation",
+    "owner": "Simon",
+    "steps": 0,
+    "kind": "figure",
+    "source": "Lu et al. (2026), AgentArcEval, JSS 232 · our mapping from Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+  },
+  {
+    "number": 20,
+    "title": "Context is a budget",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §1 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §7"
+  },
+  {
+    "number": 21,
+    "title": "Who actually writes context files?",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §3–4.1"
+  },
+  {
+    "number": 22,
+    "title": "What goes into AGENTS.md",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §4.2, Table 1"
+  },
+  {
+    "number": 23,
+    "title": "Five ways to phrase an instruction",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §4.2"
+  },
+  {
+    "number": 24,
+    "title": "Context files are maintained artifacts",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §4.3, Table 2"
+  },
+  {
+    "number": 25,
+    "title": "What stays in context, what waits on disk",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §7, §15 · Nous Research, Hermes Agent docs; Alejandro AO (2026), Hermes architecture"
+  },
+  {
+    "number": 26,
+    "title": "Subagents are context engineering",
+    "section": "Topic 4 / Context engineering",
+    "owner": "Luca",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §11, Rec. 12 · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+  },
+  {
+    "number": 27,
+    "title": "From session agent to always-on agent",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Zechner (2025); Pi docs, github.com/earendil-works/pi · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable · Nous Research, Hermes Agent docs; Alejandro AO (2026), Hermes architecture"
+  },
+  {
+    "number": 28,
+    "title": "Pi Durable: surviving a crash",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+  },
+  {
+    "number": 29,
+    "title": "Hermes: an always-on agent",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 3,
+    "kind": "diagram",
+    "source": "Nous Research, Hermes Agent docs; Alejandro AO (2026), Hermes architecture · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §7–10"
+  },
+  {
+    "number": 30,
+    "title": "What always-on costs",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 0,
+    "kind": "figure",
+    "source": "Zechner (2025); Pi docs, github.com/earendil-works/pi · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable · Hermes issue #5563"
+  },
+  {
+    "number": 31,
+    "title": "The platform turn",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 2,
+    "kind": "diagram",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §14 · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+  },
+  {
+    "number": 32,
+    "title": "Recommendations from eleven harnesses",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 0,
+    "kind": "figure",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §16"
+  },
+  {
+    "number": 33,
+    "title": "A minimum viable harness in ~90 lines",
+    "section": "Topic 5 / From sessions to always-on agents",
+    "owner": "Matheus",
+    "steps": 0,
+    "kind": "figure",
+    "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §16.10, Listing 3"
+  },
+  {
+    "number": 34,
+    "title": "Discussion",
+    "section": "Discussion",
+    "owner": "All presenters",
+    "steps": 0,
+    "kind": "statement",
+    "source": ""
+  }
+]

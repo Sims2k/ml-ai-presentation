@@ -5,7 +5,7 @@ deck itself — paired with fresh screenshots of outputs/ml-architecture-lecture
 Run scripts/build_lecture_deck.py and the screenshot step below before this script
 whenever slide content changes, so the notes stay in sync with the deck.
 """
-import re,subprocess
+import re
 from pathlib import Path
 from html import unescape
 from lecture_content import build_lecture
@@ -13,7 +13,7 @@ from speaker_scripts import SCRIPTS
 
 ROOT=Path(__file__).resolve().parents[1]
 SHOTS=ROOT/'previews/lecture-full'
-OUT_TEX=ROOT/'src/speaker-notes.tex'
+OUT_TEX=ROOT/'outputs/speaker-notes.tex'
 OUT_DIR=ROOT/'outputs'
 
 TAG=re.compile(r'<(/?)b>')
@@ -201,6 +201,7 @@ def main():
             tex.append(f'\\par\\noindent{{\\scriptsize\\textcolor{{teal!60!black}}{{Reading anchor: {esc(slide["source"])}}}}}')
         tex.append('\\clearpage')
     tex.append('\\end{document}')
+    OUT_TEX.parent.mkdir(parents=True,exist_ok=True)
     OUT_TEX.write_text('\n'.join(tex))
     print('wrote',OUT_TEX)
 

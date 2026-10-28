@@ -1,0 +1,72 @@
+[
+ {
+  "id": "why-architecture-evaluation-must-change",
+  "title": "Why architecture evaluation must change",
+  "lead": "Classic scenario-based methods assume fixed requirements; agents decide much of their architecture at runtime.",
+  "owner": "Simon",
+  "cues": [
+   "<b>Goals</b> are decomposed into sub-tasks while the agent runs.",
+   "<b>The agent makes trade-offs</b> — inside guardrails we design.",
+   "<b>Model, prompts and tools</b> change after evaluation.",
+   "<b>New scenarios</b> are needed for memory, tools and guardrails."
+  ],
+  "takeaway": "Guardrails become the main architectural control point.",
+  "source": "Lu et al. (2026), AgentArcEval, JSS 232, §1"
+ },
+ {
+  "id": "agentarceval-the-process",
+  "title": "AgentArcEval: the process",
+  "lead": "An ATAM-based method that evaluates agent architecture at design time and keeps re-evaluating at runtime.",
+  "owner": "Simon",
+  "cues": [
+   "<b>Understand first:</b> goals, governance, quality and guardrail requirements, the architecture.",
+   "<b>Design time:</b> define and prioritise context scenarios.",
+   "<b>Runtime:</b> monitor risks and reprioritise scenarios.",
+   "<b>Output:</b> trade-offs, risks, improvements."
+  ],
+  "takeaway": "Agent architecture evaluation never really ends.",
+  "source": "Lu et al. (2026), AgentArcEval, JSS 232, §4, Fig. 2"
+ },
+ {
+  "id": "a-quality-scenario-in-six-parts",
+  "title": "A quality scenario in six parts",
+  "lead": "Each scenario follows source → stimulus → environment → artefact → response → measure.",
+  "owner": "Simon",
+  "cues": [
+   "<b>Source and stimulus:</b> who triggers what.",
+   "<b>Artefact:</b> the part of the architecture under test.",
+   "<b>Environment:</b> the conditions that make it hard.",
+   "<b>Measure</b> makes the scenario checkable."
+  ],
+  "takeaway": "A scenario is only useful if its measure can fail.",
+  "source": "Lu et al. (2026), AgentArcEval, JSS 232, §5, §6.4"
+ },
+ {
+  "id": "eleven-general-scenarios-and-their-measures",
+  "title": "Eleven general scenarios and their measures",
+  "lead": "The catalogue gives one starter scenario per quality attribute; teams adapt and prioritise them.",
+  "owner": "Simon",
+  "cues": [
+   "<b>Eleven attributes</b>, from accuracy to contestability.",
+   "<b>Each comes with a measure</b> a team can track.",
+   "<b>Prioritising</b> is where the domain enters.",
+   "<b>Luna tax copilot</b> chose 7 of the 11."
+  ],
+  "takeaway": "Prioritising scenarios is where the domain enters the evaluation.",
+  "source": "Lu et al. (2026), AgentArcEval, JSS 232, §5–6"
+ },
+ {
+  "id": "scenarios-as-a-lens-on-real-harnesses",
+  "title": "Scenarios as a lens on real harnesses",
+  "lead": "The same scenario catalogue exposes where real harnesses put their architectural effort.",
+  "owner": "Simon",
+  "cues": [
+   "<b>Rows</b> are AgentArcEval attributes; cells are architectural mechanisms.",
+   "<b>Pi</b> optimises for a person at a terminal.",
+   "<b>Pi Durable</b> optimises for availability.",
+   "<b>Hermes</b> invests in safety policy and self-improvement."
+  ],
+  "takeaway": "A scenario catalogue makes the trade-offs between harnesses visible.",
+  "source": "Lu et al. (2026), AgentArcEval, JSS 232 · our mapping from Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+ }
+]
