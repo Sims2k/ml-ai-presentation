@@ -1,0 +1,100 @@
+[
+ {
+  "id": "context-is-a-budget",
+  "title": "Context is a budget",
+  "lead": "Context engineering decides what task-relevant information the model has — and what it does not.",
+  "owner": "Luca",
+  "cues": [
+   "<b>Prompt engineering:</b> how a task is described.",
+   "<b>Context engineering:</b> what information the model can access.",
+   "<b>The window fills</b> with every tool output.",
+   "<b>Compaction</b> frees space — at different thresholds and in different ways."
+  ],
+  "takeaway": "Every token in the window competes for the model’s attention.",
+  "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §1 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §7"
+ },
+ {
+  "id": "who-actually-writes-context-files",
+  "title": "Who actually writes context files?",
+  "lead": "An empirical study scanned 10,000 popular GitHub projects for AI context files.",
+  "owner": "Luca",
+  "cues": [
+   "<b>Formats:</b> Copilot instructions, CLAUDE.md, AGENTS.md, GEMINI.md.",
+   "<b>Adoption is early:</b> only 5% of mature projects.",
+   "<b>AGENTS.md</b> is the tool-agnostic convention, so it is studied in depth.",
+   "<b>Most common pair:</b> AGENTS.md with CLAUDE.md."
+  ],
+  "takeaway": "Context engineering is real practice, but still early.",
+  "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §3–4.1"
+ },
+ {
+  "id": "what-goes-into-agents-md",
+  "title": "What goes into AGENTS.md",
+  "lead": "Projects describe conventions, contribution rules and architecture — rarely security.",
+  "owner": "Luca",
+  "cues": [
+   "<b>Top three:</b> conventions, contribution guidelines, architecture.",
+   "<b>Then:</b> build and test commands — what an agent must run.",
+   "<b>Rare:</b> troubleshooting and security.",
+   "<b>No shared structure</b> yet across projects."
+  ],
+  "takeaway": "Teams document how to work here, not how to stay safe.",
+  "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §4.2, Table 1"
+ },
+ {
+  "id": "five-ways-to-phrase-an-instruction",
+  "title": "Five ways to phrase an instruction",
+  "lead": "The same convention can describe, order, forbid, explain or set a condition.",
+  "owner": "Luca",
+  "cues": [
+   "<b>Descriptive</b> states facts; <b>prescriptive</b> gives orders.",
+   "<b>Prohibitive</b> sets boundaries — “never …”.",
+   "<b>Explanatory</b> adds the reason; <b>conditional</b> a situation.",
+   "<b>Open question:</b> which style changes agent behaviour most?"
+  ],
+  "takeaway": "How you phrase context is a design choice, not a detail.",
+  "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §4.2"
+ },
+ {
+  "id": "context-files-are-maintained-artifacts",
+  "title": "Context files are maintained artifacts",
+  "lead": "Half the files never change; active ones are tuned instruction by instruction.",
+  "owner": "Luca",
+  "cues": [
+   "<b>50% unchanged</b> since they were added.",
+   "<b>Active files:</b> mostly add or reword instructions.",
+   "<b>Few removals:</b> files tend to grow.",
+   "<b>Treat them like code:</b> versioned, reviewed, tested."
+  ],
+  "takeaway": "Context files co-evolve with the code they describe.",
+  "source": "Mohsenimofidi et al. (2026), Context Engineering for AI Agents in OSS, MSR ’26, §4.3, Table 2"
+ },
+ {
+  "id": "what-stays-in-context-what-waits-on-disk",
+  "title": "What stays in context, what waits on disk",
+  "lead": "Harnesses keep the always-loaded context small and move the rest behind a tool call.",
+  "owner": "Luca",
+  "cues": [
+   "<b>Always loaded:</b> instructions, schemas, a skill catalog, small memory files.",
+   "<b>On demand:</b> a skill’s full text only when it is used.",
+   "<b>On disk:</b> full history, searchable but out of the window.",
+   "<b>Hermes caps memory</b> at a few thousand characters on purpose."
+  ],
+  "takeaway": "Load context just in time, not just in case.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §7, §15 · Nous Research, Hermes Agent docs; Alejandro AO (2026), Hermes architecture"
+ },
+ {
+  "id": "subagents-are-context-engineering",
+  "title": "Subagents are context engineering",
+  "lead": "A subagent spends tokens exploring in its own context and returns one short report.",
+  "owner": "Luca",
+  "cues": [
+   "<b>The orchestrator</b> delegates several prompts at once.",
+   "<b>Workers</b> start with a fresh context and keep their search noise.",
+   "<b>The parent keeps</b> only the call and the reports.",
+   "<b>Hermes</b> runs one child by default; in Pi Durable a subagent is a conversation owned by a tool call."
+  ],
+  "takeaway": "The harness decides what the orchestrator never sees.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §11, Rec. 12 · Earendil (2026), Pi Durable, earendil.com/posts/pi-durable"
+ }
+]

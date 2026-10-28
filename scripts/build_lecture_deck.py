@@ -2,12 +2,13 @@
 from pathlib import Path
 from html import escape
 import re,json,subprocess
-from build_lecture_samples import FONTS,BASE,MOTION,CSS,JS,controls
+from deck_common import FONTS,BASE,MOTION,CSS,JS,controls
 from lecture_content import build_lecture
 from drift_visuals import DRIFT_CSS
 from visual_marks import tool_mark,concept_mark,MARK_CSS
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'outputs'
+OUT.mkdir(parents=True,exist_ok=True)
 DIAGRAMS=ROOT/'assets/diagrams/lecture-full';DIAGRAMS.mkdir(parents=True,exist_ok=True)
 slides=build_lecture()
 EXTRA=r'''
@@ -142,7 +143,7 @@ document.addEventListener('keydown',e=>{if(e.target.isContentEditable)return;if(
 contents.addEventListener('click',e=>{const b=e.target.closest('[data-jump]');if(b){deck.show(Number(b.dataset.jump));contentsOrigin=null;toggleContents();}});
 '''
 # Exported HTML must initialize from complete source and preserve all deck behavior.
-deckjs=JS.replace('lecture-redesign-edited.html','ml-architecture-lecture-edited.html')
+deckjs=JS.replace('presentation-edited.html','ml-architecture-lecture-edited.html')
 doc='<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ML Architecture — Topic-led lecture</title><style>'+FONTS+'\n'+BASE+'\n'+CSS+'\n'+EXTRA+'</style></head><body><div class="edit-notice">Editing · Escape to finish · Ctrl/Cmd+S to download</div><div class="deck-viewport"><main class="deck-stage" id="deckStage">'+''.join(pages)+'</main></div>'+contents+'<noscript><style>html,body{overflow:auto;height:auto}.deck-viewport,.deck-stage{position:static;overflow:visible;height:auto}.slide{position:relative;visibility:visible;opacity:1;pointer-events:auto}</style><p>All complete slides are shown without JavaScript.</p></noscript><script data-diagram-controls>'+MOTION+'</script><script>'+deckjs+NAV+'</script></body></html>'
 (OUT/'ml-architecture-lecture.html').write_text(doc)
 (OUT/'lecture-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))

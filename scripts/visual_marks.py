@@ -11,7 +11,7 @@ def image(name,alt='',cls='concept-icon'):
     data=(ASSETS/name).read_bytes()
     # Standalone SVGs retain their own coordinate system and cannot affect
     # the authored diagram geometry, CSS, IDs or motion groups.
-    if name not in ('airflow.svg','mlflow.svg','nist.svg','shap.png'):
+    if name not in ('airflow.svg','mlflow.svg','nist.svg','shap.png') and not name.startswith('logo-'):
         data=data.replace(b'currentColor',b'#a62c40')
     mime='image/png' if name.endswith('.png') else 'image/svg+xml'
     return f'<img class="{cls}" alt="{escape(alt)}" src="data:{mime};base64,{b64encode(data).decode()}"/>'
@@ -55,6 +55,17 @@ def concept_mark(slide):
     }
     name=sections.get(section.split(' / ')[-1])
     return image(name) if name else ''
+
+@lru_cache(maxsize=None)
+def _logo_uri(name):
+    data=(ASSETS/('logo-'+name)).read_bytes()
+    mime='image/png' if name.endswith('.png') else 'image/svg+xml'
+    return f'data:{mime};base64,{b64encode(data).decode()}'
+
+def logo(name,x,y,size=40):
+    """Official project or vendor mark (assets/marks/logo-*), drawn inside a diagram."""
+    return (f'<image data-logo="{name.rsplit(".",1)[0]}" href="{_logo_uri(name)}" x="{x}" y="{y}" '
+            f'width="{size}" height="{size}" preserveAspectRatio="xMidYMid meet"/>')
 
 @lru_cache(maxsize=None)
 def icon_paths(name):

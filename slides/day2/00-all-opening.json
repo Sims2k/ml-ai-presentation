@@ -1,0 +1,36 @@
+[
+ {
+  "id": "agentic-ai-architecture",
+  "title": "Agentic AI Architecture",
+  "lead": "From a model in a pipeline to a model that acts.",
+  "owner": "All presenters",
+  "cues": [],
+  "takeaway": "",
+  "source": ""
+ },
+ {
+  "id": "five-questions-in-forty-minutes",
+  "title": "Five questions in forty minutes",
+  "lead": "Each presenter answers one question, grounded in one paper.",
+  "owner": "All presenters",
+  "cues": [
+   "<b>Five topics</b>, each self-contained: one question, one main source.",
+   "<b>Real systems as evidence:</b> Pi, Pi Durable, Hermes and the eleven harnesses of one source-code study.",
+   "<b>Topic-led:</b> no single running example this time.",
+   "<b>Discussion</b> reserved for the last three minutes."
+  ],
+  "takeaway": "Same question as Day 1, one layer up: what must surround the model?",
+  "source": "Group handoff · Day 2 outline"
+ },
+ {
+  "id": "discussion",
+  "title": "Discussion",
+  "lead": "Which of today’s five questions can our own project already answer?",
+  "owner": "All presenters",
+  "cues": [
+   "Harness · patterns · evaluation · context · always-on"
+  ],
+  "takeaway": "",
+  "source": ""
+ }
+]

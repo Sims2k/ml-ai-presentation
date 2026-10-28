@@ -4,7 +4,7 @@ Brand typography follows approved A. Semantic colors repeat across all figures.
 All complete static frames remain readable without the keyboard enhancement.
 """
 from html import escape
-from build_lecture_samples import text, node, arrow, svg, group, architecture
+from deck_common import text, node, arrow, svg, group
 from visual_marks import svg_icon
 
 PAPER='#faf9f7'
@@ -19,11 +19,6 @@ def label(x,y,value):
 def zone(y,title,h=272):
     return f'<rect x="8" y="{y}" width="1104" height="{h}" rx="6" class="zone"/>'+text(28,y+36,title,'lane-title')
 
-def banner(y,title,lines):
-    out=f'<rect x="24" y="{y}" width="1072" height="{64+len(lines)*32}" rx="6" fill="#f1f0eb" stroke="#d4d4cc"/>'
-    out+=text(44,y+32,title,'lane-title')
-    for i,line in enumerate(lines):out+=text(44,y+70+i*32,line,'aside-sub')
-    return out
 
 def sequence(slug,title,items,details,heading='ARCHITECTURE PATH',footer=''):
     """Three responsibilities, with exact operational detail under each one."""
@@ -76,41 +71,7 @@ def table_figure(slug,title,headers,rows,widths=None):
     cols='<colgroup>'+''.join(f'<col style="width:{w}%">' for w in widths)+'</colgroup>' if widths else ''
     return '<div class="lecture-table"><table>'+cols+'<thead><tr>'+''.join('<th>'+escape(h)+'</th>' for h in headers)+'</tr></thead><tbody>'+''.join('<tr>'+''.join('<td>'+escape(str(c))+'</td>' for c in row)+'</tr>' for row in rows)+'</tbody></table></div>',0
 
-def distribution(slug='input-drift'):
-    body=zone(12,'SAME FEATURE DEFINITION · SAME BIN BOUNDARIES · TWO COMPARABLE COHORTS',560)
-    for i,(name,vals) in enumerate([('Reference: earlier customers',[10,20,30,40]),('Current: newer customers',[40,30,20,10])]):
-        off=i*552
-        layer=text(off+52,108,name,'plot-title')
-        layer+=text(off+52,150,'Customers per 100','axis-label')
-        layer+=f'<path d="M{off+52} 176 V424 H{off+516}" class="axis"/>'
-        for k,v in enumerate(vals):
-            x=off+100+k*104;h=v*5
-            layer+=f'<rect x="{x}" y="{424-h}" width="60" height="{h}" class="hist {"current" if i else "reference"}"/>'
-            layer+=text(x+30,424-h-16,str(v),'plot-title','middle')
-            layer+=text(x+30,466,['0','1–2','3–5','6+'][k],'axis-label','middle')
-        layer+=text(off+52,514,'App logins in the last seven days','axis-label')
-        body+=group(layer,i+1,name)
-    body+=text(28,600,'What changed: the input distribution. What this does not establish: predictive accuracy loss.','aside-title')
-    body+=text(28,630,'Invented counts: two 100-customer cohorts. No churn labels are needed for this comparison.','diagram-note')
-    return svg(slug,'Data drift: the customer mix changes','Two invented cohorts use identical app-activity bins; the current cohort contains more low-activity customers, without establishing any change in churn risk given those inputs.',body),2
 
-def concept(slug='concept-drift'):
-    body=zone(12,'HOLD THE INPUT MEANING FIXED · CHANGE ITS RELATIONSHIP TO THE OUTCOME',560)
-    for i,name in enumerate(['Reference relationship','Changed relationship']):
-        off=i*552;layer=text(off+52,108,name,'plot-title')
-        layer+=text(off+52,154,'Illustrative churn risk','axis-label')
-        layer+=f'<path d="M{off+52} 184 V440 H{off+516}" class="axis"/>'
-        layer+=text(off+60,216,'Higher','axis-label')+text(off+60,422,'Lower','axis-label')
-        layer+=f'<path d="M{off+144} 224 C{off+236} 240 {off+304} 388 {off+484} 412" class="risk reference"/>'
-        if i:
-            layer+=f'<path d="M{off+144} 224 C{off+244} 234 {off+340} 256 {off+484} 280" class="risk current"/>'
-            layer+=text(off+254,338,'Same activity, higher risk','annotation')
-        layer+=text(off+120,482,'Low activity','axis-label')+text(off+408,482,'High activity','axis-label')
-        layer+=text(off+52,528,'Same feature: seven-day app logins','axis-label')
-        body+=group(layer,i+1,name)
-    body+=text(28,600,'Dashed: earlier relationship. Solid: later relationship. The deployed M1 has not changed.','aside-title')
-    body+=text(28,630,'Schematic relationships, not measurements or fitted models. Assess with valid inputs and mature outcomes.','diagram-note')
-    return svg(slug,'Concept drift: the same behavior means something different','After a hypothetical pricing change, active customers have higher churn risk than before, while the input definition and deployed model are held fixed.',body),2
 
 def label_timeline():
     s='delayed-labels';body=zone(16,'LINK EVIDENCE TO THE ORIGINAL PREDICTION DATE AND TARGET WINDOW',572)
@@ -242,3 +203,30 @@ def monitoring_architecture():
         body+=group(node(x,y,280,160,name,ls,role,tag),(step+1)//2,name)
     body+=text(28,630,'Monitoring can request a review. It cannot approve a candidate or silently promote a replacement.','diagram-note')
     return svg(s,'Monitoring architecture: signals, evidence and response','Input, execution and mature-label evidence is linked in shared run context, routed to an owner, and used for investigation rather than automatic model promotion.',body),3
+
+
+def architecture():
+    s='architecture'
+    body='<rect x="8" y="12" width="1104" height="268" rx="6" class="zone"/>'
+    body+=text(28,48,'TRAINING · LEARN AND APPROVE A MODEL','lane-title')
+    body+='<rect x="8" y="340" width="1104" height="244" rx="6" class="zone production"/>'
+    body+=text(28,376,'PRODUCTION · APPLY THE APPROVED MODEL','lane-title')
+    # All connectors precede nodes; there are no crossing paths or off-axis ports.
+    body+=arrow(s,216,172,248,172)+arrow(s,440,172,472,172)
+    body+=arrow(s,568,248,568,420,True)
+    body+='<rect x="584" y="296" width="184" height="30" fill="#faf9f7"/>'+text(592,318,'APPROVED M1','edge-label')
+    for a,b in [(216,248),(440,472),(664,696),(888,920)]:
+        body+=arrow(s,a,492,b,492)
+    body+=group(node(24,96,192,152,'History',['Past features','+ churn labels'],'data','INPUT'),1,'Historical features and observed labels')
+    body+=group(node(248,96,192,152,'Train / test',['Learn a model','Evaluate quality'],'model','LEARNING'),1,'Train and evaluate a candidate')
+    body+=group(node(472,96,192,152,'Registry',['Version + lineage','Approval status'],'model','ARTIFACT'),2,'Approve and register a model')
+    body+=text(708,142,'Labels describe what happened.','aside-title')
+    body+=text(708,178,'Features describe the customer','aside-sub')
+    body+=text(708,212,'at the scoring cutoff.','aside-sub')
+    body+=group(node(24,420,192,144,'Sources',['Bank / CRM / app'],'data','RECORDS'),3,'Read current bank records')
+    body+=group(node(248,420,192,144,'Features',['Validate + prepare'],'data','INPUTS'),3,'Validate and compute features')
+    body+=group(node(472,420,192,144,'Score',['Run approved M1'],'model','INFERENCE'),4,'Run the approved model')
+    body+=group(node(696,420,192,144,'Score store',['Risk + version links'],'data','RESULTS'),4,'Store predictions and their versions')
+    body+=group(node(920,420,176,144,'Policy',['Choose action'],'business','BUSINESS'),5,'Choose an eligible business action')
+    body+=text(28,620,'DATA / RECORDS','legend data-text')+text(324,620,'MODEL / EXECUTION','legend model-text')+text(692,620,'BUSINESS RULES / ACTION','legend business-text')
+    return svg(s,'From a trained model to an ML system','Historical features and churn labels support training and approval; production validates current features, scores with the approved model, stores results, and applies a separate business policy.',body),5

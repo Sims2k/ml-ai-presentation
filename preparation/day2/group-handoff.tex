@@ -1,0 +1,127 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=16pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,parskip,setspace,ragged2e}
+\usepackage{xcolor,graphicx,booktabs,tabularx,array,enumitem,titlesec,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=teal!60!black,urlcolor=teal!60!black]{hyperref}
+\definecolor{teal}{HTML}{187C80}
+\definecolor{pale}{HTML}{EEF6F5}
+\definecolor{ink}{HTML}{203342}
+\setstretch{1.20}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+\setlist[itemize]{leftmargin=1.4em,itemsep=0.45em,topsep=0.4em,parsep=0.15em}
+\setlist[enumerate]{leftmargin=1.5em,itemsep=0.5em,topsep=0.4em,parsep=0.15em}
+\titlespacing*{\section}{0pt}{1.5em}{0.7em}
+\titlespacing*{\subsection}{0pt}{1.2em}{0.5em}
+\widowpenalty=10000
+\clubpenalty=10000
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small Day 2 \textbar\ AI architecture}
+\rhead{\small Foundation models / agentic AI, theoretical overview}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\tcbset{breakable,arc=1.5mm,boxrule=0.6pt,left=3mm,right=3mm,top=2.5mm,bottom=2.5mm,before skip=12pt,after skip=12pt,fonttitle=\bfseries,before upper={\setlength{\parskip}{0.6em}\RaggedRight}}
+\newtcolorbox{keybox}[1]{colback=pale,colframe=teal,title={#1}}
+\newtcolorbox{examplebox}[1]{breakable=false,colback=orange!5,colframe=orange!55!black,title={Brief illustration: #1}}
+\newtcolorbox{handoffbox}[1]{colback=blue!3,colframe=blue!40!black,title={#1}}
+\newcommand{\source}[1]{\par\textcolor{teal!70!black}{\textit{Reading anchor: #1}}\par}
+
+\begin{document}
+\RaggedRight
+\title{Six Questions About Agentic AI Architecture\\[0.4em]\large A detailed Day 2 handoff for the presentation team}
+\author{Ricardo, Tom\'as, Simon, Luca, and Matheus}
+\date{Foundation models / agentic AI architecture --- 27 October 2026}
+\begin{center}
+{\LARGE Six Questions About Agentic AI Architecture\par}
+{\large A detailed Day 2 handoff\par}
+Ricardo, Tom\'as, Simon, Luca, and Matheus\\
+Foundation models / agentic AI architecture --- 27 October 2026
+\end{center}
+
+\begin{keybox}{What changed since the last version of this handoff}
+The talk is \textbf{40 minutes and 34 slides}, with speakers assigned in Day 1's order. Each topic is answered from one paper and stays self-contained; there is \textbf{no running example} this time. Real systems appear as evidence: \textbf{Pi} (a minimal coding agent), \textbf{Pi Durable} (Earendil's library for agents that survive crashes, released with Pi 1.0 on 1 October 2026) and \textbf{Hermes} (Nous Research's always-on agent). The right-hand column of each slide is read by the audience as key concepts; presenter directions are in the speaker notes. The deck, presenter guide and speaker notes are at \url{https://agentbox.tail289ef2.ts.net:8443/ml-ai-presentation/}; edit your own slide text in \texttt{slides/day2/} of the repository.
+\end{keybox}
+
+\textbf{How to use this handoff.} Everyone should read Section 1. Then read your own topic. Each topic section identifies the question it answers, the key points to cover, and a suggested transition sentence into the next topic. Nothing here depends on another speaker's slides existing yet.
+
+The timings are a \textbf{40-minute} speaking plan, discussion included: Ricardo, Tom\'as, Simon, Luca and Matheus, in Day 1's order.
+
+\section{Before anyone writes a slide}
+\subsection{The shared frame}
+Day 1 asked: how do you architect a system around a model that behaves statistically rather than deterministically? Day 2 asks the same question one layer up: how do you architect the \emph{runtime} around a model that can now call tools, hold multi-step state, and act with some autonomy? Say this explicitly in the opening --- it is the thread that ties Day 2 back to Day 1 without needing a shared example.
+
+\subsection{What each topic owes the audience}
+Every topic section below should open by naming its question in one sentence, give the audience enough vocabulary to follow the rest of the talk even if they skip the paper, and close with one concrete takeaway worth remembering after the slide is gone. Avoid restating another topic's content --- cross-references are given explicitly in each section's \emph{Hands off to} note.
+
+\section{Topic 1: What is a harness, and why is it suddenly a named discipline?}
+\textbf{Question to answer:} what sits between a foundation model and a working system, and why does that layer now get its own name?
+
+\textbf{Key points.} A coding or background agent is not just a model --- it is a model plus a \textbf{harness}: the loop that calls the model, the tools it can invoke, how context is assembled and trimmed, and the extension surface that lets a team customize behavior without touching the core loop. ``Harness engineering'' was named as a discipline in early 2026. A 2026 source-code study audited eleven production harnesses (Claude Code, Codex CLI, Gemini CLI, Aider, OpenHands, Pi, Hermes, and others) across roughly four million lines of code, and defined \textbf{seven canonical subsystems} every harness implements in some form, plus a catalogue of \textbf{29 recurring design patterns}. Two findings are worth a slide on their own: none of the eleven systems import a general-purpose agentic framework for their core loop, and none retrieve code with vector embeddings --- the field runs on hand-rolled loops and deterministic retrieval, not the heavier infrastructure many assume.
+
+\begin{examplebox}{naming a subsystem concretely}
+One subsystem is context management: deciding what from a long task history actually goes into the next model call. A minimal harness might simply summarize old history when a token budget is crossed; a more ambitious one might maintain layered memory files updated automatically. The point for this slide is the \emph{category}, not any one system's specific implementation.
+\end{examplebox}
+
+\textbf{Hands off to Topic 2:} once the audience has the seven-subsystem vocabulary, the next topic zooms into one subsystem in detail --- the agent's own internal architecture --- via a catalogue built specifically for foundation-model-based agents.
+
+\source{Barbaste, Darrigol, Vu \& Wiltberger (2026), arXiv:2609.00006.}
+
+\section{Topic 2: How do you catalogue an agent's internal architecture?}
+\textbf{Question to answer:} if two teams are both building ``an agent,'' what vocabulary lets them compare design choices precisely instead of talking past each other?
+
+\textbf{Key points.} This paper performed a systematic literature review of foundation-model-based agents and distilled \textbf{18 architectural patterns}, each documented with its context, the forces that push toward or away from it, and its trade-offs --- plus a decision model for choosing among them. Pick 2--3 patterns to go deep on rather than listing all 18; good candidates are ones with an intuitive hook, such as a planning pattern (how an agent breaks a goal into steps), a tool-use pattern (how it decides which tool to call and interprets the result), or a reflection pattern (how it checks its own output before acting further).
+
+\textbf{Hands off to Topic 3:} having a vocabulary for architecture is only useful if you can also judge whether a given architecture is any good --- which is exactly the gap the next paper addresses.
+
+\source{Liu, Lo, Lu \& Zhu (2025), \emph{Agent Design Pattern Catalogue}, Journal of Systems and Software, vol. 220.}
+
+\section{Topic 3: How do you evaluate an agent's architecture, not just its outputs?}
+\textbf{Question to answer:} traditional software architecture evaluation methods exist --- why don't they transfer cleanly to agents?
+
+\textbf{Key points.} Foundation-model-based agents have characteristics that break assumptions baked into older evaluation methods: \textbf{compound architecture} (many components, often other agents, calling each other), \textbf{autonomous and non-deterministic behavior} (the same input can lead to different action sequences), and \textbf{continuous evolution} (the underlying model or its prompt can change independently of the surrounding system). AgentArcEval is a method designed specifically for this, built around a \textbf{catalogue of agent-specific general scenarios} that a team adapts into concrete evaluation scenarios for their own system. The paper validates the method on a real-world tax copilot (``Luna''); mention this once as evidence the method works in practice, without reconstructing the case study in detail.
+
+\textbf{Hands off to Topic 4:} one of AgentArcEval's own scenario categories concerns how well an agent's context and instructions are actually documented and maintained --- which is precisely what the next topic studies empirically, in the wild.
+
+\source{Lu, Zhao, Liu \& Zhang (2026), \emph{AgentArcEval}, Journal of Systems and Software, vol. 232.}
+
+\section{Topic 4: What does context engineering actually look like in real projects?}
+\textbf{Question to answer:} vendors recommend maintaining a context file (like \texttt{AGENTS.md}) so an agent understands a project's conventions --- do developers actually do this, and how?
+
+\textbf{Key points.} This is an empirical study, not a proposal. Of \textbf{10,000} popular open-source repositories, only \textbf{466 (5\%)} had an AI context file; the content analysis covers the \textbf{155 AGENTS.md files} among them and 453 commits of their history. Findings worth presenting as a short list rather than a wall of prose: there is \textbf{no established content structure yet} across projects; the way context is expressed varies along several styles --- descriptive, prescriptive, prohibitive, explanatory, conditional --- often mixed within one file; and a commit-level analysis gives early insight into how these files \emph{evolve} over a project's lifetime, rather than being written once and left alone. Frame this as evidence that context engineering is still a genuinely open, unsettled practice, not a solved problem with one right answer.
+
+\textbf{Hands off to Topic 5:} both the architecture-evaluation method and the context-engineering findings point toward the same open question --- where does this whole area go next, and what should a team actually do differently starting now?
+
+\source{Mohsenimofidi, Galster, Treude \& Baltes (2026), \emph{Context Engineering for AI Agents in Open-Source Software}, MSR 2026.}
+
+\section{Topic 5: What changes when agents run always-on?}
+\textbf{Question to answer:} what does an architecture need once the agent no longer waits for a person at a terminal?
+
+\textbf{Key points.} Use three real systems as points on a spectrum --- this framing is our own synthesis, not a lineage the sources claim. \textbf{Pi} is a session agent: a person starts and supervises each run, and its state is a JSONL session tree. \textbf{Pi Durable} (Earendil, 1 October 2026, experimental) is a library, not a new CLI: every model and tool step is a task that checkpoints before moving on, a new process calls \texttt{resume()} after a crash, only tools marked safe are rerun, and a \texttt{requestId} makes submissions exactly-once. \textbf{Hermes} (Nous Research) is always-on: CLI, a long-running chat gateway and ACP clients feed one agent core, a scheduler starts work by itself, memory files are always in context, sessions live in SQLite with full-text search, and compaction at 50\% rotates the session. Close with the cost of autonomy (one Hermes user's report: 69\% of a 12-hour session's tokens spent replaying history, issue \#5563), the platform turn, and four or five of the harness paper's \textbf{18 recommendations}, with the evidence from today's systems.
+
+\textbf{Hands off to discussion:} end with one open question for the room --- ``which of today's five questions can our own project already answer, and which would we need before letting an agent run unattended?''
+
+\source{Earendil (2026), \emph{Pi Durable}, earendil.com/posts/pi-durable; Nous Research, Hermes Agent documentation; Alejandro AO (2026), Pi and Hermes architecture explainers; Barbaste, Darrigol, Vu \& Wiltberger (2026), recommendations section.}
+
+\section{The proposed speaking sequence}
+\begin{tabularx}{\textwidth}{@{}p{0.17\textwidth}p{0.14\textwidth}X@{}}
+\toprule
+\textbf{Time} & \textbf{Slides} & \textbf{Owner and topic}\\
+\midrule
+0--2 min & 1--2 & All: opening and agenda\\
+2--9 min & 3--8 & Ricardo: Day 1 to Day 2; agent = model + harness (seven subsystems); eleven harnesses from 1 to 109 tools; the agent loop; Pi's minimal core; what eleven harnesses share and lack\\
+9--15 min & 9--14 & Tomás: the 18-pattern catalogue; eight families; planning, reflection, registry and adapter; decision model\\
+15--21 min & 15--19 & Simon: why evaluation changes; AgentArcEval process; the Luna accuracy scenario; eleven scenarios and measures; scenarios as a lens on Pi, Pi Durable and Hermes\\
+21--29 min & 20--26 & Luca: context as a budget; 466 of 10,000 repositories; AGENTS.md content, styles and evolution; what stays in context; subagents\\
+29--37 min & 27--33 & Matheus: session agent to always-on agent; Pi Durable crash recovery; Hermes architecture; what always-on costs; the platform turn; recommendations; the 90-line harness\\
+37--40 min & 34 & All: discussion\\
+\bottomrule
+\end{tabularx}
+
+\textbf{A note on scope.} Each topic is self-contained on purpose: a speaker who only has time to prepare their own section, and read the \emph{Hands off to} notes on either side of it, can still give a coherent talk. Pi, Pi Durable and Hermes recur as evidence, but no slide depends on another speaker's explanation of them.
+
+\end{document}

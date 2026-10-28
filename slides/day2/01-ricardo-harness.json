@@ -1,0 +1,86 @@
+[
+ {
+  "id": "one-layer-up-from-day-1",
+  "title": "One layer up from Day 1",
+  "lead": "Day 1 put a model inside a system. Day 2 puts it inside a loop that acts.",
+  "owner": "Ricardo",
+  "cues": [
+   "<b>Day 1:</b> a one-way path from records to a business decision.",
+   "<b>Day 2:</b> the model chooses an action, not just a score.",
+   "<b>The return arrow</b> is new: results flow back as context.",
+   "<b>Same engineering question:</b> what must surround the model?"
+  ],
+  "takeaway": "An agent is still a model inside an architecture — now one that loops.",
+  "source": "Day 1 lecture · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §1"
+ },
+ {
+  "id": "agent-model-harness",
+  "title": "Agent = model + harness",
+  "lead": "The harness is everything except the model. A source-code study of eleven harnesses found the same seven subsystems in all of them.",
+  "owner": "Ricardo",
+  "cues": [
+   "<b>Agent loop</b> at the centre: model → tool → observation.",
+   "<b>Six more subsystems:</b> LLM access, tools, safety, memory, orchestration, extensions.",
+   "<b>Every harness takes a position</b> on all seven, even if it is “none”.",
+   "<b>Interfaces</b> sit on top: terminal, editors, chat gateways."
+  ],
+  "takeaway": "The harness is the part you can engineer.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §2.3, Table 1"
+ },
+ {
+  "id": "eleven-harnesses-from-one-tool-to-109",
+  "title": "Eleven harnesses, from one tool to 109",
+  "lead": "The same seven subsystems, built with tool surfaces that differ by two orders of magnitude.",
+  "owner": "Ricardo",
+  "cues": [
+   "<b>Minimal end:</b> Mini-SWE-Agent works through one bash tool; Pi exposes four by default.",
+   "<b>Maximal end:</b> Hermes registers 69 tools and scopes them per platform; OpenClaw ships 109.",
+   "<b>More code is not better results:</b> loop sophistication does not predict benchmark performance.",
+   "<b>Most code goes elsewhere:</b> safety, user experience, extensibility and clients."
+  ],
+  "takeaway": "Tool count is a design philosophy, not a quality score.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §5 Table 4, §8.1 Fig. 3"
+ },
+ {
+  "id": "the-agent-loop-decide-act-observe",
+  "title": "The agent loop: decide, act, observe",
+  "lead": "One cycle repeats until the model answers in text instead of calling a tool.",
+  "owner": "Ricardo",
+  "cues": [
+   "<b>The context window accumulates state:</b> every pass writes into it.",
+   "<b>Clockwise:</b> model → permission gate → tool → observation.",
+   "<b>Steering input</b> waits for a safe boundary, never mid-tool-call.",
+   "<b>Stop conditions differ:</b> no cap in Pi, a 90-step budget in Hermes."
+  ],
+  "takeaway": "A loop with a growing context — everything else manages that loop.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §6"
+ },
+ {
+  "id": "pi-a-minimal-core-everything-else-an-extension",
+  "title": "Pi: a minimal core, everything else an extension",
+  "lead": "Pi keeps the core small and moves safety, sub-agents and plan mode into extensions.",
+  "owner": "Ricardo",
+  "cues": [
+   "<b>Four layers:</b> interfaces → product → loop → model gateway.",
+   "<b>Session tree:</b> JSONL entries you can fork and rewind.",
+   "<b>Extension host:</b> sub-agents, plan mode and permissions hook into the event stream.",
+   "<b>Trade-off:</b> a small core, but safety depends on what you install."
+  ],
+  "takeaway": "Minimal core plus extensions is one coherent harness architecture.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §10–12 · Zechner (2025); Pi docs, github.com/earendil-works/pi"
+ },
+ {
+  "id": "what-eleven-harnesses-share-and-lack",
+  "title": "What eleven harnesses share — and lack",
+  "lead": "Production harnesses converge on skills and context files, and all skip two popular technologies.",
+  "owner": "Ricardo",
+  "cues": [
+   "<b>Shared:</b> skills, summarised history, Markdown context files, MCP.",
+   "<b>Absent everywhere:</b> agentic frameworks and embedding search over code.",
+   "<b>Instead:</b> hand-rolled async loops and deterministic search (grep, LSP).",
+   "<b>Next:</b> a vocabulary for the agent inside the loop."
+  ],
+  "takeaway": "The field runs on simple loops and deterministic retrieval.",
+  "source": "Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §13.2, Observation 8–9"
+ }
+]

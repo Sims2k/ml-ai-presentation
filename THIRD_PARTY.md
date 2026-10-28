@@ -64,3 +64,28 @@ The presentation applies Frontend Slides' fixed-stage layout and Diagram Design'
 SVG/motion approach. Generated figure geometry, lecture content, and build code
 are included so colleagues can edit them. No local skill-installation instructions,
 credentials, connector configuration, or agent-session data is included.
+
+## Day 2 diagrams
+
+All Day 2 diagrams are original drawings in the lecture's design system. Where a
+diagram simplifies a paper figure (Liu et al. 2025, Fig. 2; Lu et al. 2026,
+Fig. 2; Mohsenimofidi et al. 2026, Fig. 1), the slide says so; no paper figure is
+reproduced. Additional Lucide icons are listed in `assets/marks/sources.json`
+(ISC license, `licenses/Lucide-LICENSE.txt`).
+
+### Day 2 project and vendor logos
+
+The `assets/marks/logo-*` files are the official marks of the projects and vendors
+named on the slides, used only to identify them (nominative use); each mark
+remains the property of its owner. Sources, all recorded in
+`assets/marks/sources.json`:
+
+- Harness marks: Pi (pi.dev favicon), Hermes Agent (NousResearch/hermes-agent
+  `assets/icon-master.svg`, rasterised), Mini-SWE-Agent (SWE-agent/mini-swe-agent
+  docs, rasterised), OpenHands (All-Hands-AI/OpenHands `public/favicon.svg`),
+  OpenClaw (openclaw/openclaw `ui/public/favicon.svg`); Aider, Codex, Gemini CLI,
+  OpenCode and the AGENTS.md mark from the agentsmd/agents.md site repository.
+- Vendor and channel marks (Claude, Anthropic, OpenAI, Google Gemini, Mistral AI,
+  GitHub Copilot, GitHub, Model Context Protocol, SQLite, Telegram, Discord, Slack,
+  WhatsApp, Signal): Simple Icons 15.10.0 (CC0-1.0 for the SVG files; trademarks
+  belong to their owners), tinted with each brand's published colour where one exists.

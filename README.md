@@ -1,53 +1,37 @@
-# ML / AI architecture presentation
+# ML and agentic AI architecture — presentation archive
 
-English lecture for a software engineering master's class. The Day 1 deck uses
-one bank customer-churn case. It includes 54 slides, separate full-width drift
-figures, named presenters, a slide-aligned presenter guide, and keyboard builds.
+Two English lectures for a software engineering master's class, presented on
+20 and 27 October 2026 by Ricardo, Tomás, Simon, Luca and Matheus.
+The temporary Tailscale public review endpoints were closed on 28 October 2026.
+The repository retains the finished materials and the sources needed to rebuild them.
 
-- [Public review](https://agentbox.tail289ef2.ts.net:8443/ml-ai-presentation/)
-- [Slides](docs/presentation.html) · [PDF](docs/presentation.pdf)
-- [Presenter guide](docs/presenter-guide.pdf)
-- [Speaker notes](docs/speaker-notes.pdf) — slide-aligned scripts, slide images, and delivery cues
+| Lecture | Slides | Materials |
+| --- | --- | --- |
+| Day 1 — ML Architecture | 54; a bank customer-churn case | [HTML](docs/presentation.html), [PDF](docs/presentation.pdf), [presenter guide](docs/presenter-guide.pdf), [speaker notes](docs/speaker-notes.pdf), [group handoff](docs/group-handoff.pdf) |
+| Day 2 — Agentic AI Architecture | 34; 40 minutes including discussion | [HTML](docs/day2/presentation.html), [PDF](docs/day2/presentation.pdf), [presenter guide](docs/day2/presenter-guide.pdf), [speaker notes](docs/day2/speaker-notes.pdf), [group handoff](docs/day2/group-handoff.pdf), [Simon's evaluation brief](docs/day2/evaluation-brief.pdf) |
 
-The public review does **not** require a Tailnet connection. The HTML download is
-self-contained and works offline.
+Download the HTML decks to present offline, or use the local server below.
+The HTML embeds fonts and graphics; presentation navigation needs JavaScript.
+Printed PDFs and the static diagrams remain readable without animation.
 
-## Edit your slides
+## Repository structure
 
-| Presenter | Editable content |
-| --- | --- |
-| Ricardo | `slides/01-ricardo-foundations.json` |
-| Tomás | `slides/02-tomas-serving.json` |
-| Simon | `slides/03-simon-monitoring.json` |
-| Luca | `slides/04-luca-design.json` |
-| Matheus · architecture | `slides/05-tbd-architecture.json` |
-| Matheus | `slides/06-matheus-mlops.json` |
-| Simon + Matheus | `slides/07-simon-matheus-security.json` |
-| Matheus · quality | `slides/08-tbd-quality.json` |
-| Matheus · tools | `slides/09-tbd-tools.json` |
+- `slides/`: presenter-owned Day 1 JSON; `slides/day2/`: Day 2 JSON.
+- `scripts/`: deck builders, authored speaker scripts, diagram functions and verification.
+  `deck_common.py` holds shared styles, SVG helpers and the browser controller.
+- `theme/`, `assets/`, `licenses/`: shared rendering assets and attribution.
+- `preparation/`: authored LaTeX handoffs and Simon's Day 2 study brief.
+- `docs/`: final portable archive, including rendered PDFs and Markdown guides.
+- `src/`: Day 1 guide context and colleague-review provenance still used by the build.
+- `outputs/`, `previews/`, `assets/diagrams/`: ignored generated files.
+  Generated speaker-note LaTeX also stays in `outputs/`.
 
-Change `title`, `lead`, `bullets`, `example`, `takeaway`, `source`, or `owner` in your file.
-Keep each `id` unchanged. `<b>...</b>` marks a short emphasized phrase.
-Diagram-led slides keep their bullets in the presenter guide instead of repeating
-them beside the figure.
+## Build and verify
 
-Use a branch and pull request, or fork the repository if you have read-only
-access. You can edit JSON with GitHub's web editor. The Actions build checks
-navigation/layout and produces a downloadable site artifact. Do not edit only a
-generated HTML file: a later build will overwrite it.
-
-For diagram geometry, edit `scripts/lecture_full_visuals.py` or
-`scripts/drift_visuals.py`. To add/reorder slides, edit `scripts/lecture_content.py`
-and add the corresponding JSON content. See [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Build locally
-
-Requires Python 3.11+, Node 22+, and [Pandoc](https://pandoc.org/installing.html).
+Requires Python 3.11+, Node 22+, Pandoc and Playwright Chromium.
 On Ubuntu, install Pandoc with `sudo apt-get install pandoc`.
 
 ```sh
-git clone https://github.com/Sims2k/ml-ai-presentation.git
-cd ml-ai-presentation
 npm ci
 npx playwright install chromium
 npm run build
@@ -56,59 +40,66 @@ npm run site
 npm run serve
 ```
 
-Open `http://localhost:8000`. On Linux, Playwright may need
-`npx playwright install --with-deps chromium`.
+Open `http://localhost:8000`. The preview server binds to loopback.
+On Linux, Playwright may need `npx playwright install --with-deps chromium`.
 
-`npm run build` writes `outputs/`; `npm test` checks keyboard traversal, overlap,
-SVG bounds, diagram states, and exports the slide/guide PDFs. `npm run site`
-copies the reviewed results to `docs/`. Browser text edits with E are local to
-that browser; Ctrl/Cmd+S downloads an edited copy, not a repository commit.
+The default build and test commands cover **both** lectures. Tests first build
+both decks in a fresh temporary source directory to catch dependencies on cached
+outputs. Checks also cover slide
+geometry, keyboard traversal, diagrams, local editing and static/reduced-motion
+behaviour, and export the slide/guide PDFs and screenshots.
+For one lecture, use `npm run build:day1` / `npm run test:day1` or their `:day2`
+equivalents. Run `npm run site` after verification to refresh `docs/`.
 
-### Speaker notes
+GitHub Actions runs both builds and their checks, then uploads a
+`presentation-archive` artifact. It does not deploy a public site or check the
+retired review endpoint. The repository itself remains public.
 
-`docs/speaker-notes.pdf` is a committed artifact, not rebuilt by CI (it needs a
-LaTeX toolchain CI does not install). To regenerate it after editing slide
-content, install XeLaTeX (`texlive-xetex` or similar) and run:
+## Speaker notes
+
+The authored prose lives in `scripts/speaker_scripts.py` and
+`scripts/day2_speaker_scripts.py`. Day 2 includes optional preparation examples
+and definitions, separate from the spoken scripts. Simon's five scripts fit the
+six-minute allocation; the preparation boxes are material to keep in reserve.
+
+To rebuild notes after building and verifying the decks, install XeLaTeX,
+DejaVu Sans, the required TeX packages (including tcolorbox and xurl) and Poppler:
 
 ```sh
-npm run build
-npm test        # verifies the deck, exports PDFs, and captures the current slide images
-python3 scripts/build_speaker_notes.py
-xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs src/speaker-notes.tex
-xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs src/speaker-notes.tex
-python3 scripts/verify_speaker_notes.py  # needs pdftotext (Poppler)
+npm run notes
 npm run site
 ```
 
-Slide content comes from `lecture_content.build_lecture()` and the presenter JSON
-files. Spoken prose is authored separately in `scripts/speaker_scripts.py` and
-must be updated when a slide changes. The notes generator groups that prose into
-short bulleted paragraphs and adds visual/build/handoff cues. It uses the fresh
-screenshots produced by `npm test` in `previews/lecture-full/`.
+Use `npm run notes:day1` or `npm run notes:day2` for one booklet, then
+`python3 scripts/verify_speaker_notes.py --day 1` (or `--day 2`).
+The generators use fresh screenshots from the deck checks. They write LaTeX to
+`outputs/` with paths relative to the repository, so no AgentBox-specific paths
+are needed. CI preserves the checked-in note PDFs; it does not install LaTeX.
+See [preparation/README.md](preparation/README.md) for handoff and brief sources.
 
-The 19 October content merge follows the 54 visible slides in the colleagues’
-Google review deck. `src/colleague-review.json` records the changed content and
-skipped originals; it is provenance, not a second editable content source.
-Ricardo’s opening order and Tomás’s seven-slide serving section follow that
-review. Matheus owns architecture tactics, quality and tools. Names containing
-`tbd` in JSON filenames are retained for stable colleague links; assignments
-inside those files and on slides are current.
+## Editing
 
-## Publishing
+Each presenter edits their JSON file, keeping `id` values stable. Day 1 uses
+`title`, `lead`, `bullets`, `example`, `takeaway`, `source`, and `owner`; Day 2
+uses `title`, `lead`, `cues`, `takeaway`, `source`, and `owner`. `<b>...</b>` marks
+short emphasis. Edit authored scripts when changing a slide's explanation.
 
-The public review currently serves the curated `docs/` directory via a public
-Tailscale Funnel path. It is independent of the private Tailnet review route.
-A new source commit does not automatically update that server checkout.
+Day 1 order and figures live in `lecture_content.py`, `lecture_full_visuals.py`
+and `drift_visuals.py`; Day 2 uses `day2_content.py` and `day2_visuals.py`.
+Day 1 filenames containing `tbd` are retained for stable colleague links;
+assignments within the files are current. `src/colleague-review.json` records
+review provenance, rather than providing a second editable content source.
 
-Actions builds an updated site artifact for each change. If GitHub Pages is
-configured with source **GitHub Actions**, the workflow also deploys it to Pages.
-The owner can enable that in Settings → Pages. Otherwise use the artifact or
-pull, build, test, and refresh the public server checkout.
+Keys: Right/Space reveals builds, then advances; Left reverses; Page Up/Down
+skips between slides; G opens contents; F toggles fullscreen; E enables local
+text editing. Escape finishes editing; Ctrl/Cmd+S downloads the edited HTML.
+Browser edits do not update repository sources. Add `?motion=static` to view
+complete diagrams. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Content and attribution
+## Sources and teaching boundaries
 
-See [SOURCES.md](SOURCES.md) and [THIRD_PARTY.md](THIRD_PARTY.md). The monitoring
-section opens with the attributed original Krawczyk/Cano temporal-drift figure
-and presenter-approved bank illustrations (`scripts/drift_visuals.py`). No library PDFs, Zotero credentials, server configuration, or
-local session files are included. Banking records, outcomes, incidents and tool
-records are teaching illustrations, not reported experiments.
+See [SOURCES.md](SOURCES.md) and [THIRD_PARTY.md](THIRD_PARTY.md).
+Banking records, outcomes and tool runs are teaching illustrations. Day 2's
+system comparison is an architectural synthesis, not a comparative benchmark;
+Luna's numerical acceptance targets are requirements, not reported results.
+No library PDFs, credentials, connector configuration or session exports are included.

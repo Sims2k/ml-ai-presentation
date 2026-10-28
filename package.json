@@ -3,10 +3,18 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "python3 scripts/build_lecture_deck.py",
-    "test": "node scripts/verify_navigation.cjs && node scripts/verify_lecture_deck.cjs",
+    "build": "npm run build:day1 && npm run build:day2",
+    "build:day1": "python3 scripts/build_lecture_deck.py",
+    "build:day2": "python3 scripts/build_day2_deck.py",
+    "test": "npm run test:build && npm run test:day1 && npm run test:day2",
+    "test:day1": "node scripts/verify_navigation.cjs && node scripts/verify_lecture_deck.cjs",
+    "test:day2": "node scripts/verify_day2_navigation.cjs && node scripts/verify_day2_deck.cjs",
+    "notes": "npm run notes:day1 && npm run notes:day2 && python3 scripts/verify_speaker_notes.py",
+    "notes:day1": "python3 scripts/build_speaker_notes.py && xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs outputs/speaker-notes.tex && xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs outputs/speaker-notes.tex",
+    "notes:day2": "python3 scripts/build_day2_speaker_notes.py && xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs/day2 outputs/day2/day2-speaker-notes.tex && xelatex -interaction=nonstopmode -halt-on-error -output-directory=outputs/day2 outputs/day2/day2-speaker-notes.tex",
     "site": "python3 scripts/build_site.py",
-    "serve": "python3 -m http.server 8000 --directory docs"
+    "serve": "python3 -m http.server 8000 --bind 127.0.0.1 --directory docs",
+    "test:build": "python3 scripts/verify_clean_build.py"
   },
   "devDependencies": {
     "playwright": "1.64.1"

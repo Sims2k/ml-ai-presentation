@@ -5,7 +5,7 @@ Fig. 2 — not a reproduction of their artwork. All plotted bank examples are in
 """
 from pathlib import Path
 from html import escape
-from build_lecture_samples import group
+from deck_common import group
 from visual_marks import svg_icon
 
 ROOT=Path(__file__).resolve().parents[1]

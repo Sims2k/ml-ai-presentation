@@ -1,0 +1,86 @@
+[
+ {
+  "id": "a-shared-vocabulary-for-agent-design",
+  "title": "A shared vocabulary for agent design",
+  "lead": "A systematic review of 57 studies distilled 18 architectural patterns for foundation-model agents.",
+  "owner": "Tomás",
+  "cues": [
+   "<b>Inside the agent:</b> goal creation, planning, reflection.",
+   "<b>Outside it:</b> the model, knowledge, a registry, tools and workers.",
+   "<b>Each pattern</b> documents context, forces, solution, consequences, known uses.",
+   "<b>Why it matters:</b> two teams can compare designs precisely."
+  ],
+  "takeaway": "Patterns let us name a design choice and its trade-off.",
+  "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §2–4, Fig. 2"
+ },
+ {
+  "id": "eighteen-patterns-in-eight-families",
+  "title": "Eighteen patterns in eight families",
+  "lead": "Group the catalogue by the question each pattern answers.",
+  "owner": "Tomás",
+  "cues": [
+   "<b>Eight families</b>, from goal creation to evaluation.",
+   "<b>Most agents combine</b> several small patterns.",
+   "<b>Deep dive on three:</b> planning, reflection, registry.",
+   "<b>Coding harnesses skip RAG</b> and use grep and the language server instead."
+  ],
+  "takeaway": "Most agents combine many small patterns, not one big one.",
+  "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, Table 1 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §13.2"
+ },
+ {
+  "id": "planning-one-path-or-many",
+  "title": "Planning: one path or many?",
+  "lead": "A plan generator decomposes a goal; the choice is how many options it keeps open.",
+  "owner": "Tomás",
+  "cues": [
+   "<b>Single path:</b> one ordered list — cheap, simple, explainable.",
+   "<b>Multi-path:</b> options per step, compared before choosing.",
+   "<b>Trade-off:</b> multi-path improves certainty but costs more model calls.",
+   "<b>A visible plan</b> lets people correct it early."
+  ],
+  "takeaway": "Most coding agents choose a single, visible plan.",
+  "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §4.7–4.8"
+ },
+ {
+  "id": "reflection-who-checks-the-work",
+  "title": "Reflection: who checks the work?",
+  "lead": "Reflection patterns differ by who gives the feedback: the agent, another agent, or a person.",
+  "owner": "Tomás",
+  "cues": [
+   "<b>Self:</b> cheap and fast, limited by the agent’s own blind spots.",
+   "<b>Cross:</b> a second agent adds a perspective, and cost.",
+   "<b>Human:</b> aligns with preferences, adds latency and contestability.",
+   "<b>Real harnesses mix all three</b> at different moments."
+  ],
+  "takeaway": "Choose the reviewer by the cost of a wrong action.",
+  "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §4.9–4.11 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §6"
+ },
+ {
+  "id": "registries-and-adapters-finding-capabilities",
+  "title": "Registries and adapters: finding capabilities",
+  "lead": "A registry makes tools and agents discoverable; an adapter connects the loop to outside systems.",
+  "owner": "Tomás",
+  "cues": [
+   "<b>Registry:</b> tool schemas, skills and agent personas in one place.",
+   "<b>Load on use:</b> skills and agents enter the context only when needed.",
+   "<b>Adapter:</b> MCP or JSON-RPC to servers, language servers and sandboxes.",
+   "<b>Scale:</b> Hermes registers 69 tools but shows each platform a subset."
+  ],
+  "takeaway": "Registries keep the loop small while capabilities grow.",
+  "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §4.16–4.17 · Barbaste et al. (2026), Harness Engineering, arXiv:2609.00006, §8"
+ },
+ {
+  "id": "choosing-patterns-the-decision-model",
+  "title": "Choosing patterns: the decision model",
+  "lead": "The catalogue’s decision model asks one question per design problem.",
+  "owner": "Tomás",
+  "cues": [
+   "<b>One question per row</b>, two answers.",
+   "<b>Each answer has consequences</b> — benefits and costs.",
+   "<b>A design</b> is a coherent set of answers.",
+   "<b>Next:</b> how do we judge whether the choices are good?"
+  ],
+  "takeaway": "A pattern is chosen by a question, not by fashion.",
+  "source": "Liu et al. (2025), Agent Design Pattern Catalogue, JSS 220, §5.1, Fig. 19"
+ }
+]
