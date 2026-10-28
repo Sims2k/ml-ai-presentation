@@ -43,7 +43,9 @@ npm run serve
 Open `http://localhost:8000`. The preview server binds to loopback.
 On Linux, Playwright may need `npx playwright install --with-deps chromium`.
 
-The default build and test commands cover **both** lectures. Checks cover slide
+The default build and test commands cover **both** lectures. Tests first build
+both decks in a fresh temporary source directory to catch dependencies on cached
+outputs. Checks also cover slide
 geometry, keyboard traversal, diagrams, local editing and static/reduced-motion
 behaviour, and export the slide/guide PDFs and screenshots.
 For one lecture, use `npm run build:day1` / `npm run test:day1` or their `:day2`

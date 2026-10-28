@@ -8,6 +8,7 @@ from drift_visuals import DRIFT_CSS
 from visual_marks import tool_mark,concept_mark,MARK_CSS
 
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'outputs'
+OUT.mkdir(parents=True,exist_ok=True)
 DIAGRAMS=ROOT/'assets/diagrams/lecture-full';DIAGRAMS.mkdir(parents=True,exist_ok=True)
 slides=build_lecture()
 EXTRA=r'''
